@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:background="@color/primary_background_color">
+
+    <ImageView
+        android:id="@+id/talklet_logo_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_02"
+        android:layout_gravity="center|center_vertical"
+        android:layout_marginTop="140dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/please_connect_to_talklet"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="100dp"
+        fontPath="fonts/Avenir-Black.ttf"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/connect_with_fb_button"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/primary_background_color"
+        android:text="@string/connect_with_facebook"/>
+
+
+
+
+
+
+</LinearLayout>

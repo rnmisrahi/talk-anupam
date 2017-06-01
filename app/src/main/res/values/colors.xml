@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8781bd</color>
+
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#8781bd</color>
+
+
+    <color name="primary_background_color">#f2f1f7</color>
+    <color name="eighty_transparent_background">#F2f2f1f7</color>
+    <color name="text_color">#636363</color>
+    <color name="white_color">#ffffff</color>
+    <color name="camera_background">#16aaad</color>
+    <color name="tip_background">#fef9f4</color>
+    <color name="white_bg">#fefefe</color>
+    <color name="Pastel_magenta">#f59ebd</color>
+</resources>

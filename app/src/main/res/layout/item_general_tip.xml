@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="255dp"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingPrefix"
+    android:background="@color/tip_background"
+    >
+
+    <ImageView
+        android:id="@+id/question_or_assertion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="35dp"
+        android:src="@drawable/setting"/>
+
+    <TextView
+        android:id="@+id/tip_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Try ro ask about the kid's day"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        fontPath="fonts/Avenir-Black.ttf"/>
+
+
+
+</LinearLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background_color">
+
+
+    <TextView
+        android:id="@+id/title_fill_details"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:text="@string/title_fill_details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="114dp"
+        android:paddingStart="45dp"
+        android:paddingEnd="45dp"
+        android:textAlignment="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"/>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/camera_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="43dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_fill_details"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/camera_background"
+        android:src="@drawable/pic"/>
+
+    <TextView
+        android:id="@+id/upload_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_photo"
+        android:layout_gravity="center"
+        android:layout_marginTop="11dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/camera_image"
+        tools:layout_editor_absoluteX="150dp" />
+
+    <EditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        android:layout_marginTop="29dp"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp"
+        android:background="@drawable/edit_text_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upload_photo"
+        tools:layout_editor_absoluteX="67dp" />
+
+
+    <EditText
+        android:id="@+id/birthday_edit_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/birthday"
+        android:layout_marginTop="29dp"
+        android:layout_gravity="center"
+        android:textColorHighlight="@color/colorAccent"
+        android:paddingBottom="10dp"
+        android:background="@drawable/edit_text_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_edit_text"
+        android:inputType="date"
+        android:clickable="true"/>
+
+    <ImageView
+        android:id="@+id/calendar_intent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/birthday_edit_text"
+        app:layout_constraintEnd_toEndOf="@+id/birthday_edit_text"
+        android:src="@drawable/birthday"/>
+    
+    
+    <Button
+        android:id="@+id/confirm_signup_details"
+        android:layout_width="130dp"
+        android:layout_height="51dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white_color"
+        android:text="@string/confirm"
+        android:textAllCaps="false"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="@id/birthday_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text"
+        tools:layout_editor_absoluteX="187dp" />
+
+
+</android.support.constraint.ConstraintLayout>
