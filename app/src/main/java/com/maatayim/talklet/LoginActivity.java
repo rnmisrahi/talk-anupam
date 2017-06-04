@@ -8,15 +8,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.maatayim.talklet.application.TalkletApplication;
+import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.baseline.events.AddLoginFragmentEvent;
-import com.maatayim.talklet.screens.login.LoginFragment;
+import com.maatayim.talklet.screens.loginactivity.login.LoginFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -25,12 +24,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity implements BaseContract.View {
 
-//    CallbackManager callbackManager;
-
-//    @Inject
-//    RepositoryImpl repositoryImpl;
-//    @Inject LoginView view;
-//    @Inject LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,34 +31,7 @@ public class LoginActivity extends AppCompatActivity implements BaseContract.Vie
         setContentView(R.layout.activity_base);
         ((TalkletApplication) getApplication()).getAppComponent().inject(this);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Avenir-Black.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build());
 
-//        callbackManager = CallbackManager.Factory.create();
-//
-//        LoginManager.getInstance().registerCallback(callbackManager,
-//                new FacebookCallback<LoginResult>() {
-//                    @Override
-//                    public void onSuccess(LoginResult loginResult) {
-//                        // App code
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        // App code
-//                    }
-//
-//                    @Override
-//                    public void onError(FacebookException exception) {
-//                        // App code
-//                    }
-//                });
-//
-//        LoginButton loginButton = (LoginButton) findViewById(R.id.connect_with_fb_button);
-//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() { ... });
-//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {...});
 
         EventBus.getDefault().register(this);
         EventBus.getDefault().post(new AddLoginFragmentEvent(new LoginFragment()));
@@ -122,11 +88,6 @@ public class LoginActivity extends AppCompatActivity implements BaseContract.Vie
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_CODE_TAKE_PHOTO || requestCode == REQUEST_CODE_PICK_FROM_GALLERY){
-//            EventBus.getDefault().post(new ActivityResultEvent(requestCode, resultCode, data));
-//        }else{
-//            EventBus.getDefault().post(new FacebookLoginActivityResultEvent(requestCode, resultCode, data));
-//        }
 
     }
 }

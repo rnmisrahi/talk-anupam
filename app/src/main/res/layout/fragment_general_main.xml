@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
     android:background="@drawable/toolbar_extension">
 
     <ImageView
@@ -18,18 +19,40 @@
         android:padding="20dp"
         android:src="@drawable/record"/>
 
+    
+    <TextView
+        android:id="@+id/total_words_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_words"
+        app:layout_constraintStart_toStartOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager"
+        android:layout_marginTop="68dp"/>
+
+    <TextView
+        android:id="@+id/total_words_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="403/500"
+        app:layout_constraintEnd_toEndOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager"
+        android:layout_marginTop="68dp"
+        fontPath="fonts/Avenir-Black.ttf"/>
+
+
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/tips_view_pager"
-        android:layout_width="255dp"
+        android:layout_width="0dp"
         android:layout_height="175dp"
+        android:layout_marginTop="30dp"
         android:background="@color/white_bg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:foregroundGravity="center"
-        android:layout_marginTop="117dp"/>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recording_mic"
+        tools:layout_editor_absoluteX="65dp" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/tips_view_pager_indicator"
@@ -46,12 +69,51 @@
         app:strokeWidth="1dp"
         app:strokeColor="@color/text_color"
         app:theme="@style/StyledIndicators"
-        android:background="@color/tip_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/tips_view_pager"
         android:layout_marginStart="53dp"
         android:layout_marginEnd="53dp"/>
+
+
+    <ProgressBar
+        android:id="@+id/words_progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/total_words_title"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/horizontal_progressbar"/>
+
+    <TextView
+        android:id="@+id/start_bar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/zero_start_progress_bar_value"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="11dp"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toTopOf="@+id/words_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/words_progress_bar"/>
+
+    <TextView
+        android:id="@+id/end_bar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="500"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="11dp"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toTopOf="@+id/words_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/words_progress_bar"/>
+
+
 
 
 </android.support.constraint.ConstraintLayout>

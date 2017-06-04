@@ -13,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="35dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="5dp"
         android:src="@drawable/setting"/>
 
     <TextView
@@ -24,7 +25,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_margin="20dp"
-        fontPath="fonts/Avenir-Black.ttf"/>
+        fontPath="fonts/Avenir-Medium.ttf"/>
 
 
 

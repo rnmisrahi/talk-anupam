@@ -19,8 +19,15 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--facebook-->
     <string name="facebook_app_id">796713693824727</string>
     <string name="fb_login_protocol_scheme">fb796713693824727</string>
+
+    <!--MainScreen-->
+    <string name="total_words">Total words</string>
+    <string name="zero_start_progress_bar_value">0</string>
+    <string name="progress_bar_value" formatted="false">%1s / %2s</string>
+
 
 
 </resources>

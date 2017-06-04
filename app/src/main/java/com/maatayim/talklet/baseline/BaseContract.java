@@ -1,9 +1,10 @@
 package com.maatayim.talklet.baseline;
 
 import android.net.Uri;
+import android.support.v4.util.Pair;
 
-import com.maatayim.talklet.screens.general.generalticket.GeneralTipTicket;
-import com.facebook.AccessToken;
+import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainscreen.generalticket.GeneralTipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.Date;
@@ -32,13 +33,17 @@ public interface BaseContract {
         Completable saveBabysPhoto(Uri photo);
         Completable saveFacebookLoginToken(LoginResult loginResult);
 
-        Observable<String> getName(long id);
-        Observable<Date> getBirthday(long id);
-        Observable<Uri> getBaybsPhoto(long id);
-        Observable<List<GeneralTipTicket>> getTipsList();
+        Observable<String> getName(String id);
+        Observable<Date> getBirthday(String id);
+        Observable<Uri> getBaybsPhoto(String id);
+        Observable<List<GeneralTipTicket>> getTipsList(String id);
+        Observable<Pair<Integer, Integer>> getWordsCount(String id);
 
 
-        Observable<AccessToken> getFacebookLoginToken();
+
+        Observable<String> getFacebookLoginToken();
+
+        Observable<List<Child>> getChildrenList();
     }
 
 

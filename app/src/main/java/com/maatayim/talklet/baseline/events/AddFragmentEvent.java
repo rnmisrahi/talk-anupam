@@ -1,6 +1,6 @@
 package com.maatayim.talklet.baseline.events;
 
-import com.maatayim.talklet.baseline.TalkletFragment;
+import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 
 /**
  * Created by Sophie on 5/22/2017.

@@ -1,5 +1,6 @@
 package com.maatayim.talklet;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,16 +17,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-import com.maatayim.talklet.application.TalkletApplication;
-import com.maatayim.talklet.baseline.SideMenuFragment;
-import com.maatayim.talklet.baseline.TalkletFragment;
+import com.maatayim.talklet.baseline.TalkletApplication;
+import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
+import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.TempFragment;
-import com.maatayim.talklet.screens.general.GeneralFragment;
+import com.maatayim.talklet.screens.mainscreen.GeneralFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 import static com.maatayim.talklet.R.id.nav_view_drawer;
 
 public class MainActivity extends AppCompatActivity implements NavigationView
@@ -44,14 +47,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((TalkletApplication) getApplication()).getAppComponent().inject(this);
+
         ButterKnife.bind(this);
 
         initToolbar(EMPTY_TITLE);
         initDrawer();
+        initFragmentManager();
 
         EventBus.getDefault().register(this);
         addFragment(new GeneralFragment(), false);
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 
@@ -225,10 +235,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView
 
     private boolean lastFragment() {
         FragmentManager fm = getSupportFragmentManager();
-
         int index = fm.getBackStackEntryCount() - 1;
-
         return index == 0;
+    }
+
+
+    protected void initFragmentManager() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                TalkletFragment fragment = getCurrentFragment();
+                if (fragment == null)
+                    return;
+//                toolbar.getMenu().clear();
+                displayTitle(fragment.getTitle());
+
+            }
+        });
+
+    }
+
+    protected void displayTitle(String title) {
+        ((TextView) toolbar.findViewById(R.id.toolbar_title)).setText(title);
     }
 
 

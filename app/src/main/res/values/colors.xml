@@ -14,4 +14,5 @@
     <color name="tip_background">#fef9f4</color>
     <color name="white_bg">#fefefe</color>
     <color name="Pastel_magenta">#f59ebd</color>
+    <color name="progress_bar_tint_color">#67ccce</color>
 </resources>

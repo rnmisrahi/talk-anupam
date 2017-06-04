@@ -16,10 +16,11 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FrameLayout view = new FrameLayout(this);
-        view.setId(1);
-
-        setContentView(view);
+        setContentView(R.layout.activity_test);
+//        FrameLayout view = new FrameLayout(this);
+//        view.setId(R.id.test_activity);
+//
+//        setContentView(view);
     }
 
 }

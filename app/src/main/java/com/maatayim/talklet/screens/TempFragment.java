@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
-import com.maatayim.talklet.baseline.SideMenuFragment;
+import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 
 /**
  * Created by Sophie on 5/24/2017.
