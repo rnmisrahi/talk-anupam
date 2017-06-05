@@ -88,4 +88,9 @@ public class RepositoryImpl implements BaseContract.Repository {
     public Observable<List<Child>> getChildrenList() {
         return localRepo.getChildrenList();
     }
+
+    @Override
+    public Observable<Integer> getLastConnectionChild() {
+        return localRepo.getLastConnectionChild();
+    }
 }

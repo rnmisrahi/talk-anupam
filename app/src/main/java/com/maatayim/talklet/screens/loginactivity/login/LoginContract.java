@@ -15,7 +15,7 @@ public interface LoginContract {
 
     interface Presenter extends BaseContract.Presenter {
 
-        void testConnect();
+//        void testConnect();
 
         void saveToken(LoginResult loginResult);
 
@@ -30,5 +30,9 @@ public interface LoginContract {
         void setConnection();
 
         void displayFacebookLoginInterface();
+
+        void onFacebookLoginSuccess();
+
+        void onFacebookLoginFailed();
     }
 }

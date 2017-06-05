@@ -55,12 +55,12 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        //// TODO: 5/25/2017 Save data
+                        view.onFacebookLoginSuccess();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        view.onFacebookLoginFailed();
                     }
                 });
     }
@@ -101,10 +101,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
 
-    @Override
-    public void testConnect() {
-        mockConnectToFacebook();
-    }
+//    @Override
+//    public void testConnect() {
+//        mockConnectToFacebook();
+//    }
 
     private void mockConnectToFacebook() {
         view.displayFacebookLoginInterface();

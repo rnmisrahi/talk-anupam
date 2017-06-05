@@ -4,9 +4,11 @@ import android.net.Uri;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -20,58 +22,50 @@ public class SignUpPresenter implements SignupContract.Presenter {
 
 
     BaseContract.Repository repository;
+    private Scheduler scheduler;
 
     private SignupContract.View view;
 
 
     @Inject
-    public SignUpPresenter(SignupContract.View view, BaseContract.Repository repository) {
+    public SignUpPresenter(SignupContract.View view, BaseContract.Repository repository, Scheduler scheduler) {
         this.view = view;
         this.repository = repository;
-    }
-
-    public void checkIfBabysPhotoExists(){
-        io.reactivex.Observable<Uri> photo = null;
-
-        try{
-            photo = repository.getBaybsPhoto("1234L");
-            if (photo != null){
-                view.onDataReceived(photo);
-            }
-
-        }catch (Throwable e){
-
-        }
-
-
+        this.scheduler = scheduler;
     }
 
 
-    public void saveSignUpDetails(String name, Calendar date) {
+//    public void checkIfBabysPhotoExists(){
+//        io.reactivex.Observable<Uri> photo = null;
+//
+//        try{
+//            photo = repository.getBaybsPhoto("1234L");
+//            if (photo != null){
+//                view.onDataReceived(photo);
+//            }
+//
+//        }catch (Throwable e){
+//
+//        }
+//
+//
+//    }
 
-        if (date == null) {
-            view.displayNoBirthdayError();
-            return;
-        }
 
-        if (name.isEmpty()) {
-            view.displayNoBirthdayError();
-            return;
-        }
+    public void saveSignUpDetails(String name, Date date) {
 
-
-        repository.saveSignupDetails(name, date.getTime())
+        repository.saveSignupDetails(name, date)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(scheduler)
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        //// TODO: 5/25/2017 Save data
+                        view.onDataSaveSuccess();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        view.onDataSaveFailure();
                     }
                 });
 

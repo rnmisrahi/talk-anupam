@@ -113,6 +113,16 @@
         app:layout_constraintTop_toTopOf="@+id/words_progress_bar"
         app:layout_constraintBottom_toBottomOf="@+id/words_progress_bar"/>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+
+        android:background="@color/primary_background_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/words_progress_bar"/>
+
 
 
 

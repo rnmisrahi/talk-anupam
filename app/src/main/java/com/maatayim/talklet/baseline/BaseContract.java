@@ -44,6 +44,7 @@ public interface BaseContract {
         Observable<String> getFacebookLoginToken();
 
         Observable<List<Child>> getChildrenList();
+        Observable<Integer> getLastConnectionChild();
     }
 
 

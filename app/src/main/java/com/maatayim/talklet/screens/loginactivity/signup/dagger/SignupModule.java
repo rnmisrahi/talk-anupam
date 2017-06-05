@@ -6,6 +6,7 @@ import com.maatayim.talklet.screens.loginactivity.signup.SignupContract;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
 
 /**
  * Created by Sophie on 5/21/2017.
@@ -21,8 +22,8 @@ public class SignupModule {
     }
 
     @Provides
-    public SignupContract.Presenter providePresenter(SignupContract.View view, BaseContract.Repository repo) {
-        return new SignUpPresenter(view, repo);
+    public SignupContract.Presenter providePresenter(SignupContract.View view, BaseContract.Repository repo, Scheduler scheduler) {
+        return new SignUpPresenter(view, repo, scheduler);
     }
 
 

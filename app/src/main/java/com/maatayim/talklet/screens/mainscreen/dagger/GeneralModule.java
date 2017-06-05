@@ -6,6 +6,7 @@ import com.maatayim.talklet.screens.mainscreen.GeneralPresenter;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
 
 /**
  * Created by Sophie on 5/28/2017
@@ -21,8 +22,8 @@ public class GeneralModule {
     }
 
     @Provides
-    public GeneralContract.Presenter providePresenter(GeneralContract.View view, BaseContract.Repository repo) {
-        return new GeneralPresenter(view, repo);
+    public GeneralContract.Presenter providePresenter(GeneralContract.View view, BaseContract.Repository repo, Scheduler scheduler) {
+        return new GeneralPresenter(view, repo, scheduler);
     }
 
 

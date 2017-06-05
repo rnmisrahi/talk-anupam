@@ -59,5 +59,13 @@
     </style>
 
 
+    <style name="com_facebook_button." parent="com_facebook_button">
+        <item name="android:layout_height">55dp</item>
+        <item name="android:layout_width">246dp</item>
+        <item name="background">@color/colorPrimary</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+
 
 </resources>

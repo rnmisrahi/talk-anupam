@@ -70,8 +70,8 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
-//        presenter = new SignUpPresenter(this, new RepositoryImpl(new LocalData(), new RemoteData()));
-        presenter.checkIfBabysPhotoExists();
+
+//        presenter.checkIfBabysPhotoExists();
         EventBus.getDefault().register(this);
 
         return view;
@@ -124,10 +124,6 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         Glide.with(getContext()).load(uri).centerCrop().into(babysPhoto);
     }
 
-    @Override
-    public void displayNoBirthdayError() {
-
-    }
 
     @Subscribe
     public void onSetPhotoEvent(DisplayPhotoEvent event){
@@ -140,14 +136,8 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         if (!checkAllDetailsWereFilled()){
             Toast.makeText(getContext(), "Please fill all the details", Toast.LENGTH_SHORT).show();
         }else{
-            presenter.saveSignUpDetails(name.getText().toString(), birthdayDate);
-
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
+            presenter.saveSignUpDetails(name.getText().toString(), birthdayDate.getTime());
         }
-
-
     }
 
     private boolean checkAllDetailsWereFilled() {
@@ -156,6 +146,18 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         }else{
             return true;
         }
+    }
+
+    @Override
+    public void  onDataSaveSuccess(){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void onDataSaveFailure(){
+        Toast.makeText(getContext(), "Save data failed", Toast.LENGTH_SHORT).show();
     }
 
 }

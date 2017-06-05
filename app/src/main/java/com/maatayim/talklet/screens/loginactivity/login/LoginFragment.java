@@ -99,7 +99,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
             @Override
             public void onSuccess(LoginResult loginResult) {
                 presenter.saveToken(loginResult);
-                EventBus.getDefault().post(new AddLoginFragmentEvent(new SignupFragment()));
+
             }
 
             @Override
@@ -112,6 +112,16 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
                 // App code
             }
         });
+    }
+
+    @Override
+    public void onFacebookLoginSuccess(){
+        EventBus.getDefault().post(new AddLoginFragmentEvent(new SignupFragment()));
+    }
+
+    @Override
+    public void onFacebookLoginFailed() {
+        Toast.makeText(getContext(), "Facebook login failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

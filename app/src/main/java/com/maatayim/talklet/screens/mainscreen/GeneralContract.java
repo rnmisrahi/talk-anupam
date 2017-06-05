@@ -18,11 +18,17 @@ public interface GeneralContract {
 
     interface Presenter extends BaseContract.Presenter{
         void getData();
+
     }
 
     interface View extends BaseContract.View{
         void updateTipsViewPager(List<GeneralTipTicket> ticketList);
         void updateWordsCount(int numOfWords, int maxNumOfWords);
+
+        void setChildName(String name);
+
+        void onChildLoadError();
+
 
     }
 }

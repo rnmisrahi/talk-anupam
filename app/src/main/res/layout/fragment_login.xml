@@ -27,6 +27,7 @@
         fontPath="fonts/Avenir-Medium.ttf"/>
 
     <com.facebook.login.widget.LoginButton
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"
         android:id="@+id/connect_with_fb_button"
         android:layout_width="250dp"
         android:layout_height="55dp"
@@ -37,7 +38,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="26dp"
         android:textColor="@color/primary_background_color"
-        android:text="@string/connect_with_facebook"/>
+        facebook:com_facebook_login_text="@string/connect_with_facebook"/>
 
 
 

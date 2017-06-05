@@ -4,6 +4,9 @@ import android.net.Uri;
 
 import com.maatayim.talklet.baseline.BaseContract;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import dagger.Component;
 
 /**
@@ -15,6 +18,8 @@ public interface SignupContract {
 
     interface Presenter extends BaseContract.Presenter{
 
+        void saveSignUpDetails(String name, Date date);
+
     }
 
 
@@ -23,6 +28,8 @@ public interface SignupContract {
 
         void onDataReceived(io.reactivex.Observable<Uri> uri);
 
-        void displayNoBirthdayError();
+        void onDataSaveSuccess();
+
+        void onDataSaveFailure();
     }
 }

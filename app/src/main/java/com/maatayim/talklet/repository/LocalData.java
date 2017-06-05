@@ -23,13 +23,16 @@ public class LocalData {
     //temp child DB
     String babysName;
     Date birthday;
+    int lastChildConnected = DEFAULT_CHILD;
 
 
 
 //    public static final String TEMP_TOKEN = "EAALUm1y1RtcBAAfZCaA91aV9yvbKZCW940qo8gVdGSe1TkVNEgnaRnQt4dgiJft1hvNSs6EfPkLpKqg4MdMLzbT5Api0jY1C9wFP7EmuiJVHf8KejYZBcZAwZAF64wpvfxrZAS5YE2wBbV6SzVyP2gZAOXfsET4JDZCebcF9YJliRw0nCaFZBn24f0mUgYSJ45ql73w1o0YsF7oDMY4RLcC4Q";
     public static final String TEMP_TOKEN = "TEST_TOKEN";
+    public static final int DEFAULT_CHILD = 0;
     private Uri babysPhoto = null;
     private static LoginResult loginToken;
+    private Observable<Integer> lastConnectionChild;
 
 
     public Completable savePersonalSignupDetails(String name, Date birthday) {
@@ -131,7 +134,18 @@ public class LocalData {
 
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
-        childrenList.add(new Child("1111", babysName, birthday, babysPhoto));
+        childrenList.add(new Child("1111", "Sophie", birthday, babysPhoto));
+        childrenList.add(new Child("2222", "Vial", birthday, babysPhoto));
+        childrenList.add(new Child("3333", "Idan", birthday, babysPhoto));
         return childrenList;
+    }
+
+    public Observable<Integer> getLastConnectionChild() {
+        return Observable.fromCallable(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return lastChildConnected;
+            }
+        });
     }
 }

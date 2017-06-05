@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.maatayim.talklet.R;
@@ -80,7 +81,7 @@ public class GeneralFragment extends TalkletFragment implements GeneralContract.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_general_main, container, false);
         ButterKnife.bind(this, view);
-        setTitle(EMPTY_TITLE);
+//        setTitle(EMPTY_TITLE);
         presenter.getData();
         return view;
 
@@ -103,6 +104,16 @@ public class GeneralFragment extends TalkletFragment implements GeneralContract.
                 String.valueOf(maxNumOfWords)));
 
         wordsProgressBar.setProgress((numOfWords*100)/maxNumOfWords);
+    }
+
+    @Override
+    public void setChildName(String name) {
+        setTitle(name);
+    }
+
+    @Override
+    public void onChildLoadError() {
+        Toast.makeText(getContext(), "Failed load child", Toast.LENGTH_SHORT).show();
     }
 
 
