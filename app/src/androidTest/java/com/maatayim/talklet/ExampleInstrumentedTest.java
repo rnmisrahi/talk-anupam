@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.sophie.talklet", appContext.getPackageName());
+        assertEquals("com.maatayim.talklet", appContext.getPackageName());
     }
 }

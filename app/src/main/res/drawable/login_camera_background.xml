@@ -4,7 +4,7 @@
     android:shape="oval">
 
     <solid
-        android:color="@color/camera_background"/>
+        android:color="@color/Light_sea_green"/>
 
     <size
         android:width="95dp"

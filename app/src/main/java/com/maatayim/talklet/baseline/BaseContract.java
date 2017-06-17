@@ -4,7 +4,10 @@ import android.net.Uri;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.Date;
@@ -33,18 +36,24 @@ public interface BaseContract {
         Completable saveBabysPhoto(Uri photo);
         Completable saveFacebookLoginToken(LoginResult loginResult);
 
+
+        Observable<Child> getChild(String id);
         Observable<String> getName(String id);
         Observable<Date> getBirthday(String id);
         Observable<Uri> getBaybsPhoto(String id);
         Observable<List<GeneralTipTicket>> getTipsList(String id);
         Observable<Pair<Integer, Integer>> getWordsCount(String id);
-
-
-
         Observable<String> getFacebookLoginToken();
-
         Observable<List<Child>> getChildrenList();
-        Observable<Integer> getLastConnectionChild();
+        Observable<Child> getLastConnectionChild();
+        Observable<Boolean> checkIfSignedUp();
+
+
+        Observable<List<RecordingObj>> getRecordings(String id);
+
+        Observable<WordsCount> getTotalWordsCount(String id);
+
+        Observable<List<CalendarWordsObj>> getCalendarData(String id);
     }
 
 

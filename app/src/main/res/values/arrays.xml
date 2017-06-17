@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="tabs_titles">
+        <item>@string/tab_title_general</item>
+        <item>@string/tab_title_data</item>
+    </string-array>
+
+
+    <integer-array name="tabs_icons_not_selected">
+        <item>@drawable/face</item>
+        <item>@drawable/data_not_selected</item>
+    </integer-array>
+
+
+    <integer-array name="tabs_icons_selected">
+        <item>@drawable/general</item>
+        <item>@drawable/data</item>
+    </integer-array>
+
+
+    <string-array name="tabs_titles_data_tab">
+        <item>@string/tab_title_general</item>
+        <item>@string/by_date</item>
+        <item>@string/by_recording</item>
+    </string-array>
+
+
+</resources>

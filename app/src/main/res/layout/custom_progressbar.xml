@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/words_progress_bar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="62dp"
+        android:layout_marginStart="88dp"
+        android:progressDrawable="@drawable/horizontal_progressbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/start_bar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="11dp"
+        android:layout_marginStart="11dp"
+        android:text="@string/zero_start_progress_bar_value"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/words_progress_bar"
+        app:layout_constraintEnd_toStartOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toTopOf="@+id/words_progress_bar" />
+
+    <TextView
+        android:id="@+id/end_bar_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="11dp"
+        android:layout_marginStart="11dp"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/words_progress_bar"
+        app:layout_constraintStart_toEndOf="@+id/words_progress_bar"
+        app:layout_constraintTop_toTopOf="@+id/words_progress_bar"
+        tools:text="500" />
+
+</android.support.constraint.ConstraintLayout>

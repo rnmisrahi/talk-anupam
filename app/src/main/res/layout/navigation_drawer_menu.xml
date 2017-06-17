@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_menu_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/navigation_drawer_padding"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/schedule_recordings_item"
+        style="@style/side_drawer_item_style"
+        android:text="@string/schedule_recordings"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/schedule"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/setting_item"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/setting_item"
+        style="@style/side_drawer_item_style"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/setting"
+        android:text="@string/setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_recordings_item"
+        app:layout_constraintBottom_toTopOf="@+id/notification_item"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/notification_item"
+        style="@style/side_drawer_item_style"
+        android:text="@string/notification"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/notification"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_item"
+        app:layout_constraintBottom_toTopOf="@+id/website_item"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/website_item"
+        style="@style/side_drawer_item_style"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/web"
+        android:text="@string/website"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_item"
+        app:layout_constraintBottom_toTopOf="@+id/logout_item"
+        android:clickable="true"/>
+
+
+    <TextView
+        android:id="@+id/logout_item"
+        style="@style/side_drawer_item_style"
+        android:text="@string/log_out"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/log"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/website_item"
+        app:layout_constraintBottom_toTopOf="@+id/help_item"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/help_item"
+        style="@style/side_drawer_item_style"
+        android:paddingStart="26dp"
+        android:drawableStart="@drawable/setting"
+        android:text="@string/help"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logout_item"
+        android:clickable="true"/>
+</android.support.constraint.ConstraintLayout>

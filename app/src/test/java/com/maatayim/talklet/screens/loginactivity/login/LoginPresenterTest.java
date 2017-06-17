@@ -46,22 +46,22 @@ public class LoginPresenterTest {
     private LoginContract.View view;
 
     @Mock
-    Context context;
+    private Context context;
 
     @Mock
-    AccessTokenWrapper accessToken;
+    private AccessTokenWrapper accessToken;
 
     @Mock
-    LoginResult loginResult;
+    private LoginResult loginResult;
 
     @Mock
-    BaseContract.Repository repository;
+    private BaseContract.Repository repository;
 
 
-    LoginPresenter presenter;
+    private LoginPresenter presenter;
 
     @Mock
-    EventBus eventBus;
+    private EventBus eventBus;
 
 
     @Before

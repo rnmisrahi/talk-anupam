@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:background="@color/white_bg">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tips_view_pager_child_ata"
+        android:layout_width="0dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="65dp"
+        android:background="@color/white_bg"
+        android:foregroundGravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="65dp" />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/tips_view_pager_indicator"
+        style="vpiCirclePageIndicatorStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="53dp"
+        android:layout_marginStart="53dp"
+        android:padding="10dp"
+        app:fillColor="@color/Pastel_magenta"
+        app:layout_constraintBottom_toBottomOf="@+id/tips_view_pager_child_ata"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:paddingStart="50dp"
+        app:pageColor="@color/tip_background"
+        app:radius="4dp"
+        app:snap="true"
+        app:strokeColor="@color/text_color"
+        app:strokeWidth="1dp"
+        app:theme="@style/StyledIndicators" />
+
+
+    <View
+        android:layout_width="295dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager_indicator"
+        android:layout_marginTop="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recordings_recycler_view"
+        android:background="@color/recordings_bg"
+        android:padding="20dp"/>
+
+
+    <TextView
+        android:id="@+id/past_recording_title"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:text="@string/past_recordings"
+        fontPath="fonts/Avenir-Black.ttf"
+        app:layout_constraintStart_toStartOf="@+id/recordings_recycler_view"
+        app:layout_constraintEnd_toEndOf="@+id/recordings_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager_child_ata"
+        android:background="@drawable/edit_text_line"
+        android:paddingTop="17dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="35dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recordings_recycler_view"
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/past_recording_title"
+        android:layout_marginTop="12dp"
+        android:paddingBottom="10dp"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -33,10 +33,21 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_drawer_header"
-        app:menu="@menu/drawer_menu"
-        android:background="@color/primary_background_color"
-        app:itemTextColor="@color/text_color" />
+        android:background="@color/navigation_drawer_padding"
+        app:itemTextColor="@color/colorPrimary" >
+
+    <LinearLayout
+        android:id="@+id/drawer_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/nav_drawer_header" />
+
+        <include layout="@layout/navigation_drawer_menu" />
+    </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
 
 
 

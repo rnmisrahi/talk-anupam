@@ -100,6 +100,33 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     }
 
+    @Override
+    public void checkIfSignedUp() {
+        repository.checkIfSignedUp()
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableObserver<Boolean>() {
+                    @Override
+                    public void onNext(@NonNull Boolean isSignedUp) {
+                        if (isSignedUp) {
+                            view.onSignedUpSuccess();
+                        } else {
+                            view.onSignedUpFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+//                            Log.d(TAG, "onError: ");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 
 //    @Override
 //    public void testConnect() {

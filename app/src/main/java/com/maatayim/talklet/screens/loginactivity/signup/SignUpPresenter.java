@@ -41,7 +41,7 @@ public class SignUpPresenter implements SignupContract.Presenter {
 //        try{
 //            photo = repository.getBaybsPhoto("1234L");
 //            if (photo != null){
-//                view.onDataReceived(photo);
+//                view.onWordsTypesDataReceived(photo);
 //            }
 //
 //        }catch (Throwable e){

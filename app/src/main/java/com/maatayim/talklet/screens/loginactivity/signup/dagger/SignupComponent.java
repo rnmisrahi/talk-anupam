@@ -1,6 +1,6 @@
 package com.maatayim.talklet.screens.loginactivity.signup.dagger;
 
-import com.maatayim.talklet.screens.loginactivity.login.injection.PerFragment;
+import com.maatayim.talklet.injection.PerFragment;
 import com.maatayim.talklet.screens.loginactivity.signup.SignupFragment;
 
 import dagger.Subcomponent;

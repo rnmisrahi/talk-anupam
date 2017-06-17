@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomProgressBar">
+        <attr name="startVal" format="string" />
+        <attr name="endVal" format="string" />
+    </declare-styleable>
+
+</resources>

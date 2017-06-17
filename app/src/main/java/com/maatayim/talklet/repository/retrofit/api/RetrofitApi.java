@@ -30,7 +30,7 @@ public interface RetrofitApi {
     );
 
 
-//    Recording
+//    RecordingObj
     @POST("recording")
     void postRecordingMetadata(
             @Header("Authorization") String authorization,

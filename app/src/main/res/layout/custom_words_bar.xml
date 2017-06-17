@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white_bg">
+
+
+    <ProgressBar
+        android:id="@+id/words_progress_bar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp"
+        android:max="400"
+        android:progress="20"
+        android:orientation="vertical"
+        android:progressDrawable="@drawable/horizontal_progressbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/date_string"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="19dp"
+        app:layout_constraintVertical_bias="0.479" />
+
+
+
+    <TextView
+        android:id="@+id/date_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/words_progress_bar"
+        android:background="@color/primary_background_color"
+        tools:text="8/2"/>
+
+</android.support.constraint.ConstraintLayout>

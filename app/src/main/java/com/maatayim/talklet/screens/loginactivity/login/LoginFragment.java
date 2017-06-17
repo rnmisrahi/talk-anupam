@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.maatayim.talklet.MainActivity;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
@@ -116,7 +117,18 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 
     @Override
     public void onFacebookLoginSuccess(){
+        presenter.checkIfSignedUp();
+
+    }
+
+    public void onSignedUpFailed(){
         EventBus.getDefault().post(new AddLoginFragmentEvent(new SignupFragment()));
+    }
+
+    public void onSignedUpSuccess(){
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

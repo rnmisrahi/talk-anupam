@@ -20,6 +20,9 @@ public interface LoginContract {
         void saveToken(LoginResult loginResult);
 
         void checkIfLoggedIn();
+
+        void checkIfSignedUp();
+
     }
 
     interface View extends BaseContract.View {
@@ -34,5 +37,9 @@ public interface LoginContract {
         void onFacebookLoginSuccess();
 
         void onFacebookLoginFailed();
+
+        void onSignedUpFailed();
+
+        void onSignedUpSuccess();
     }
 }

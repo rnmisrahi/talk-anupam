@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="65dp">
+
+    <com.hookedonplay.decoviewlib.DecoView
+        android:id="@+id/deco_view"
+        android:layout_width="165dp"
+        android:layout_height="165dp"
+        android:layout_marginTop="64dp"
+        app:dv_lineWidth="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/words_count_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@+id/deco_view"
+        app:layout_constraintEnd_toEndOf="@+id/deco_view"
+        app:layout_constraintTop_toTopOf="@+id/deco_view"
+        app:layout_constraintBottom_toBottomOf="@+id/deco_view"
+        android:textColor="@color/Light_sea_green"
+        android:gravity="center"/>
+
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/unique_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deco_view"/>
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/new_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unique_progressbar"/>
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/advance_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_progressbar"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

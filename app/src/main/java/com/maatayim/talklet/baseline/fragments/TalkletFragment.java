@@ -49,6 +49,10 @@ public abstract class TalkletFragment extends Fragment implements BaseContract.V
 
     }
 
+    public void displayTitle(){
+        setTitle(title);
+    }
+
 
     public void finish() {
         getActivity().onBackPressed();

@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_fill_details"
         app:civ_border_width="5dp"
-        app:civ_border_color="@color/camera_background"
+        app:civ_border_color="@color/Light_sea_green"
         android:src="@drawable/pic"/>
 
     <TextView

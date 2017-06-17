@@ -4,10 +4,14 @@ import android.net.Uri;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -22,8 +26,8 @@ import io.reactivex.Observable;
 public class LocalData {
     //temp child DB
     String babysName;
-    Date birthday;
-    int lastChildConnected = DEFAULT_CHILD;
+    Date birthday = mockBirthday(2017, 5, 1);;
+    String lastChildConnected = "1111";
 
 
 
@@ -33,6 +37,18 @@ public class LocalData {
     private Uri babysPhoto = null;
     private static LoginResult loginToken;
     private Observable<Integer> lastConnectionChild;
+
+    private Date mockBirthday(int year, int month, int day){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
 
 
     public Completable savePersonalSignupDetails(String name, Date birthday) {
@@ -134,18 +150,120 @@ public class LocalData {
 
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
-        childrenList.add(new Child("1111", "Sophie", birthday, babysPhoto));
-        childrenList.add(new Child("2222", "Vial", birthday, babysPhoto));
-        childrenList.add(new Child("3333", "Idan", birthday, babysPhoto));
+//        childrenList.add(new Child("1111", "Sophie", birthday, Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
+        childrenList.add(new Child("2222", "BabyBoss", birthday, Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA")));
+        childrenList.add(new Child("3333", "Boo", birthday, Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg")));
+//        childrenList.add(new Child("4444", "Stewie", birthday, Uri.parse("http://vignette1.wikia.nocookie.net/family-guy-the-quest-for-stuff/images/e/ea/Stewie.png/revision/latest?cb=20140419144429")));
+//        childrenList.add(new Child("5555", "Jack Jack", birthday, Uri.parse("http://www.writeups.org/wp-content/uploads/Jack-Jack-The-Incredibles-baby-a.jpg")));
         return childrenList;
     }
 
-    public Observable<Integer> getLastConnectionChild() {
-        return Observable.fromCallable(new Callable<Integer>() {
+    public Observable<Child> getLastConnectionChild() {
+        return Observable.fromCallable(new Callable<Child>() {
             @Override
-            public Integer call() throws Exception {
-                return lastChildConnected;
+            public Child call() throws Exception {
+
+                //// TODO: 6/6/2017 getSpecific Child from DB - this solution is temporery
+                List<Child> childrenList = mockChildrenList();
+                for (Child child : childrenList) {
+                    if (child.getId().equals(lastChildConnected)) {
+                        return child;
+                    }
+                }
+                return childrenList.get(0);
             }
         });
+    }
+
+    public Observable<Boolean> checkIfSignedUp() {
+        return Observable.just(true);
+    }
+
+    public Observable<Child> getChild(final String id) {
+
+        return Observable.fromCallable(new Callable<Child>() {
+            @Override
+            public Child call() throws Exception {
+                List<Child> childrenList = mockChildrenList();
+                for (Child child : childrenList) {
+                    if (child.getId().equals(id)) {
+                        return child;
+                    }
+                }
+                return childrenList.get(0); //// TODO: 6/6/2017 What default value????
+            }
+        });
+    }
+
+    public Observable<List<RecordingObj>> getRecordings(String id) {
+        return Observable.fromCallable(new Callable<List<RecordingObj>>() {
+            @Override
+            public List<RecordingObj> call() throws Exception {
+                return mockRecordings();
+            }
+
+
+        });
+    }
+
+    private List<RecordingObj> mockRecordings() {
+        List<RecordingObj> recordings = new ArrayList<>();
+
+        recordings.add(new RecordingObj("1111", 1, new Date(1483726548L), new android.util.Pair<Integer, Integer>(15,20), 3600000L));
+        recordings.add(new RecordingObj("2222", 2, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L));
+        recordings.add(new RecordingObj("3333", 3, new Date(1507659612010L), new android.util.Pair<Integer, Integer>(4,100), 3600000L));
+        recordings.add(new RecordingObj("4444", 4, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L));
+        recordings.add(new RecordingObj("5555", 5, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L));
+
+        return recordings;
+
+    }
+
+
+    private WordsCount mockWordsData(){
+
+        return new WordsCount(new Pair<>(18,33), new Pair<>(2, 18), new Pair<>(20, 73));
+
+    }
+
+
+    public Observable<WordsCount> getTotalWordsCount(String id) {
+        return Observable.fromCallable(new Callable<WordsCount>() {
+            @Override
+            public WordsCount call() throws Exception {
+                return mockWordsData();
+            }
+
+
+        });
+    }
+
+    public Observable<List<CalendarWordsObj>> getCalendarData(String id) {
+        return Observable.fromCallable(new Callable<List<CalendarWordsObj>>() {
+            @Override
+            public List<CalendarWordsObj> call() throws Exception {
+                return mockCalendarData();
+            }
+
+
+        });
+    }
+
+    private List<CalendarWordsObj> mockCalendarData() {
+        List<CalendarWordsObj> calendarData = new ArrayList<>();
+        Calendar birthdayCal = Calendar.getInstance();
+        birthdayCal.setTime(birthday);
+        Calendar todaysDate = Calendar.getInstance();
+
+        while(!birthdayCal.after(todaysDate)){
+            Date targetDay = birthdayCal.getTime();
+            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData()));
+
+            birthdayCal.add(Calendar.DATE, 1);
+
+        }
+
+        return calendarData;
+
     }
 }

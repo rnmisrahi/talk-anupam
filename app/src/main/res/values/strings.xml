@@ -29,5 +29,18 @@
     <string name="progress_bar_value" formatted="false">%1s / %2s</string>
 
 
+    <!--Tabs Titles-->
+    <string name="tab_title_general">General</string>
+    <string name="tab_title_data">Data</string>
+    <string name="past_recordings">Past Recordings</string>
+    <string name="by_date">By date</string>
+    <string name="by_recording">By recording</string>
+
+
+    <!--Child General-->
+    <string name="recording_text" formatted="false">| Record %d | %1s | %2s:%3s | %4s | </string>
+    <string name="words_chart" formatted="false">%.0f / %d\nwords</string>
+    <string name="words">words</string>
+
 
 </resources>

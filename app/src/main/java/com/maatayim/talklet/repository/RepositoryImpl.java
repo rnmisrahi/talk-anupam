@@ -5,7 +5,10 @@ import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.Date;
@@ -49,10 +52,34 @@ public class RepositoryImpl implements BaseContract.Repository {
         return localRepo.saveFacebookLoginToken(loginResult);
     }
 
+    @Override
+    public Observable<Boolean> checkIfSignedUp() {
+        return localRepo.checkIfSignedUp();
+    }
 
+    @Override
+    public Observable<List<RecordingObj>> getRecordings(String id) {
+        return localRepo.getRecordings(id);
+    }
+
+    @Override
+    public Observable<WordsCount> getTotalWordsCount(String id) {
+        return localRepo.getTotalWordsCount(id);
+    }
+
+    @Override
+    public Observable<List<CalendarWordsObj>> getCalendarData(String id) {
+        return localRepo.getCalendarData(id);
+    }
 
 
 //    Getters
+
+    @Override
+    public Observable<Child> getChild(String id) {
+        return localRepo.getChild(id);
+    }
+
 
     @Override
     public Observable<String> getName(String id) {
@@ -90,7 +117,7 @@ public class RepositoryImpl implements BaseContract.Repository {
     }
 
     @Override
-    public Observable<Integer> getLastConnectionChild() {
+    public Observable<Child> getLastConnectionChild() {
         return localRepo.getLastConnectionChild();
     }
 }

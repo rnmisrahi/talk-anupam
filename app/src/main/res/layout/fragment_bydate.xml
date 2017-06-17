@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:background="@color/white_bg">
+
+    <TextView
+        android:id="@+id/words_goal_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Light_sea_green"
+        android:textSize="24sp"
+        fontPath="fonts/Avenir-Black.ttf"
+        tools:text="203"
+        android:gravity="center"
+        android:layout_marginTop="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/words_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Light_sea_green"
+        android:textSize="14sp"
+        fontPath="fonts/Avenir-Black.ttf"
+        android:text="@string/words"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/words_goal_amount" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/calendar_horizontal_rv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/words_title"
+        android:layout_marginTop="10dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/todays_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_horizontal_rv"
+        tools:text="Monday, 8 April"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="10sp"/>
+
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/unique_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todays_date"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/new_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unique_progressbar"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.maatayim.talklet.screens.mainactivity.CustomProgressBar
+        android:id="@+id/advance_progressbar"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_progressbar"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+
+
+</android.support.constraint.ConstraintLayout>

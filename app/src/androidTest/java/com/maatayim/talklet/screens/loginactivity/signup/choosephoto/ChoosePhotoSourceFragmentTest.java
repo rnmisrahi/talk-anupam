@@ -33,7 +33,7 @@ public class ChoosePhotoSourceFragmentTest {
     public void setUp() throws Exception {
         fragment = new ChoosePhotoFragment();
 
-        fragmentActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().replace(1, fragment, null).commit();
+        fragmentActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test_frame_container, fragment, null).commit();
 
 
     }

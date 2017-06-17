@@ -3,10 +3,18 @@ package com.maatayim.talklet.injection;
 import com.maatayim.talklet.LoginActivity;
 import com.maatayim.talklet.MainActivity;
 import com.maatayim.talklet.repository.injection.DataModule;
-import com.maatayim.talklet.screens.mainscreen.dagger.GeneralComponent;
-import com.maatayim.talklet.screens.mainscreen.dagger.GeneralModule;
-import com.maatayim.talklet.screens.mainscreen.generalticket.dagger.TipComponent;
-import com.maatayim.talklet.screens.mainscreen.generalticket.dagger.TipModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateComponent;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.injection.GeneralTabComponent;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.injection.GeneralTabModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.injection.DataTabComponent;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.injection.DataTabModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.injection.ChildGeneralComponent;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.injection.ChildGeneralModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.injection.ChildComponent;
+import com.maatayim.talklet.screens.mainactivity.childinfo.injection.ChildModule;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.GeneralComponent;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.GeneralModule;
 import com.maatayim.talklet.screens.loginactivity.login.injection.LoginComponent;
 import com.maatayim.talklet.screens.loginactivity.login.injection.LoginModule;
 import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.dagger.ChoosePhotoComponent;
@@ -40,8 +48,14 @@ public interface AppComponent {
 
     LoginComponent plus(LoginModule module);
 
-    TipComponent plus(TipModule module);
+    ChildComponent plus(ChildModule childModule);
 
+    ChildGeneralComponent plus(ChildGeneralModule childGeneralModule);
 
+    GeneralTabComponent plus(GeneralTabModule generalTabModule);
+
+    DataTabComponent plus(DataTabModule dataTabModule);
+
+    ByDateComponent plus(ByDateModule byDateModule);
 }
 

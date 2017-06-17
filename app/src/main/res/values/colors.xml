@@ -8,11 +8,24 @@
 
     <color name="primary_background_color">#f2f1f7</color>
     <color name="eighty_transparent_background">#F2f2f1f7</color>
+
     <color name="text_color">#636363</color>
+    <color name="text_color_not_selected">#c6c5ca</color>
+
     <color name="white_color">#ffffff</color>
-    <color name="camera_background">#16aaad</color>
+    <color name="Light_sea_green">#16aaad</color>
     <color name="tip_background">#fef9f4</color>
     <color name="white_bg">#fefefe</color>
     <color name="Pastel_magenta">#f59ebd</color>
     <color name="progress_bar_tint_color">#67ccce</color>
+    <color name="recordings_bg">#e9f7f7</color>
+
+    <!--pie chart-->
+    <color name="pie_chart_bg1">#1dd2d6</color>
+    <color name="pie_chart_bg2">#d1b1ff</color>
+
+
+    <!--navigation drawer-->
+    <color name="navigation_drawer_padding">#dcdaeb</color>
 </resources>
+

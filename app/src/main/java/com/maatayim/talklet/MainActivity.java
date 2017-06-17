@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -22,7 +26,9 @@ import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.TempFragment;
-import com.maatayim.talklet.screens.mainscreen.GeneralFragment;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.GeneralFragment;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.DrawerHandler;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
@@ -31,16 +37,26 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.maatayim.talklet.R.id.nav_view_drawer;
 
-public class MainActivity extends AppCompatActivity implements NavigationView
-        .OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
 
     public static final String EMPTY_TITLE = "";
-    protected ActionBarDrawerToggle drawerToggle;
+//    protected ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    @BindView(R.id.nav_view_drawer)
+    NavigationView navigationView;
+
+//    @BindView(R.id.drawer_linear_layout)
+//    LinearLayout drawerLinearLayout;
+
+    @BindView(R.id.drawer_menu_layout)
+    ConstraintLayout drawerMenuLayout;
+    private DrawerHandler drawerHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView
         ((TalkletApplication) getApplication()).getAppComponent().inject(this);
 
         ButterKnife.bind(this);
-
+        drawerHandler = new DrawerHandler(this);
         initToolbar(EMPTY_TITLE);
-        initDrawer();
         initFragmentManager();
 
         EventBus.getDefault().register(this);
@@ -69,6 +84,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView
     protected void initToolbar(String title) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         ((TextView) toolbar.findViewById(R.id.toolbar_title)).setText(title);
+
+        final ImageView hamburgerView = ((ImageView) toolbar.findViewById(R.id.drawer_hamburger));
+        drawerHandler.setHamburgerView(hamburgerView);
+        hamburgerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerHandler.isHamburger()){
+                    drawerHandler.menuClick();
+                }else{
+                    onBackPressed();
+                }
+
+            }
+        });
+
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -87,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView
         addFragment(event.getFragment(), false);
     }
 
-    private void addFragment(SideMenuFragment sideMenuFragment) {
+    public void addFragment(SideMenuFragment sideMenuFragment) {
         addFragment(sideMenuFragment, false);
     }
 
@@ -102,105 +133,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView
         }
         ft.addToBackStack(fragment.getClass().getName());
         ft.commit();
-//        if (fm.getBackStackEntryCount() == 0) {
-//        }
-
-    }
-
-    ////////////////////////// drawer ///////////////////
-
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private void initDrawer() {
-
-        drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string
-                .navigation_drawer_close);
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(nav_view_drawer);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // Change the color of "logout" item specifically
-//        changeMenuItemColor(navigationView);
-
 
     }
 
 
-    private void setNewSidemenuFragment(SideMenuFragment sideMenuFragment, MenuItem item) {
-        sideMenuFragment.setMenuItem(item);
-        addFragment(sideMenuFragment);
-//        setHomeAsUp();
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        //// TODO: 5/24/2017 complete this navigation
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.schedule_recordings_item:
-                setNewSidemenuFragment(new TempFragment(), item);
-                break;
-            case R.id.setting_item:
-                setNewSidemenuFragment(new TempFragment(), item);
-                break;
-            case R.id.notification_item:
-                setNewSidemenuFragment(new TempFragment(), item);
-                break;
-            case R.id.website_item:
-                setNewSidemenuFragment(new TempFragment(), item);
-                break;
-            case R.id.logout_item:
-                return false;
-            case R.id.help:
-                setNewSidemenuFragment(new TempFragment(), item);
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
-    private void uncheckElementsInSideMenu() {
-        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view_drawer);
-        int menuSize = mNavigationView.getMenu().size();
-        for (int i = 0; i < menuSize; i++) {
-            mNavigationView.getMenu().getItem(i).setChecked(false);
-        }
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////
 
     protected TalkletFragment getCurrentFragment() {
 
@@ -215,19 +151,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-
-        uncheckElementsInSideMenu();
-
+        FragmentManager fm = getSupportFragmentManager();
         getCurrentFragment().onBackPressed();
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 
-
         if (lastFragment())
             finish();
         else
+            drawerHandler.onBackPressChangeHamburgerIcon(fm, false);
             super.onBackPressed();
 
 

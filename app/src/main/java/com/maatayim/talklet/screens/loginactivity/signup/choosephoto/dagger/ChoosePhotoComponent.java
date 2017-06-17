@@ -1,6 +1,6 @@
 package com.maatayim.talklet.screens.loginactivity.signup.choosephoto.dagger;
 
-import com.maatayim.talklet.screens.loginactivity.login.injection.PerFragment;
+import com.maatayim.talklet.injection.PerFragment;
 import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.ChoosePhotoFragment;
 
 import dagger.Subcomponent;
