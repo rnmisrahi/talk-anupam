@@ -28,12 +28,12 @@ public class GeneralFragmentTest {
     @Rule
     public ActivityTestRule<TestActivity> fragmentActivityTestRule = new ActivityTestRule<>(TestActivity
             .class);
-    private GeneralFragment fragment;
+    private MainFragment fragment;
 
 
     @Before
     public void setUp() throws Exception {
-        fragment = new GeneralFragment();
+        fragment = new MainFragment();
         fragmentActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test_frame_container, fragment, null).commit();
     }
 

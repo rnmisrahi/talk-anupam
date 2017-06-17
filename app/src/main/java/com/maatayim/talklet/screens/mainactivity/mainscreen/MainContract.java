@@ -11,11 +11,11 @@ import dagger.Component;
 
 
 /**
- * Created by Sophie on 5/26/2017.
+ * Created by Sophie on 5/26/2017
  */
 
 @Component
-public interface GeneralContract {
+public interface MainContract {
 
     interface Presenter extends BaseContract.Presenter{
         void getData();

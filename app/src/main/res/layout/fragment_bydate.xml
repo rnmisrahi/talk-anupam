@@ -31,9 +31,21 @@
         fontPath="fonts/Avenir-Black.ttf"
         android:text="@string/words"
         android:gravity="center"
+        android:layout_marginBottom="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/words_goal_amount" />
+
+    <ImageView
+        android:id="@+id/center_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/center_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:foregroundGravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/todays_date"
+        app:layout_constraintTop_toBottomOf="@+id/words_title"/>
 
 
     <android.support.v7.widget.RecyclerView
@@ -41,11 +53,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/white_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/words_title"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        >
 
     </android.support.v7.widget.RecyclerView>
 
@@ -53,12 +66,13 @@
         android:id="@+id/todays_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar_horizontal_rv"
         tools:text="Monday, 8 April"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:padding="10dp"
         android:textSize="10sp"/>
 
 

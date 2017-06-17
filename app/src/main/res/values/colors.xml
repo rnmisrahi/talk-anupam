@@ -10,6 +10,7 @@
     <color name="eighty_transparent_background">#F2f2f1f7</color>
 
     <color name="text_color">#636363</color>
+
     <color name="text_color_not_selected">#c6c5ca</color>
 
     <color name="white_color">#ffffff</color>
@@ -23,7 +24,9 @@
     <!--pie chart-->
     <color name="pie_chart_bg1">#1dd2d6</color>
     <color name="pie_chart_bg2">#d1b1ff</color>
-
+    <color name="date_bars">#e7f7f7</color>
+    <color name="accent_date_bars">#5ec9cd</color>
+    <color name="dark_gray">#a1a3a6</color>
 
     <!--navigation drawer-->
     <color name="navigation_drawer_padding">#dcdaeb</color>

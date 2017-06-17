@@ -20,14 +20,14 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Sophie on 5/26/2017
  */
 
-public class GeneralPresenter implements GeneralContract.Presenter {
+public class MainPresenter implements MainContract.Presenter {
 
-    private GeneralContract.View view;
+    private MainContract.View view;
     private BaseContract.Repository repository;
     private Scheduler scheduler;
 
     @Inject
-    public GeneralPresenter(GeneralContract.View view, BaseContract.Repository repository, Scheduler scheduler) {
+    public MainPresenter(MainContract.View view, BaseContract.Repository repository, Scheduler scheduler) {
         this.view = view;
         this.repository = repository;
         this.scheduler = scheduler;

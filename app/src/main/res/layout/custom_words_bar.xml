@@ -4,26 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/white_bg">
+    android:layout_height="wrap_content">
 
 
     <ProgressBar
         android:id="@+id/words_progress_bar"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-        android:layout_width="5dp"
-        android:layout_height="wrap_content"
+        style="@style/Widget.ProgressBar.Vertical"
+        android:layout_width="3dp"
+        android:layout_height="91dp"
         android:maxHeight="400dp"
         android:max="400"
-        android:progress="20"
-        android:orientation="vertical"
-        android:progressDrawable="@drawable/horizontal_progressbar"
+        android:progress="300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/date_string"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="19dp"
-        app:layout_constraintVertical_bias="0.479" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 

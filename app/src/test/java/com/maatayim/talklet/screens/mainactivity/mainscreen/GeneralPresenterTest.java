@@ -44,7 +44,7 @@ public class GeneralPresenterTest {
     public MockitoRule rule = MockitoJUnit.rule();
 
     @Mock
-    private GeneralContract.View view;
+    private MainContract.View view;
 
     @Mock
     private BaseContract.Repository repository;
@@ -58,12 +58,12 @@ public class GeneralPresenterTest {
 
     private List<Child> childList = new ArrayList<>();
     private Pair<Integer, Integer> wordsCount = new Pair<>(WORDS_COUNT, MAX_WORDS);
-    private GeneralPresenter presenter;
+    private MainPresenter presenter;
 
 
     @Before
     public void setUp() throws Exception {
-        presenter = new GeneralPresenter(view, repository, Schedulers.trampoline());
+        presenter = new MainPresenter(view, repository, Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
             @Override
             public Scheduler apply(@NonNull Scheduler scheduler) throws Exception {

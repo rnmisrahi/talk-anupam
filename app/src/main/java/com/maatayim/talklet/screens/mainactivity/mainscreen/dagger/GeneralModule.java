@@ -1,8 +1,8 @@
 package com.maatayim.talklet.screens.mainactivity.mainscreen.dagger;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.GeneralContract;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.GeneralPresenter;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainContract;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,20 +15,20 @@ import io.reactivex.Scheduler;
 @Module
 public class GeneralModule {
 
-    private final GeneralContract.View view;
+    private final MainContract.View view;
 
-    public GeneralModule(GeneralContract.View view) {
+    public GeneralModule(MainContract.View view) {
         this.view = view;
     }
 
     @Provides
-    public GeneralContract.Presenter providePresenter(GeneralContract.View view, BaseContract.Repository repo, Scheduler scheduler) {
-        return new GeneralPresenter(view, repo, scheduler);
+    public MainContract.Presenter providePresenter(MainContract.View view, BaseContract.Repository repo, Scheduler scheduler) {
+        return new MainPresenter(view, repo, scheduler);
     }
 
 
     @Provides
-    public GeneralContract.View provideView() {
+    public MainContract.View provideView() {
         return view;
     }
 

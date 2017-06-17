@@ -226,6 +226,24 @@ public class LocalData {
 
     }
 
+    private WordsCount mockWordsData(String id, Calendar date){
+        Calendar birthdayCalTest = Calendar.getInstance();
+        birthdayCalTest.setTime(birthday);
+        birthdayCalTest.add(Calendar.DATE, 7);
+
+        if (date == birthdayCalTest){
+            return new WordsCount(new Pair<>(18,33), new Pair<>(2, 18), new Pair<>(20, 73));
+
+        }
+
+        if(date.after(birthdayCalTest)){
+            return new WordsCount(new Pair<>(30,33), new Pair<>(16, 18), new Pair<>(60, 73));
+        }
+
+        return new WordsCount(new Pair<>(19,33), new Pair<>(5, 18), new Pair<>(25, 73));
+
+    }
+
 
     public Observable<WordsCount> getTotalWordsCount(String id) {
         return Observable.fromCallable(new Callable<WordsCount>() {
@@ -257,7 +275,7 @@ public class LocalData {
 
         while(!birthdayCal.after(todaysDate)){
             Date targetDay = birthdayCal.getTime();
-            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData()));
+            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData("id", birthdayCal)));
 
             birthdayCal.add(Calendar.DATE, 1);
 

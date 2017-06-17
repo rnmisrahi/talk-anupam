@@ -34,14 +34,14 @@ import butterknife.ButterKnife;
  * Created by Sophie on 5/26/2017.
  */
 
-public class GeneralFragment extends TalkletFragment implements GeneralContract.View{
+public class MainFragment extends TalkletFragment implements MainContract.View{
     public static final String EMPTY_TITLE = "";
     public static final int DEFAULT_GAP = 120;
     public static final int HALF_GAP = DEFAULT_GAP / 2;
     public static final String ARG_ID = "babysId";
 
     @Inject
-    GeneralContract.Presenter presenter;
+    MainContract.Presenter presenter;
 
     @BindView(R.id.tips_view_pager)
     ViewPager tipsViewPager;
@@ -64,12 +64,12 @@ public class GeneralFragment extends TalkletFragment implements GeneralContract.
     private String babysId;
 
 
-//    public static GeneralFragment newInstance(String id) {
+//    public static MainFragment newInstance(String id) {
 //
 //        Bundle args = new Bundle();
 //        args.putString(ARG_ID, id);
 //
-//        GeneralFragment fragment = new GeneralFragment();
+//        MainFragment fragment = new MainFragment();
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
@@ -110,7 +110,7 @@ public class GeneralFragment extends TalkletFragment implements GeneralContract.
         totalWords.setText(getString(R.string.progress_bar_value,
                 String.valueOf(numOfWords),
                 String.valueOf(maxNumOfWords)));
-
+        wordsProgressBar.setMax(maxNumOfWords);
         wordsProgressBar.setProgress((numOfWords*100)/maxNumOfWords);
     }
 
