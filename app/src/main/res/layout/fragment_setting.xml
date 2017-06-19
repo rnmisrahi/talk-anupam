@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background_color">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/about_you"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="5dp"
+        android:background="@color/primary_background_color">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/about_you"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:drawableStart="@drawable/group222"
+            android:drawablePadding="34dp"
+            android:layout_marginStart="15dp"/>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/about_child1"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="5dp"
+        android:background="@color/primary_background_color">
+
+        <TextView
+            android:id="@+id/about_child_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="About Joe"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:drawableStart="@drawable/page1111"
+            android:drawablePadding="34dp"
+            android:layout_marginStart="15dp"/>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/about_child2"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="5dp"
+        android:background="@color/primary_background_color"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/child2_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="About Joe"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:drawableStart="@drawable/page1111"
+            android:drawablePadding="34dp"
+            android:layout_marginStart="15dp"/>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/add_another_kid"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="5dp"
+        android:background="@color/primary_background_color">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/add_another_kid"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:drawableStart="@drawable/group"
+            android:drawablePadding="22dp"
+            android:layout_marginStart="15dp"/>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+</LinearLayout>

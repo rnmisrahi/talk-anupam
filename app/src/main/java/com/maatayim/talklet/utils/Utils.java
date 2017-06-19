@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.widget.TextView;
+
+import com.maatayim.talklet.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,5 +74,16 @@ public class Utils {
         String weekDay = dayFormat.format(calendar.getTime());
         String dateStr = getSpecificFormattedDate(calendar.getTime(), shortDateFormat);
         return weekDay+dateStr;
+    }
+
+
+    public static SpannableStringBuilder setTextBold(String txtStr){
+        SpannableStringBuilder txt = new SpannableStringBuilder(txtStr);
+        txt.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),
+                0, txt.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return txt;
+
     }
 }

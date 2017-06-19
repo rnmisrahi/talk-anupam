@@ -26,6 +26,7 @@ import com.maatayim.talklet.MainActivity;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.screens.TempFragment;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.SettingFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,7 @@ public class DrawerHandler {
 
     @OnClick(R.id.setting_item)
     public void onSettingsClick(TextView view){
-        onItemCheck(view, new TempFragment());
+        onItemCheck(view, new SettingFragment());
     }
 
 
@@ -152,21 +153,25 @@ public class DrawerHandler {
         view.setBackgroundColor(activity.getResources().getColor(R.color.navigation_drawer_padding));
         view.setText(setTextViewWordCount(view.getText().toString(), true));
 
+        uncheckCurrentSidemenuSelection();
+
+
+        if(newItemLocation != checkedItemIndex){
+            activity.addFragment(fragment);
+//            onBackPressChangeHamburgerIcon(null, true);
+            checkedItemIndex = newItemLocation;
+        }
+
+        closeDrawer();
+    }
+
+    private void uncheckCurrentSidemenuSelection(){
         //Uncheck the previous item
         if(checkedItemIndex != -1){
             TextView itemToUncheck = sideMenuItems.get(checkedItemIndex);
             itemToUncheck.setBackgroundColor(activity.getResources().getColor(R.color.primary_background_color));
             itemToUncheck.setText(setTextViewWordCount(itemToUncheck.getText().toString(), false));
         }
-
-
-        if(newItemLocation != checkedItemIndex){
-            activity.addFragment(fragment);
-            onBackPressChangeHamburgerIcon(null, true);
-            checkedItemIndex = newItemLocation;
-        }
-
-        closeDrawer();
     }
 
 
@@ -188,6 +193,7 @@ public class DrawerHandler {
             hamburgerView.setImageDrawable(activity.getResources().getDrawable(R.drawable.back));
             isHamburger = false;
         }else {
+            uncheckCurrentSidemenuSelection();
             if (fm.getBackStackEntryCount() == 2) {
                 hamburgerView.setImageDrawable(activity.getResources().getDrawable(R.drawable.menu_grey));
                 isHamburger = true;
@@ -204,7 +210,8 @@ public class DrawerHandler {
     }
 
 
-
-
-
+    public void onAddFragment() {
+        hamburgerView.setImageDrawable(activity.getResources().getDrawable(R.drawable.back));
+        isHamburger = false;
+    }
 }

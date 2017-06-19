@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <ProgressBar
@@ -12,26 +12,38 @@
         style="@style/Widget.ProgressBar.Vertical"
         android:layout_width="3dp"
         android:layout_height="91dp"
-        android:maxHeight="400dp"
         android:max="400"
+        android:maxHeight="400dp"
         android:progress="300"
+        app:layout_constraintBottom_toTopOf="@+id/date_string"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/date_string"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-
+    <View
+        android:id="@+id/bg_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1.2"
+        android:background="@color/primary_background_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/words_progress_bar" />
 
     <TextView
         android:id="@+id/date_string"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="3dp"
+        android:gravity="center"
+        android:layout_marginStart="3dp"
+        android:background="@drawable/calendar_bg"
         android:textSize="10dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/bg_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/words_progress_bar"
-        android:background="@color/primary_background_color"
-        tools:text="8/2"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bg_view"
+        tools:text="8/2" />
 
 </android.support.constraint.ConstraintLayout>

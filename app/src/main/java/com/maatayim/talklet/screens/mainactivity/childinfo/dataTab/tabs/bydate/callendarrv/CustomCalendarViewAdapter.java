@@ -10,13 +10,20 @@ import com.maatayim.talklet.R;
 import java.util.List;
 
 /**
- * Created by Sophie on 6/11/2017.
+ * Created by Sophie on 6/11/2017
  */
 public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalendarViewHolder> {
     private List<CalendarWordsObj> itemsList;
+    public static final int MAX_PADDING = 5;
+    private int paddingCounter = 0;
 
     public CustomCalendarViewAdapter(List<CalendarWordsObj> itemsList) {
         this.itemsList = itemsList;
+        for (int i=0; i<MAX_PADDING; i++){
+            itemsList.add(0, new CalendarWordsObj(null, null, false));
+            itemsList.add(new CalendarWordsObj(null, null, false));
+            paddingCounter++;
+        }
     }
 
     @Override
@@ -38,5 +45,9 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
             return 0;
         }
         return itemsList.size();
+    }
+
+    public CalendarWordsObj getItem(int position) {
+        return itemsList.get(position);
     }
 }

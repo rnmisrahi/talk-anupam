@@ -41,6 +41,14 @@
     <string name="recording_text" formatted="false">| Record %d | %1s | %2s:%3s | %4s | </string>
     <string name="words_chart" formatted="false">%.0f / %d\nwords</string>
     <string name="words">words</string>
+    <string name="about_you">About you</string>
+    <string name="add_another_kid">Add another kid</string>
 
+    <!--Setting fragment-->
+    <string name="about_kid">About %s</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="i_speak_another_language">+ I speak another language</string>
+    <string name="about_you_title">About you</string>
 
 </resources>

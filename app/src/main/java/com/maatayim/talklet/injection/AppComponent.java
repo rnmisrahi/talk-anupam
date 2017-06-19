@@ -21,6 +21,10 @@ import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.dagger.Choo
 import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.dagger.ChoosePhotoModule;
 import com.maatayim.talklet.screens.loginactivity.signup.dagger.SignupComponent;
 import com.maatayim.talklet.screens.loginactivity.signup.dagger.SignupModule;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouComponent;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouModule;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.injection.SettingComponent;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.injection.SettingModule;
 
 import javax.inject.Singleton;
 
@@ -57,5 +61,9 @@ public interface AppComponent {
     DataTabComponent plus(DataTabModule dataTabModule);
 
     ByDateComponent plus(ByDateModule byDateModule);
+
+    SettingComponent plus(SettingModule settingModule);
+
+    AboutYouComponent plus(AboutYouModule aboutYouModule);
 }
 

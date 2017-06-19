@@ -2,6 +2,7 @@ package com.maatayim.talklet.repository;
 
 import android.net.Uri;
 import android.support.v4.util.Pair;
+import android.view.View;
 
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
@@ -20,13 +21,13 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 /**
- * Created by Sophie on 5/28/2017.
+ * Created by Sophie on 5/28/2017
  */
 
 public class LocalData {
     //temp child DB
     String babysName;
-    Date birthday = mockBirthday(2017, 5, 1);;
+    Date birthday = mockBirthday(2017, 5, 1);
     String lastChildConnected = "1111";
 
 
@@ -275,7 +276,7 @@ public class LocalData {
 
         while(!birthdayCal.after(todaysDate)){
             Date targetDay = birthdayCal.getTime();
-            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData("id", birthdayCal)));
+            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData("id", birthdayCal), false));
 
             birthdayCal.add(Calendar.DATE, 1);
 

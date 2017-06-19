@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         initFragmentManager();
 
         EventBus.getDefault().register(this);
-        addFragment(new MainFragment(), false);
+        addFragment(new MainFragment(), true);
 
     }
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addFragment(SideMenuFragment sideMenuFragment) {
-        addFragment(sideMenuFragment, false);
+        addFragment(sideMenuFragment, true);
     }
 
 
@@ -120,10 +120,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         if (replace) {
             ft.replace(R.id.frame_layout, fragment, fragment.getClass().getName());
+            if(isHomeFragment()){
+                ft.addToBackStack(fragment.getClass().getName());
+            }
         } else {
             ft.add(R.id.frame_layout, fragment, fragment.getClass().getName());
+            drawerHandler.onAddFragment();
+            ft.addToBackStack(fragment.getClass().getName());
         }
-        ft.addToBackStack(fragment.getClass().getName());
+
         ft.commit();
 
     }
@@ -158,6 +163,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    private boolean isHomeFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        int index = fm.getBackStackEntryCount();
+        return index == 1 || index == 0;
+    }
+
 
     private boolean lastFragment() {
         FragmentManager fm = getSupportFragmentManager();

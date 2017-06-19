@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,6 +30,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CustomCalendarViewAdapter.MAX_PADDING;
+
 /**
  * Created by Sophie on 6/11/2017.
  */
@@ -35,6 +40,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
 
     public static final String ARG_ID = "babyId";
 
+
     @Inject
     ByDateContract.Presenter presenter;
 
@@ -42,7 +48,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     TextView todaysSaidWords;
 
     @BindView(R.id.calendar_horizontal_rv)
-    RecyclerView horizontalCalendar;
+    RecyclerView horizontalCalendarRV;
 
     @BindView(R.id.todays_date)
     TextView todaysDate;
@@ -57,6 +63,9 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     CustomProgressBar advanceProgressBar;
 
     private String babyId;
+    private CustomCalendarViewAdapter calendarAdapter;
+    private int prevMiddle = -1;
+    private LinearLayoutManager linearLayoutManager;
 
 
     public static ByDateFragment newInstance(String id) {
@@ -67,7 +76,6 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Nullable
@@ -101,14 +109,49 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     }
 
     @Override
-    public void loadCalendarData(List<CalendarWordsObj> calendarList) {
+    public void loadCalendarData(final List<CalendarWordsObj> calendarList) {
 
         todaysDate.setText(Utils.getTodaysDateStr());
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        horizontalCalendar.setLayoutManager(linearLayoutManager);
-        CustomCalendarViewAdapter vendorsAdapter = new CustomCalendarViewAdapter(calendarList);
-        horizontalCalendar.setAdapter(vendorsAdapter);
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        horizontalCalendarRV.setLayoutManager(linearLayoutManager);
+
+        SnapHelper helper = new LinearSnapHelper();
+        helper.attachToRecyclerView(horizontalCalendarRV);
+
+        calendarAdapter = new CustomCalendarViewAdapter(calendarList);
+        horizontalCalendarRV.setAdapter(calendarAdapter);
+
+
+        linearLayoutManager.scrollToPositionWithOffset(5, 20);
+        horizontalCalendarRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    updateSelectedDay(calendarList);
+                }
+            }
+        });
+
     }
+
+
+    private void updateSelectedDay(List<CalendarWordsObj> calendarList) {
+        int firstItem = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+        int lastItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+
+
+        int middle = (int) Math.ceil((lastItem + firstItem) / 2);
+
+        if (prevMiddle != -1) {
+            calendarList.get(prevMiddle).setMiddle(false);
+        }
+        calendarList.get(middle).setMiddle(true);
+        prevMiddle = middle;
+        calendarAdapter.notifyDataSetChanged();
+    }
+
 
 
     @Override

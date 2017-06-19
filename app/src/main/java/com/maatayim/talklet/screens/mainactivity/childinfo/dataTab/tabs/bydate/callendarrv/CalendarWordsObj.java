@@ -12,12 +12,14 @@ public class CalendarWordsObj {
 
     private final Date date;
     private final WordsCount wordsCount;
+    private boolean isMiddle;
 
-    public CalendarWordsObj(Date date, WordsCount wordsCount){
+    public CalendarWordsObj(Date date, WordsCount wordsCount, boolean isMiddle){
 
         this.date = date;
         this.wordsCount = wordsCount;
 
+        this.isMiddle = isMiddle;
     }
 
     public Date getDate() {
@@ -26,5 +28,14 @@ public class CalendarWordsObj {
 
     public WordsCount getWordsCount() {
         return wordsCount;
+    }
+
+
+    public boolean isMiddle() {
+        return isMiddle;
+    }
+
+    public void setMiddle(boolean middle) {
+        isMiddle = middle;
     }
 }

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,15 +21,14 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.ViewPagerAdapter;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.ByDateFragment;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.GeneralTabFragment;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.injection.DataTabModule;
-import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.ChildGeneralFragment;
-import com.maatayim.talklet.screens.mainactivity.childinfo.injection.ChildModule;
+
+import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnPageChange;
-import butterknife.Optional;
 
 /**
  * Created by Sophie on 6/6/2017.
@@ -53,7 +53,7 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
 
     protected static String[] TABS_TITLES_DATA;
-    protected TextView[] tabsTextViews_data;
+    protected LinearLayout[] tabsTextViews_data;
 
 
     public static DataTabFragment newInstance(String id) {
@@ -89,7 +89,7 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
     @Override
     public void onDataReceived(Child child) {
-        setTitle(child.getName()); //// TODO: 6/7/2017 needble??????????
+        setTitle(child.getName());
 
         initViewPager();
         initTabLayout();
@@ -119,12 +119,10 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
         TABS_TITLES_DATA = getResources().getStringArray(R.array.tabs_titles_data_tab);
 
-        tabsTextViews_data = new TextView[TABS_TITLES_DATA.length];
+        tabsTextViews_data = new LinearLayout[TABS_TITLES_DATA.length];
 
         for (int i = 0; i < TABS_TITLES_DATA.length; i++) {
-
             tabLayout.getTabAt(i).setCustomView(getTabView(i));
-
         }
 
         setTabSelected(0);
@@ -132,10 +130,11 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
 
     private View getTabView(int i) {
-        tabsTextViews_data[i] = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.custom_data_general_tab, null);
-        tabsTextViews_data[i].setText(TABS_TITLES_DATA[i]);
-        tabsTextViews_data[i].setGravity(RelativeLayout.CENTER_IN_PARENT);
-        tabsTextViews_data[i].setGravity(RelativeLayout.TEXT_ALIGNMENT_CENTER);
+        tabsTextViews_data[i] = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.custom_data_general_tab, null);
+        TextView tabsTitle = (TextView) tabsTextViews_data[i].findViewById(R.id.tab_title);
+        tabsTitle.setText(TABS_TITLES_DATA[i]);
+//        tabsTextViews_data[i].setGravity(RelativeLayout.CENTER_IN_PARENT);
+//        tabsTextViews_data[i].setGravity(RelativeLayout.TEXT_ALIGNMENT_CENTER);
 
         RelativeLayout layout = new RelativeLayout(getContext());
         layout.addView(tabsTextViews_data[i]);
@@ -143,8 +142,8 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
         return layout;
     }
 
-    @Optional
-    @OnPageChange(R.id.view_pager)
+
+    @OnPageChange(R.id.view_pager_data)
     void onPageSelected(int position) {
         setTabSelected(position);
 
@@ -153,9 +152,11 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
     protected void setTabSelected(int position) {
         for (int i = 0; i < TABS_TITLES_DATA.length; i++) {
-            tabsTextViews_data[i].setTextColor(ContextCompat.getColor(getContext(), R.color.text_color_not_selected));
+            TextView tabsTitle = (TextView) tabsTextViews_data[i].findViewById(R.id.tab_title);
+            tabsTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color_not_selected));
         }
-        tabsTextViews_data[position].setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
+        TextView tabsTitle = (TextView) tabsTextViews_data[position].findViewById(R.id.tab_title);
+        tabsTitle.setTextColor(ContextCompat.getColor(getContext(), R.color.text_color));
 
     }
 }
