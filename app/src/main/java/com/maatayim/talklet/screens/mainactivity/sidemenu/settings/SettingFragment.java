@@ -3,9 +3,12 @@ package com.maatayim.talklet.screens.mainactivity.sidemenu.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maatayim.talklet.R;
@@ -14,6 +17,9 @@ import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.loginactivity.signup.SignupFragment;
+import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FavoriteWordsAdapter;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.AboutBabyAdapter;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutYouFragment;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.injection.SettingModule;
 
@@ -37,14 +43,9 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
     SettingContract.Presenter presenter;
 
 
-    @BindView(R.id.about_child_text_view)
-    TextView aboutChild1;
 
-    @BindView(R.id.about_child2)
-    CardView aboutChild2;
-
-    @BindView(R.id.child2_text_view)
-    TextView child2TextView;
+    @BindView(R.id.about_child_recycler_view)
+    RecyclerView aboutChildRV;
 
 
     @Override
@@ -66,11 +67,19 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
 
     @Override
     public void onDataReceived(List<Child> childrenNames) {
-        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getName()));
-        if (childrenNames.size() > 1){
-            aboutChild2.setVisibility(View.VISIBLE);
-            child2TextView.setText(getString(R.string.about_kid, childrenNames.get(1).getName()));
-        }
+
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        aboutChildRV.setLayoutManager(linearLayoutManager);
+
+        AboutBabyAdapter faboutBabyAdapter = new AboutBabyAdapter(childrenNames);
+        aboutChildRV.setAdapter(faboutBabyAdapter);
+
+
+//        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getName()));
+//        if (childrenNames.size() > 1){
+//            aboutChild2.setVisibility(View.VISIBLE);
+//            child2TextView.setText(getString(R.string.about_kid, childrenNames.get(1).getName()));
+//        }
     }
 
 
@@ -88,8 +97,9 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
 
 
 
+
     @OnClick(R.id.add_another_kid)
     public void onAddKidClick(){
-
+        EventBus.getDefault().post(new AddFragmentEvent(new SignupFragment()));
     }
 }

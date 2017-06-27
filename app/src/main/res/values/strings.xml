@@ -38,7 +38,12 @@
 
 
     <!--Child General-->
-    <string name="recording_text" formatted="false">| Record %d | %1s | %2s:%3s | %4s | </string>
+    <string name="recording_text" formatted="false">| Record %d | %1s | %d:%d | %4s | </string>
+    <string name="record_num" formatted="false">Record %d</string>
+    <string name="record_details" formatted="false">| %d:%d | %s |</string>
+    <string name="words_details" formatted="false">Unique: %d  |  New: %d  |  Advance: %d</string>
+    <string name="words_counter" formatted="false">%d /nwords</string>
+
     <string name="words_chart" formatted="false">%.0f / %d\nwords</string>
     <string name="words">words</string>
     <string name="about_you">About you</string>
@@ -51,4 +56,33 @@
     <string name="i_speak_another_language">+ I speak another language</string>
     <string name="about_you_title">About you</string>
 
+    <!--by recording-->
+    <string name="words_num">%d words</string>
+    <string name="english">English</string>
+    <string name="second_language">Second Language</string>
+    <string name="first_language">First Language</string>
+    <string name="third_language">Third Language</string>
+    <string name="your_favorite_words">Your Favorite Words</string>
+    <string name="view_all_words">View All Words</string>
+
+    <!--favorites-->
+    <string name="favorites_title">Words</string>
+    <string name="new_word">+  New word</string>
+    <string name="new_word_open">-  New word</string>
+    <string name="frequency">Frequency</string>
+    <string name="age">Age</string>
+    <string name="advance_word">+  Advance word</string>
+    <string name="advance_word_open">-  Advance word</string>
+    <string name="other_word">+  Other word</string>
+    <string name="other_word_open">-  Other word</string>
+    <string name="close_all_words">Close All Words</string>
+    <string name="age_value">%d M</string>
+    <string name="talklet_word_de_jour">Talklet Word de Jour</string>
+    <string name="a_new_word_every_day_for_your_baby_s_brain">A new word every day for your baby’s brain</string>
+    <string name="word_subtext" formatted="false">%d%% of %d month olds use this word</string>
+
+
+    <!--about baby-->
+    <string name="upload_new_photo">Upload new photo</string>
+    <string name="please_select_at_least_one_child_to_begin_recording">Please select at least one child to begin recording.</string>
 </resources>

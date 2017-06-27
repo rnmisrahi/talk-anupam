@@ -1,6 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.dagger;
 
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipContract;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipsContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,15 +12,15 @@ import dagger.Provides;
 @Module
 public class TipModule {
 
-    private final GeneralTipContract.View view;
+    private final TipsContract.View view;
 
-    public TipModule(GeneralTipContract.View view) {
+    public TipModule(TipsContract.View view) {
         this.view = view;
     }
 
 
     @Provides
-    public GeneralTipContract.View provideView() {
+    public TipsContract.View provideView() {
         return view;
     }
 

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,19 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
+import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.mainactivity.CustomProgressBar;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.injection.GeneralTabModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.FavoriteWordsFragment;
+
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Sophie on 6/7/2017
@@ -102,7 +107,6 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
 
 
     public void initializePieChart(final int wordsSaid, final int totalWords){
-//        pieChart.setCenterText(getString(R.string.words_chart, wordsSaid, totalWords));
 
         final SeriesItem seriesItem = new SeriesItem.Builder(getResources().getColor(R.color.primary_background_color))
                 .setRange(0, totalWords, 0)
@@ -123,7 +127,12 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
             @Override
             public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
                 float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
-                setTextViewWordCount(percentFilled*wordsSaid, totalWords);
+                try{
+                    setTextViewWordCount(percentFilled*wordsSaid, totalWords);
+                }catch (Exception e){
+
+                }
+
 
             }
 
@@ -140,7 +149,6 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
 
         decoView.addEvent(new DecoEvent.Builder(wordsSaid)
                 .setIndex(series1Index)
-                .setDelay(50)
                 .build());
     }
 
@@ -166,38 +174,11 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
 
     }
 
+    @OnClick(R.id.deco_view)
+    public void onDecoViewClick(){
+        EventBus.getDefault().post(new AddFragmentEvent(FavoriteWordsFragment.newInstance(babyId)));
+    }
 
-//    @Override
-//    public void onStart(){
-//        super.onStart();
-//        getView().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                drawLineGraph();
-//            }
-//        });
-//    }
-//    /**
-//     *  The code for creating the line graph
-//     */
-//    private void drawLineGraph(){
-////        setupLineChart();
-//
-//        // Get the paint renderer to create the line shading.
-//        Paint paint = lineChart.getRenderer().getPaintRender();
-//        int height = lineChart.getHeight();
-//
-//        LinearGradient linGrad = new LinearGradient(0, 0, 0, height,
-//                getResources().getColor(R.color.colorPrimary),
-//                getResources().getColor(R.color.primary_background_color),
-//                Shader.TileMode.REPEAT);
-//        paint.setShader(linGrad);
-//
-////        setupLineChartData();
-//
-//        // Don't forget to refresh the drawing
-//        lineChart.invalidate();
-//    }
 
 
 

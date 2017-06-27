@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="114dp"
+        android:layout_marginTop="75dp"
         android:paddingStart="45dp"
         android:paddingEnd="45dp"
         android:textAlignment="center"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="55dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_fill_details"
@@ -54,7 +54,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="@string/name"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="35dp"
         android:layout_gravity="center"
         android:paddingBottom="10dp"
         android:background="@drawable/edit_text_line"
@@ -65,7 +65,7 @@
 
 
     <TextView
-        android:id="@+id/birthday_edit_text"
+        android:id="@+id/birthday_text_view"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="@string/birthday"
@@ -84,8 +84,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
-        app:layout_constraintBottom_toBottomOf="@+id/birthday_edit_text"
-        app:layout_constraintEnd_toEndOf="@+id/birthday_edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/birthday_text_view"
+        app:layout_constraintEnd_toEndOf="@+id/birthday_text_view"
         android:src="@drawable/birthday"/>
     
     
@@ -99,8 +99,8 @@
         android:textAllCaps="false"
         android:layout_marginTop="50dp"
         android:layout_gravity="end"
-        app:layout_constraintEnd_toEndOf="@id/birthday_edit_text"
-        app:layout_constraintTop_toBottomOf="@+id/birthday_edit_text"
+        app:layout_constraintEnd_toEndOf="@id/birthday_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_text_view"
         tools:layout_editor_absoluteX="187dp" />
 
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
+
+    <TextView
+        android:id="@+id/word_col1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/word_col2"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="13sp"
+        tools:text="House"/>
+
+
+    <TextView
+        android:id="@+id/word_col2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/word_col1"
+        app:layout_constraintEnd_toStartOf="@+id/word_col3"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="13sp"
+        tools:text="Puppy"/>
+
+
+
+    <TextView
+        android:id="@+id/word_col3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/word_col2"
+        app:layout_constraintEnd_toStartOf="@+id/word_col4"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="13sp"
+        tools:text="Spoon"/>
+
+
+    <TextView
+        android:id="@+id/word_col4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/word_col3"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="13sp"
+        tools:text="Apple"/>
+
+</android.support.constraint.ConstraintLayout>

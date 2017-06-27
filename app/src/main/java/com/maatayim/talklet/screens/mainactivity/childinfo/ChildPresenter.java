@@ -1,12 +1,7 @@
 package com.maatayim.talklet.screens.mainactivity.childinfo;
 
-import android.net.Uri;
-
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import io.reactivex.Scheduler;

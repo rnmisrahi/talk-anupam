@@ -37,8 +37,8 @@
         android:paddingBottom="10dp"/>
 
 
-    <EditText
-        android:id="@+id/birthday"
+    <TextView
+        android:id="@+id/birthday_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,8 @@
         android:layout_marginEnd="52dp"
         android:hint="@string/birthday"
         android:paddingBottom="10dp"
-        android:drawableEnd="@drawable/schedule"/>
+        android:drawableEnd="@drawable/schedule"
+        android:clickable="true"/>
 
 
     <TextView
@@ -59,14 +60,47 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthday"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_text_view"
         android:layout_marginTop="31dp"
         android:background="@drawable/edit_text_line"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="52dp"
-        android:hint="First Language"
+        android:hint="@string/first_language"
         android:paddingBottom="10dp"
         android:drawableEnd="@drawable/triangle2"/>
+
+    <TextView
+        android:id="@+id/second_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_language"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/edit_text_line"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:hint="@string/second_language"
+        android:paddingBottom="10dp"
+        android:drawableEnd="@drawable/triangle2"
+        android:visibility="gone"/>
+
+
+    <TextView
+        android:id="@+id/third_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/second_language"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/edit_text_line"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:hint="@string/third_language"
+        android:paddingBottom="10dp"
+        android:drawableEnd="@drawable/triangle2"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -75,7 +109,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_language"
+        app:layout_constraintTop_toBottomOf="@+id/third_language"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_marginTop="31dp"

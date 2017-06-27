@@ -36,39 +36,11 @@ public class ByDatePresenter implements ByDateContract.Presenter {
 
     @Override
     public void getData(String id) {
-        setWordsTypesData(id);
+//        setWordsTypesData(id);
         setCalendarData(id);
     }
 
 
-
-
-    private void setWordsTypesData(String id) {
-        repository.getTotalWordsCount(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<WordsCount>() {
-                    @Override
-                    public void onNext(@NonNull WordsCount wordsCount) {
-                        view.onWordsTypesDataReceived(wordsCount.getTotalWordsCount(),
-                                wordsCount.getUniqueWords(),
-                                wordsCount.getNewWords(),
-                                wordsCount.getAdvanceWords());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        view.wordsCountLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        view.onComplete();
-
-                    }
-                });
-
-    }
 
     private void setCalendarData(String id) {
         repository.getCalendarData(id)

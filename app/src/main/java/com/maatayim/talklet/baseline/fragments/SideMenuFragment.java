@@ -17,4 +17,5 @@ public class SideMenuFragment extends TalkletFragment {
     public void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
     }
+
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/num_of_words_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="203 words"
+        android:textSize="10dp"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/outer_space_text_color"/>
+
+    <ImageView
+        android:id="@+id/center_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/center_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:foregroundGravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/todays_date"
+        app:layout_constraintTop_toBottomOf="@+id/num_of_words_title"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/calendar_horizontal_rv_by_recording"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num_of_words_title"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/todays_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_horizontal_rv_by_recording"
+        tools:text="Monday, 8 April"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="10sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/records_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todays_date"
+        android:layout_marginTop="20dp"
+        />
+
+</android.support.constraint.ConstraintLayout>

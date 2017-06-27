@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="tab_label">10sp</dimen>
+    <dimen name="frequency_width">10sp</dimen>
 </resources>

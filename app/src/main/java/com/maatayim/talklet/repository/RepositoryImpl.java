@@ -7,8 +7,10 @@ import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
+import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
 import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.Date;
@@ -38,7 +40,7 @@ public class RepositoryImpl implements BaseContract.Repository {
 //    Saves
 
     public Completable saveSignupDetails(String name, Date birthday) {
-        return localRepo.savePersonalSignupDetails(name, birthday);
+        return localRepo.savePersonalSignUpDetails(name, birthday);
     }
 
 
@@ -72,6 +74,31 @@ public class RepositoryImpl implements BaseContract.Repository {
         return localRepo.getCalendarData(id);
     }
 
+    @Override
+    public Observable<List<String>> getLanguageList() {
+        return localRepo.getLanguagesList();
+    }
+
+    @Override
+    public Observable<List<FourWordsObj>> getFavoritesWords(String id) {
+        return localRepo.getFavoriteWords(id);
+    }
+
+    @Override
+    public Observable<List<SpecialWords>> getNewWords(String id) {
+        return localRepo.getNewWords(id);
+    }
+
+    @Override
+    public Observable<List<SpecialWords>> getAdvanceWords(String id) {
+        return localRepo.getAdvanceWords(id);
+    }
+
+    @Override
+    public Observable<List<SpecialWords>> getOtherWords(String id) {
+        return localRepo.getOtherWords(id);
+    }
+
 
 //    Getters
 
@@ -97,7 +124,7 @@ public class RepositoryImpl implements BaseContract.Repository {
     }
 
     @Override
-    public Observable<List<GeneralTipTicket>> getTipsList(String id) {
+    public Observable<List<TipTicket>> getTipsList(String id) {
         return localRepo.getTipsList();
     }
 

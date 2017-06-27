@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vendor_filter_linear_layout"
+    android:layout_width="200dp"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@color/primary_background_color"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <!--<TextView-->
+        <!--android:id="@+id/language_default"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="10dp"-->
+        <!--android:background="@color/primary_background_color"-->
+        <!--android:text="@string/english"/>-->
+</LinearLayout>

@@ -7,9 +7,11 @@
 
 
     <color name="primary_background_color">#f2f1f7</color>
+    <color name="darker_background_color">#eae8f2</color>
     <color name="eighty_transparent_background">#F2f2f1f7</color>
 
     <color name="text_color">#636363</color>
+    <color name="outer_space_text_color">#464749</color>
 
     <color name="text_color_not_selected">#c6c5ca</color>
 
@@ -30,5 +32,12 @@
 
     <!--navigation drawer-->
     <color name="navigation_drawer_padding">#dcdaeb</color>
+
+    <!--favorites bg-->
+    <color name="favorites_bg">#acdee2</color>
+    <color name="columns_saparator">#979797</color>
+    <color name="row_color">#eae8f2</color>
+
+
 </resources>
 

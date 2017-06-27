@@ -1,5 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -8,9 +9,9 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +22,17 @@ import com.maatayim.talklet.screens.mainactivity.CustomProgressBar;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CustomCalendarViewAdapter;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateModule;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.utils.Utils;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CustomCalendarViewAdapter.MAX_PADDING;
 
 /**
  * Created by Sophie on 6/11/2017.
@@ -39,6 +41,8 @@ import static com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.b
 public class ByDateFragment extends TalkletFragment implements ByDateContract.View {
 
     public static final String ARG_ID = "babyId";
+    public static final int RIGHT_PADDING = 5;
+    public static final int ITEM_WIDTH = 50;
 
 
     @Inject
@@ -98,32 +102,23 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
 
     }
 
-
-    @Override
-    public void onWordsTypesDataReceived(Pair<Integer, Integer> totalWordsCount, Pair<Integer, Integer> uniqueWordsCount, Pair<Integer, Integer> newWordsCount, Pair<Integer, Integer> advanceWordsCount) {
-        todaysSaidWords.setText(String.valueOf(totalWordsCount.first));
-
-        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
-        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
-        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
-    }
-
     @Override
     public void loadCalendarData(final List<CalendarWordsObj> calendarList) {
 
-        todaysDate.setText(Utils.getTodaysDateStr());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
         horizontalCalendarRV.setLayoutManager(linearLayoutManager);
-
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(horizontalCalendarRV);
 
-        calendarAdapter = new CustomCalendarViewAdapter(calendarList);
+        calendarAdapter = new CustomCalendarViewAdapter(calendarList, true);
         horizontalCalendarRV.setAdapter(calendarAdapter);
 
+        int offset = Utils.getCenterHorizontalScreenCoord(getActivity())-ITEM_WIDTH;
+        int middle = calendarList.size()- RIGHT_PADDING-1;
+        linearLayoutManager.scrollToPositionWithOffset(middle, offset);
+        selectItem(calendarList, middle, true);
+        changeDisplayDataByDay(middle, calendarList);
 
-        linearLayoutManager.scrollToPositionWithOffset(5, 20);
         horizontalCalendarRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -137,6 +132,19 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     }
 
 
+    private void selectItem(List<CalendarWordsObj> calendarList, int middle, boolean isSingleItemChanged){
+        calendarList.get(middle).setMiddle(true);
+        prevMiddle = middle;
+        if(isSingleItemChanged){
+            calendarAdapter.notifyItemChanged(prevMiddle);
+        }else{
+            calendarAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+
+
     private void updateSelectedDay(List<CalendarWordsObj> calendarList) {
         int firstItem = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
         int lastItem = linearLayoutManager.findLastCompletelyVisibleItemPosition();
@@ -147,11 +155,33 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
         if (prevMiddle != -1) {
             calendarList.get(prevMiddle).setMiddle(false);
         }
-        calendarList.get(middle).setMiddle(true);
-        prevMiddle = middle;
-        calendarAdapter.notifyDataSetChanged();
+        selectItem(calendarList, middle, false);
+
+        changeDisplayDataByDay(middle, calendarList);
     }
 
+    private void changeDisplayDataByDay(int middle, List<CalendarWordsObj> calendarList) {
+        WordsCount wordsCount = calendarList.get(middle).getWordsCount();
+
+        if (wordsCount != null){
+            updateView(wordsCount.getTotalWordsCount(),
+                    wordsCount.getUniqueWords(),
+                    wordsCount.getNewWords(),
+                    wordsCount.getAdvanceWords(),
+                    calendarList.get(middle).getDate());
+        }
+
+    }
+
+    private void updateView(Pair<Integer, Integer> totalWordsCount, Pair<Integer, Integer> uniqueWordsCount,
+                            Pair<Integer, Integer> newWordsCount, Pair<Integer, Integer> advanceWordsCount,
+                            Date date){
+        todaysSaidWords.setText(String.valueOf(totalWordsCount.first));
+        todaysDate.setText(Utils.getTodaysDateStr(date));
+        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
+        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
+        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
+    }
 
 
     @Override

@@ -17,7 +17,7 @@ import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.DataTabFragment;
-import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.ChildGeneralFragment;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.ChildMainFragment;
 import com.maatayim.talklet.screens.mainactivity.childinfo.injection.ChildModule;
 import com.maatayim.talklet.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -112,7 +112,7 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
     protected void initViewPager() {
         adapter = new ViewPagerAdapter(getFragmentManager());
 
-        adapter.addFragment(ChildGeneralFragment.newInstance(babyId), "GENERAL");
+        adapter.addFragment(ChildMainFragment.newInstance(babyId), "GENERAL");
         adapter.addFragment(DataTabFragment.newInstance(babyId), "DATA");
 
         viewPager.setAdapter(adapter);

@@ -2,6 +2,8 @@ package com.maatayim.talklet.screens.mainactivity.childinfo.generaltab;
 
 import android.util.Pair;
 
+import com.maatayim.talklet.utils.Utils;
+
 import java.util.Date;
 
 /**
@@ -16,14 +18,17 @@ public class RecordingObj {
     private Date date;
     private Pair<Integer, Integer> wordCount;
     private long duration;
+    private boolean isSelected;
 
-    public RecordingObj(String id, int number, Date date, Pair<Integer, Integer> wordCount, long duration){
+    public RecordingObj(String id, int number, Date date, Pair<Integer, Integer> wordCount,
+                        long duration, boolean isSelected){
 
         this.id = id;
         this.number = number;
         this.date = date;
         this.wordCount = wordCount;
         this.duration = duration;
+        this.isSelected = isSelected;
     }
 
     public String getId() {
@@ -64,5 +69,19 @@ public class RecordingObj {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+
+    public String getDurationStr(){
+        return Utils.getDurationRecordStr(duration);
+    }
+
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

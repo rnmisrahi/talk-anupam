@@ -35,9 +35,9 @@ public class RecordingsHolder extends ViewHolder {
         recordingTextView.setText(context.getString(R.string.recording_text,
                 recordingObj.getNumber(),
                 dateStr,
-                String.valueOf(recordingObj.getWordCount().first),
-                String.valueOf(recordingObj.getWordCount().second),
-                Utils.getDurationRecordStr(recordingObj.getDuration())));
+                recordingObj.getWordCount().first,
+                recordingObj.getWordCount().second,
+                recordingObj.getDurationStr()));
     }
 
 

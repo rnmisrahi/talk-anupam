@@ -9,7 +9,7 @@
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:padding="5dp"
-        android:background="@drawable/child_bg"
+        android:background="@drawable/record_child_bg_not_selected"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_gravity="center"/>

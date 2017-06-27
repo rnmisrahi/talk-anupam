@@ -43,24 +43,37 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SignupFragment extends TalkletFragment implements SignupContract.View {
 
 
+    public static final String IS_LOGIN_ACTIVITY = "isFromLogin";
     @BindView(R.id.camera_image)
     CircleImageView babysPhoto;
 
     @BindView(R.id.name_edit_text)
     EditText name;
 
-    @BindView(R.id.birthday_edit_text)
+    @BindView(R.id.birthday_text_view)
     TextView birthday;
 
     @Inject
     SignUpPresenter presenter;
 
     private Calendar birthdayDate = null;
+    private boolean isFromLogin;
+
+    public static SignupFragment newInstance(boolean isFromLogin) {
+
+        Bundle args = new Bundle();
+        args.putBoolean(IS_LOGIN_ACTIVITY, isFromLogin);
+        SignupFragment fragment = new SignupFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            isFromLogin = getArguments().getBoolean(IS_LOGIN_ACTIVITY);
+        }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new SignupModule(this)).inject(this);
 
     }
@@ -70,8 +83,6 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
-
-//        presenter.checkIfBabysPhotoExists();
         EventBus.getDefault().register(this);
 
         return view;
@@ -86,13 +97,18 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
    @OnClick(R.id.camera_image)
    public void onChoosePhotoClick(){
+//       if(isFromLogin){
        EventBus.getDefault().post(new AddLoginFragmentEvent(new ChoosePhotoFragment()));
+//       }else{
+//           EventBus.getDefault().post(new AddFragmentEvent(new ChoosePhotoFragment()));
+//       }
+
    }
 
 
 
 
-    @OnClick({R.id.birthday_edit_text, R.id.calendar_intent})
+    @OnClick({R.id.birthday_text_view, R.id.calendar_intent})
     public void onSetChildsBirthdayClick(){
         birthdayDate = Calendar.getInstance(); /// todo is it????
         setDay(birthday, birthdayDate);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="3dp"
+    android:paddingBottom="7dp"
+    >
+
+    <TextView
+        android:id="@+id/num_of_advice"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:padding="2dp"
+        android:background="@drawable/num_circle"
+        tools:text="1"
+        android:gravity="center"
+        android:textColor="@color/Light_sea_green"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/advice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toEndOf="@+id/num_of_advice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:gravity="clip_horizontal"
+        tools:text="Talk to Joe about trees only djshkj fdhskjh fdsj hskjh dkshkdshk skjhdg ksjdhgskj hd  sfjh jsh csjhbcjshc jhscjsbdjs"/>
+
+
+</android.support.constraint.ConstraintLayout>

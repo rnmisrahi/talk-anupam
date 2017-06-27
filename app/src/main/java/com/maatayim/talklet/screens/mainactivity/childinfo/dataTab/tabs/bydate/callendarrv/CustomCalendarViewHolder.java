@@ -69,7 +69,12 @@ public class CustomCalendarViewHolder extends ViewHolder {
     }
 
 
-    public void setData(CalendarWordsObj item) {
+    public void setData(CalendarWordsObj item,boolean isVisibleProgressBar) {
+        if (isVisibleProgressBar){
+            wordsProgressBar.setVisibility(View.VISIBLE);
+        }else{
+            wordsProgressBar.setVisibility(View.GONE);
+        }
 
         if (item.getWordsCount()!=null){
 //            bgView.setBackgroundColor(context.getResources().getColor(R.color.primary_background_color));

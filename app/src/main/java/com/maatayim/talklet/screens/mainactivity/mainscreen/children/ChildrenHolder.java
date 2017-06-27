@@ -33,6 +33,7 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
         super(itemView);
         context = itemView.getContext();
         ButterKnife.bind(this, itemView);
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

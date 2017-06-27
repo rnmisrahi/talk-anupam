@@ -15,13 +15,15 @@ public class Child {
     private final String name;
     private Date birthday;
     private final Uri img;
+    private boolean isSelected;
 
-    public Child(String id, String name, Date birthday, Uri img){
+    public Child(String id, String name, Date birthday, Uri img, boolean isSelected){
 
         this.id = id;
         this.name = name;
         this.birthday = birthday;
         this.img = img;
+        this.isSelected = isSelected;
     }
 
 
@@ -43,5 +45,14 @@ public class Child {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

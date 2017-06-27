@@ -28,12 +28,12 @@ public class GeneralTipFragmentTest {
     @Rule
     public ActivityTestRule<TestActivity> fragmentActivityTestRule = new ActivityTestRule<>(TestActivity
             .class);
-    private GeneralTipFragment fragment;
+    private TipsFragment fragment;
 
 
     @Before
     public void setUp() throws Exception {
-        fragment = GeneralTipFragment.newInstance(new GeneralTipTicket(TEST_TIP, true));
+        fragment = TipsFragment.newInstance(new TipTicket(TEST_TIP, true));
         fragmentActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test_frame_container, fragment, null).commit();
     }
 

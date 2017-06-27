@@ -4,7 +4,7 @@ import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
 import java.util.List;
 
@@ -99,9 +99,9 @@ public class MainPresenter implements MainContract.Presenter {
         repository.getTipsList(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<GeneralTipTicket>>() {
+                .subscribeWith(new DisposableObserver<List<TipTicket>>() {
             @Override
-            public void onNext(@NonNull List<GeneralTipTicket> generalTipTickets) {
+            public void onNext(@NonNull List<TipTicket> generalTipTickets) {
                 view.updateTipsViewPager(generalTipTickets);
             }
 

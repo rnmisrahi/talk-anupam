@@ -6,4 +6,9 @@
         <attr name="endVal" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomWordSection">
+        <attr name="wordSectionTitle" format="string" />
+        <attr name="wordSectionTitleOpen" format="string" />
+    </declare-styleable>
+
 </resources>

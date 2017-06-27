@@ -5,7 +5,7 @@ import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,10 +50,10 @@ public class GeneralPresenterTest {
     private BaseContract.Repository repository;
 
     @Mock
-    private List<GeneralTipTicket> tipList;
+    private List<TipTicket> tipList;
 
     @Mock
-    private List<GeneralTipTicket> tipsList;
+    private List<TipTicket> tipsList;
 
 
     private List<Child> childList = new ArrayList<>();
@@ -82,7 +82,7 @@ public class GeneralPresenterTest {
 
         when(repository.getChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
-        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<GeneralTipTicket>>just(tipsList));
+        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>just(tipsList));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>just(wordsCount));
 
 
@@ -133,7 +133,7 @@ public class GeneralPresenterTest {
 
         when(repository.getChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
-        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<GeneralTipTicket>>error(new Exception()));
+        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>error(new Exception()));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>just(wordsCount));
 
 
@@ -152,7 +152,7 @@ public class GeneralPresenterTest {
 
         when(repository.getChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
-        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<GeneralTipTicket>>just(tipsList));
+        when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>just(tipsList));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>error(new Exception()));
 
 

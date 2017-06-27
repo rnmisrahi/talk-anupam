@@ -19,6 +19,7 @@ import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.ViewPagerAdapter;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.ByDateFragment;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.byrecording.ByRecordingFragment;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.GeneralTabFragment;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.injection.DataTabModule;
 
@@ -108,7 +109,7 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
 
         adapter.addFragment(GeneralTabFragment.newInstance(babyId), "GENERAL");
         adapter.addFragment(ByDateFragment.newInstance(babyId), "BYDATE");
-        adapter.addFragment(GeneralTabFragment.newInstance(babyId), "BYRECORD");
+        adapter.addFragment(ByRecordingFragment.newInstance(babyId), "BYRECORD");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

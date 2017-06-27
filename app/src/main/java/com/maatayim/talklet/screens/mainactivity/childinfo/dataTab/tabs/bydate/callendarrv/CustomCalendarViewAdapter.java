@@ -14,14 +14,16 @@ import java.util.List;
  */
 public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalendarViewHolder> {
     private List<CalendarWordsObj> itemsList;
+    private boolean isVisibleProgressBar;
     public static final int MAX_PADDING = 5;
     private int paddingCounter = 0;
 
-    public CustomCalendarViewAdapter(List<CalendarWordsObj> itemsList) {
+    public CustomCalendarViewAdapter(List<CalendarWordsObj> itemsList, boolean isVisibleProgressBar) {
         this.itemsList = itemsList;
+        this.isVisibleProgressBar = isVisibleProgressBar;
         for (int i=0; i<MAX_PADDING; i++){
-            itemsList.add(0, new CalendarWordsObj(null, null, false));
-            itemsList.add(new CalendarWordsObj(null, null, false));
+            itemsList.add(0, new CalendarWordsObj(null, null, false, null));
+            itemsList.add(new CalendarWordsObj(null, null, false, null));
             paddingCounter++;
         }
     }
@@ -36,7 +38,7 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
 
     @Override
     public void onBindViewHolder(CustomCalendarViewHolder holder, int position) {
-        holder.setData(itemsList.get(position));
+        holder.setData(itemsList.get(position), isVisibleProgressBar);
     }
 
     @Override

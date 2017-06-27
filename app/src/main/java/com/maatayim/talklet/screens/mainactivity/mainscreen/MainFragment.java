@@ -15,13 +15,17 @@ import android.widget.Toast;
 
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
+import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.children.ChildrenAdapter;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.GeneralModule;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipTicket;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.GeneralTipAdapter;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.MainModule;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipsAdapter;
+import com.maatayim.talklet.screens.mainactivity.record.RecordingFragment;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -29,25 +33,25 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Sophie on 5/26/2017.
  */
 
-public class MainFragment extends TalkletFragment implements MainContract.View{
+public class MainFragment extends TalkletFragment implements MainContract.View {
     public static final String EMPTY_TITLE = "";
     public static final int DEFAULT_GAP = 120;
     public static final int HALF_GAP = DEFAULT_GAP / 2;
-    public static final String ARG_ID = "babysId";
 
     @Inject
     MainContract.Presenter presenter;
 
     @BindView(R.id.tips_view_pager)
-    ViewPager tipsViewPager;
+    ViewPager tipsViewPagerMain;
 
     @BindView(R.id.tips_view_pager_indicator)
-    CirclePageIndicator pageIndicator;
+    CirclePageIndicator pageIndicatorMain;
 
     @BindView(R.id.words_progress_bar)
     ProgressBar wordsProgressBar;
@@ -61,28 +65,13 @@ public class MainFragment extends TalkletFragment implements MainContract.View{
     @BindView(R.id.children_recyclerView)
     RecyclerView childrenRecyclerView;
 
-    private String babysId;
-
-
-//    public static MainFragment newInstance(String id) {
-//
-//        Bundle args = new Bundle();
-//        args.putString(ARG_ID, id);
-//
-//        MainFragment fragment = new MainFragment();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            babysId = getArguments().getString(ARG_ID);
-//        }
-        ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new GeneralModule(this)).inject(this);
-
+        ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new MainModule(this)).inject(this);
     }
+
 
     @Nullable
     @Override
@@ -90,45 +79,58 @@ public class MainFragment extends TalkletFragment implements MainContract.View{
         View view = inflater.inflate(R.layout.fragment_general_main, container, false);
         ButterKnife.bind(this, view);
         setTitle(EMPTY_TITLE);
-        presenter.getData();
-        return view;
 
+        return view;
     }
 
     @Override
-    public void updateTipsViewPager(List<GeneralTipTicket> ticketList) {
-        tipsViewPager.setPadding(DEFAULT_GAP, 0, DEFAULT_GAP, 0);
-        tipsViewPager.setClipToPadding(false);
-        tipsViewPager.setPageMargin(HALF_GAP);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.getData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        pagerAdapter = null;
+    }
+
+    @Override
+    public void updateTipsViewPager(List<TipTicket> ticketList) {
+        tipsViewPagerMain.setPadding(DEFAULT_GAP, 0, DEFAULT_GAP, 0);
+        tipsViewPagerMain.setClipToPadding(false);
+        tipsViewPagerMain.setPageMargin(HALF_GAP);
 
         initializeViewPager(ticketList);
     }
 
     @Override
-    public void updateWordsCount(int numOfWords, int maxNumOfWords){
+    public void updateWordsCount(int numOfWords, int maxNumOfWords) {
         maxWordsNum.setText(String.valueOf(maxNumOfWords));
         totalWords.setText(getString(R.string.progress_bar_value,
                 String.valueOf(numOfWords),
                 String.valueOf(maxNumOfWords)));
         wordsProgressBar.setMax(maxNumOfWords);
-        wordsProgressBar.setProgress((numOfWords*100)/maxNumOfWords);
+        wordsProgressBar.setProgress((numOfWords * 100) / maxNumOfWords);
     }
 
+    TipsAdapter pagerAdapter;
 
-    private void initializeViewPager(List<GeneralTipTicket> ticketList){
+    private void initializeViewPager(List<TipTicket> ticketList) {
 
-        GeneralTipAdapter pagerAdapter = new GeneralTipAdapter(
-                getActivity().getSupportFragmentManager(), ticketList);
-        tipsViewPager.setAdapter(pagerAdapter);
-        pageIndicator.setViewPager(tipsViewPager);
+        pagerAdapter = new TipsAdapter(
+                getChildFragmentManager(), ticketList);
+        tipsViewPagerMain.setAdapter(pagerAdapter);
+        pageIndicatorMain.setViewPager(tipsViewPagerMain);
+
     }
 
     @Override
-    public void setChildrenRecyclerView(List<Child> childrenList){
+    public void setChildrenRecyclerView(List<Child> childrenList) {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         childrenRecyclerView.setLayoutManager(linearLayoutManager);
-        ChildrenAdapter vendorsAdapter = new ChildrenAdapter(childrenList);
-        childrenRecyclerView.setAdapter(vendorsAdapter);
+        ChildrenAdapter childrenAdapter = new ChildrenAdapter(childrenList);
+        childrenRecyclerView.setAdapter(childrenAdapter);
     }
 
 
@@ -150,6 +152,12 @@ public class MainFragment extends TalkletFragment implements MainContract.View{
     @Override
     public void onTipsLoadError() {
         Toast.makeText(getContext(), "Failed load Tips", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @OnClick(R.id.recording_mic)
+    public void onRecordClick(){
+        EventBus.getDefault().post(new AddFragmentEvent(new RecordingFragment()));
     }
 
 

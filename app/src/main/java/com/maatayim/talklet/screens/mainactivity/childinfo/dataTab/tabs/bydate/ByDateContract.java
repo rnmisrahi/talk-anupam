@@ -4,6 +4,7 @@ import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 
 import java.util.List;
 
@@ -18,10 +19,6 @@ public interface ByDateContract {
     }
 
     interface View extends BaseContract.View{
-        void onWordsTypesDataReceived(Pair<Integer, Integer> totalWordsCount,
-                                      Pair<Integer, Integer> uniqueWordsCount,
-                                      Pair<Integer, Integer> newWordsCount,
-                                      Pair<Integer, Integer> advanceWordsCount);
 
         void loadCalendarData(List<CalendarWordsObj> calendarList);
 

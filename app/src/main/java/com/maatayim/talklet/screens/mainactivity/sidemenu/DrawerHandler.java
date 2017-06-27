@@ -72,7 +72,7 @@ public class DrawerHandler {
 
     List<TextView> sideMenuItems = new ArrayList<>();
 
-    int checkedItemIndex = -1;
+    private int checkedItemIndex = -1;
     private ImageView hamburgerView;
     private boolean isHamburger = true;
 
@@ -189,6 +189,7 @@ public class DrawerHandler {
     }
 
     public void onBackPressChangeHamburgerIcon(FragmentManager fm, boolean addScreen) {
+
         if(addScreen){
             hamburgerView.setImageDrawable(activity.getResources().getDrawable(R.drawable.back));
             isHamburger = false;
@@ -202,6 +203,7 @@ public class DrawerHandler {
                 isHamburger = false;
             }
         }
+        checkedItemIndex = -1;
 
     }
 

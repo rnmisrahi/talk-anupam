@@ -59,6 +59,7 @@ public abstract class TalkletFragment extends Fragment implements BaseContract.V
     }
 
     public boolean onBackPressed() {
+        //// TODO: 6/27/2017 stop streaming
         hideKeyboard();
         return false;
     }

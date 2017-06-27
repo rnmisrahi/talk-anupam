@@ -1,5 +1,6 @@
 package com.maatayim.talklet.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
@@ -11,10 +12,13 @@ import android.widget.TextView;
 
 import com.maatayim.talklet.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,6 +30,7 @@ public class Utils {
     private static final java.lang.String defaultDateFormat = "MMM dd, yyyy";
     private static final java.lang.String shortDateFormat = ", d MMM";
     private static final java.lang.String defaultTimeFormat = "%02d:%02d:%02d";
+    private static final java.lang.String timerFormat = "hh:mm:ss";
     private static int todaysDateStr;
 
 
@@ -68,9 +73,10 @@ public class Utils {
         return width;
     }
 
-    public static String getTodaysDateStr() {
+    public static String getTodaysDateStr(Date date) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
         Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         String weekDay = dayFormat.format(calendar.getTime());
         String dateStr = getSpecificFormattedDate(calendar.getTime(), shortDateFormat);
         return weekDay+dateStr;
@@ -84,6 +90,41 @@ public class Utils {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return txt;
+
+    }
+
+
+    public static int getCenterHorizontalScreenCoord(Activity activity){
+
+        return ((activity.getResources().getDisplayMetrics().widthPixels)/2);
+    }
+
+    public static String getTimerStr(long startTime){
+//        Date newDate = new Date();
+        long tEnd = System.currentTimeMillis();
+        long tDelta = tEnd - startTime;
+//        long timePassed2 = newDate.getTime() - date.getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+
+//        Calendar timePassed = newcal - cal;
+
+//        newDate.setTime(timePassed2);
+//        SimpleDateFormat dayFormat = new SimpleDateFormat(timerFormat, Locale.US);
+//        return dayFormat.format(date);
+
+//        NumberFormat format = new DecimalFormat("##.#");
+//        format.setMaximumIntegerDigits(2);
+        return String.format(Locale.ENGLISH, "%02d:%02d:%02d",
+                tDelta / hoursInMilli,
+                (tDelta / minutesInMilli) % 60,
+                (tDelta / secondsInMilli) % 60);
+
+//        return format.format(tDelta / hoursInMilli)
+//                + ": "+ format.format(tDelta / minutesInMilli)
+//                + ": "+ format.format(tDelta % secondsInMilli);
 
     }
 }
