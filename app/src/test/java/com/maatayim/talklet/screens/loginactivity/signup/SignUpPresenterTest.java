@@ -19,7 +19,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -61,7 +60,7 @@ public class SignUpPresenterTest {
 
     @Test
     public void saveSignUpDetails_repositorySuccess() throws Exception {
-        when(repository.saveSignupDetails(any(String.class), any(Date.class))).thenReturn(Completable.complete());
+        when(repository.saveSignupChildDetails(any(String.class), any(Date.class))).thenReturn(Completable.complete());
 
         presenter.saveSignUpDetails(TEST_STR, birthday);
         verify(view, only()).onDataSaveSuccess();
@@ -69,7 +68,7 @@ public class SignUpPresenterTest {
 
     @Test
     public void saveSignUpDetails_repositoryFailure() throws Exception {
-        when(repository.saveSignupDetails(any(String.class), any(Date.class))).thenReturn(Completable.error(new Exception()));
+        when(repository.saveSignupChildDetails(any(String.class), any(Date.class))).thenReturn(Completable.error(new Exception()));
         presenter.saveSignUpDetails(TEST_STR, birthday);
         verify(view, only()).onDataSaveFailure();
     }

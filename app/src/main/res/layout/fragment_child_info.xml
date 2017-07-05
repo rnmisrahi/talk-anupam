@@ -31,14 +31,14 @@
     <View
         android:layout_width="0dp"
         android:layout_height="75dp"
-        app:layout_constraintStart_toStartOf="@+id/child_img"
-        app:layout_constraintEnd_toEndOf="@+id/child_img"
+        app:layout_constraintStart_toStartOf="@+id/child_item"
+        app:layout_constraintEnd_toEndOf="@+id/child_item"
         app:layout_constraintBottom_toBottomOf="@+id/tab_layout"
         app:layout_constraintTop_toTopOf="@+id/tab_layout"
         android:background="@color/primary_background_color"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/child_img"
+        android:id="@+id/child_item"
         android:layout_width="105dp"
         android:layout_height="105dp"
         android:padding="5dp"

@@ -26,6 +26,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.TOP_MARGIN;
+
 /**
  * Created by Sophie on 6/6/2017.
  */
@@ -88,7 +90,7 @@ public class ChildMainFragment extends TalkletFragment implements ChildMainContr
 
     @Override
     public void updateTipsViewPager(List<TipTicket> ticketList) {
-        tipsViewPagerGtab.setPadding(DEFAULT_GAP, 0, DEFAULT_GAP, 0);
+        tipsViewPagerGtab.setPadding(DEFAULT_GAP, TOP_MARGIN, DEFAULT_GAP, TOP_MARGIN);
         tipsViewPagerGtab.setClipToPadding(false);
         tipsViewPagerGtab.setPageMargin(HALF_GAP);
 
@@ -98,7 +100,7 @@ public class ChildMainFragment extends TalkletFragment implements ChildMainContr
     private void initializeViewPager(List<TipTicket> ticketList) {
 
         TipsAdapter pagerAdapter = new TipsAdapter(
-                getChildFragmentManager(), ticketList);
+                getChildFragmentManager(), ticketList, false, false);
         tipsViewPagerGtab.setAdapter(pagerAdapter);
         pageIndicator.setViewPager(tipsViewPagerGtab);
     }

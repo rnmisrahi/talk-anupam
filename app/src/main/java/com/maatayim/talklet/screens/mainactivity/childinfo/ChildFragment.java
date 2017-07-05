@@ -1,10 +1,13 @@
 package com.maatayim.talklet.screens.mainactivity.childinfo;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +48,7 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
-    @BindView(R.id.child_img)
+    @BindView(R.id.child_item)
     CircleImageView childImg;
 
     private String babyId;
@@ -70,10 +73,19 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition transition = TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move);
+            setSharedElementEnterTransition(transition);
+            setEnterTransition(transition);
+        }
+
         if (getArguments() != null) {
             babyId = getArguments().getString(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new ChildModule(this)).inject(this);
+
+
 
     }
 

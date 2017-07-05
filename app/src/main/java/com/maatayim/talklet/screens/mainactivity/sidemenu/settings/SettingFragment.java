@@ -100,6 +100,6 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
 
     @OnClick(R.id.add_another_kid)
     public void onAddKidClick(){
-        EventBus.getDefault().post(new AddFragmentEvent(new SignupFragment()));
+        EventBus.getDefault().post(new AddFragmentEvent(SignupFragment.newInstance(false)));
     }
 }

@@ -2,14 +2,16 @@ package com.maatayim.talklet.screens.mainactivity.sidemenu.settings;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -43,23 +45,18 @@ public class SettingPresenter implements SettingContract.Presenter {
         repo.getChildrenList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<Child>>() {
+                .subscribeWith(new  DisposableSingleObserver<List<Child>>() {
                     @Override
-                    public void onNext(@NonNull List<Child> children) {
+                    public void onSuccess(@NonNull List<Child> children) {
                         view.onDataReceived(children);
-
                     }
-
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onChildrenLoadError();
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
     }
+
+
 }

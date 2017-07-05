@@ -14,10 +14,12 @@ public class Child {
     private final String id;
     private final String name;
     private Date birthday;
-    private final Uri img;
+    private final String img;
     private boolean isSelected;
+    private int count;
+    private int total;
 
-    public Child(String id, String name, Date birthday, Uri img, boolean isSelected){
+    public Child(String id, String name, Date birthday, String img, boolean isSelected){
 
         this.id = id;
         this.name = name;
@@ -35,7 +37,7 @@ public class Child {
         return name;
     }
 
-    public Uri getImg() {
+    public String getImg() {
         return img;
     }
 
@@ -54,5 +56,13 @@ public class Child {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getTotal() {
+        return total;
     }
 }

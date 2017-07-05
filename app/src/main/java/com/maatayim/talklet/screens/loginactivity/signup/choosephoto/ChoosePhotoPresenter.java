@@ -32,7 +32,7 @@ public class ChoosePhotoPresenter implements ChoosePhotoContract.Presenter {
         //// TODO: 5/25/2017 save image
 //        EventBus.getDefault().post();
 
-        repository.saveBabysPhoto(photo)
+        repository.saveBabysPhoto(photo.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableCompletableObserver() {

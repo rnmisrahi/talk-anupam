@@ -6,6 +6,7 @@ import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -36,60 +38,55 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void getData() {
+        repository.downloadKids();
+        repository.downloadTips();
         getChildrenList();
 
     }
 
 
-    private void getChildrenList(){
-        repository.getChildrenList()
+    private void getChildrenList() {
+        repository.getChildrenListWithTips()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<Child>>() {
+                .subscribeWith(new DisposableSingleObserver<List<MainScreenChild>>() {
                     @Override
-                    public void onNext(@NonNull List<Child> children) {
+                    public void onSuccess(@NonNull List<MainScreenChild> children) {
                         view.setChildrenRecyclerView(children);
-                        loadLastConnectionChild();
-                    }
+                        List<TipTicket> tickets = new ArrayList<TipTicket>();
 
+                        for (MainScreenChild child : children) {
+                            for (MainScreenChild.Tip tip : child.getTips()) {
+                                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), child.getUrl()));
+                            }
+                        }
+                        if (children.size() == 1) {
+                            MainScreenChild mainScreenChild = children.get(0);
+                            view.updateWordsCount(mainScreenChild.getWordCount(), mainScreenChild.getTotal());
+                        }else{
+//                            view.updateWordsCount(wordsCount.first, wordsCount.second);
+                        }
+
+                        view.updateTipsViewPager(tickets, children.size() > 1);
+                    }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onDisplayChildrenError();
-                    }
-
-                    @Override
-                    public void onComplete() {
 
                     }
                 });
 
     }
 
-    private void loadLastConnectionChild(){
-        repository.getLastConnectionChild()
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<Child>() {
-                    @Override
-                    public void onNext(@NonNull Child lastConnectionChild) {
-                        getScreenData(lastConnectionChild);
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        view.onChildLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+    private void setScreenData(List<Child> children) {
+        getAllChildrenTips();
+//        view.setChildrenView();
     }
 
-    private void getScreenData(Child child){
+
+    private void setScreenData(Child child) {
         getTips(child.getId());
         getWordsCount(child.getId());
     }
@@ -100,21 +97,21 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribeWith(new DisposableObserver<List<TipTicket>>() {
-            @Override
-            public void onNext(@NonNull List<TipTicket> generalTipTickets) {
-                view.updateTipsViewPager(generalTipTickets);
-            }
+                    @Override
+                    public void onNext(@NonNull List<TipTicket> generalTipTickets) {
+                        view.updateTipsViewPager(generalTipTickets, false);
+                    }
 
-            @Override
-            public void onError(@NonNull Throwable e) {
-                view.onTipsLoadError();
-            }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.onTipsLoadError();
+                    }
 
-            @Override
-            public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-            }
-        });
+                    }
+                });
     }
 
 
@@ -142,5 +139,26 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
 
+    public void getAllChildrenTips() {
+        repository.getAllChildrenTips()
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableObserver<List<TipTicket>>() {
+                    @Override
+                    public void onNext(@NonNull List<TipTicket> generalTipTickets) {
+                        view.updateTipsViewPager(generalTipTickets, true);
+                    }
 
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.onTipsLoadError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
 }

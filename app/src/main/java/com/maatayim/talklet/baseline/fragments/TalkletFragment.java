@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.BaseContract;
 
+import java.util.Timer;
+
 /**
  * Created by Sophie on 5/21/2017.
  */
@@ -19,6 +21,7 @@ import com.maatayim.talklet.baseline.BaseContract;
 public abstract class TalkletFragment extends Fragment implements BaseContract.View {
 
     private String title;
+    private Timer timer;
 
 
     public TalkletFragment(){
@@ -33,6 +36,11 @@ public abstract class TalkletFragment extends Fragment implements BaseContract.V
 //        super.onDestroy();
 //        EventBus.getDefault().unregister(this);
 //    }
+
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
 
 
     @Override
@@ -60,6 +68,9 @@ public abstract class TalkletFragment extends Fragment implements BaseContract.V
 
     public boolean onBackPressed() {
         //// TODO: 6/27/2017 stop streaming
+        if (timer != null){
+            timer.cancel();
+        }
         hideKeyboard();
         return false;
     }

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.maatayim.talklet.MainActivity;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
+import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.baseline.events.AddLoginFragmentEvent;
 import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.ChoosePhotoFragment;
@@ -44,6 +45,10 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
 
     public static final String IS_LOGIN_ACTIVITY = "isFromLogin";
+
+    @BindView(R.id.title_fill_details)
+    TextView fragmentTitle;
+
     @BindView(R.id.camera_image)
     CircleImageView babysPhoto;
 
@@ -85,6 +90,13 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
 
+        if (!isFromLogin){
+            setTitle(getString(R.string.add_another_kid));
+            fragmentTitle.setVisibility(View.GONE);
+        }else{
+            fragmentTitle.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
@@ -97,11 +109,11 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
    @OnClick(R.id.camera_image)
    public void onChoosePhotoClick(){
-//       if(isFromLogin){
+       if(isFromLogin){
        EventBus.getDefault().post(new AddLoginFragmentEvent(new ChoosePhotoFragment()));
-//       }else{
-//           EventBus.getDefault().post(new AddFragmentEvent(new ChoosePhotoFragment()));
-//       }
+       }else{
+           EventBus.getDefault().post(new AddFragmentEvent(new ChoosePhotoFragment()));
+       }
 
    }
 
@@ -166,9 +178,11 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
     @Override
     public void  onDataSaveSuccess(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        if(!isFromLogin) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     @Override

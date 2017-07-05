@@ -2,8 +2,10 @@ package com.maatayim.talklet.screens.loginactivity.login;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
+import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.screens.loginactivity.login.injection.AccessTokenWrapper;
 import com.facebook.login.LoginResult;
 
@@ -15,14 +17,16 @@ import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by Sophie on 5/21/2017.
  */
 
 public class LoginPresenter implements LoginContract.Presenter {
-
+    private static final String TAG = "LoginPresenter";
     private LoginContract.View view;
     private Context context;
     private BaseContract.Repository repository;
@@ -65,6 +69,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 });
     }
 
+
     @Override
     public void checkIfLoggedIn() {
         if (!accessToken.isNull()) {
@@ -93,7 +98,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         }
                     });
 
-        }else{
+        } else {
             view.onInvalidToken();
         }
 
@@ -102,27 +107,43 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void checkIfSignedUp() {
-        repository.checkIfSignedUp()
+        repository.login()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<Boolean>() {
+                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
                     @Override
-                    public void onNext(@NonNull Boolean isSignedUp) {
-                        if (isSignedUp) {
+                    public void onSuccess(@NonNull LoginResponse loginResponse) {
+                        if (loginResponse.isSignedUp()) {
                             view.onSignedUpSuccess();
                         } else {
-                            view.onSignedUpFailed();
+                            view.onAlreadySignedUpFailed();
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-//                            Log.d(TAG, "onError: ");
+                        Log.e(TAG, "onError: ",e );
+                        //view.onLoginError();
+                    }
+                });
+
+    }
+
+    @Override
+    public void saveUserFBDetails(UserDetails userDetails) {
+
+        repository.saveUserFBDetails(userDetails)
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        view.onSaveUserFBDataSuccess();
                     }
 
                     @Override
-                    public void onComplete() {
-
+                    public void onError(@NonNull Throwable e) {
+                        view.onaveUserFBDataFailed();
                     }
                 });
     }

@@ -1,6 +1,8 @@
 package com.maatayim.talklet.screens.loginactivity.login;
 
 
+import android.os.Bundle;
+
 import com.maatayim.talklet.baseline.BaseContract;
 import com.facebook.login.LoginResult;
 
@@ -23,6 +25,7 @@ public interface LoginContract {
 
         void checkIfSignedUp();
 
+        void saveUserFBDetails(UserDetails userDetails);
     }
 
     interface View extends BaseContract.View {
@@ -38,8 +41,12 @@ public interface LoginContract {
 
         void onFacebookLoginFailed();
 
-        void onSignedUpFailed();
+        void onAlreadySignedUpFailed();
 
         void onSignedUpSuccess();
+
+        void onSaveUserFBDataSuccess();
+
+        void onaveUserFBDataFailed();
     }
 }

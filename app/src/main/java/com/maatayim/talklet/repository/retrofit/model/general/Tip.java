@@ -7,14 +7,16 @@ package com.maatayim.talklet.repository.retrofit.model.general;
 public class Tip {
 
     private String id;
+    private String childId;
     private String text;
-    private String type;
+    private boolean assertion;
 
-    public Tip(String id, String text, String type){
+    public Tip(String id, String text, boolean assertion, String childId){
 
         this.id = id;
         this.text = text;
-        this.type = type;
+        this.assertion = assertion;
+        this.childId = childId;
     }
 
 
@@ -34,11 +36,20 @@ public class Tip {
         this.text = text;
     }
 
-    public String getType() {
-        return type;
+
+    public String getChildId() {
+        return childId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setChildId(String childId) {
+        this.childId = childId;
+    }
+
+    public boolean isAssertion() {
+        return assertion;
+    }
+
+    public void setAssertion(boolean assertion) {
+        this.assertion = assertion;
     }
 }

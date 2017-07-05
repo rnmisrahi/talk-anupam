@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/toolbar_extension"
+    android:orientation="vertical"
+    android:id="@+id/constraintLayout"
+    tools:ignore="MissingPrefix">
+
+    <ImageView
+        android:id="@+id/stop_recording_mic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/record_background"
+        android:padding="35dp"
+        android:src="@drawable/stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/record_time_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="00:02:56"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        fontPath="fonts/Avenir-Black.ttf"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/select_child_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/please_select_at_least_one_child_to_begin_recording"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/record_time_duration"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginEnd="85dp"/>
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/children_recyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="30dp"
+        android:foregroundGravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/select_child_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/child_item_img" />
+
+    <View
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tips_view_pager"
+        android:background="@color/primary_background_color"
+        android:padding="10dp"/>
+
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tips_view_pager"
+        android:layout_width="0dp"
+        android:layout_height="185dp"
+        android:layout_margin="10dp"
+        android:background="@color/primary_background_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"/>
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/tips_view_pager_indicator"
+        style="vpiCirclePageIndicatorStyle"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:padding="10dp"
+        app:fillColor="@color/Pastel_magenta"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tips_view_pager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:paddingStart="50dp"
+        app:pageColor="@color/darker_background_color"
+        app:radius="4dp"
+        app:snap="true"
+        app:strokeColor="@color/text_color"
+        app:strokeWidth="1dp"
+        app:theme="@style/StyledIndicators"
+        android:layout_marginLeft="10dp"
+        android:visibility="visible"/>
+
+
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/message_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="183dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:padding="10dp"/>
+
+    <ImageView
+        android:visibility="visible"
+        android:id="@+id/exit_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="183dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:padding="10dp"/>
+
+</android.support.constraint.ConstraintLayout>

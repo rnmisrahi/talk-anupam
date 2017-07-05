@@ -1,7 +1,7 @@
 package com.maatayim.talklet.screens.mainactivity.record;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -33,24 +33,44 @@ public class RecordPresenter implements RecordContract.Presenter {
 
     @Override
     public void getData() {
-        repo.getChildrenList()
+        repo.getChildrenListWithTips()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<Child>>() {
+                .subscribeWith(new DisposableSingleObserver<List<MainScreenChild>>() {
                     @Override
-                    public void onNext(@NonNull List<Child> children) {
-                        view.onDataReceived(children);
+                    public void onSuccess(@NonNull List<MainScreenChild> mainScreenChildren) {
+                        view.onDataReceived(mainScreenChildren);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
 
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
+
+
+    }
+
+
+    public void getAllChildrenTips() {
+//        repo.getRecotdTipsList()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(scheduler)
+//                .subscribeWith(new DisposableObserver<List<TipTicket>>() {
+//                    @Override
+//                    public void onNext(@NonNull List<TipTicket> TipTickets) {
+//                        view.initViewpager(TipTickets);
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        view.onTipsLoadError();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 }

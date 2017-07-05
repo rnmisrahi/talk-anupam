@@ -1,9 +1,14 @@
 package com.maatayim.talklet.repository;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.util.Pair;
 
+import com.maatayim.talklet.repository.realm.RealmChild;
+import com.maatayim.talklet.repository.realm.RealmTip;
+import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
@@ -20,6 +25,15 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Action;
+import io.realm.Realm;
+import io.realm.RealmResults;
+
+import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.BIRTHDAY;
+import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.FIRST_NAME;
+import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.ID;
+import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.LAST_NAME;
 
 /**
  * Created by Sophie on 5/28/2017
@@ -31,22 +45,25 @@ public class LocalData {
     String babysName;
     Date birthday = mockBirthday(2017, 5, 1);
     String lastChildConnected = "1";
+    Uri babyBossUri = Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA");
+    Uri booUri = Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg");
 
     List<Child> children = mockChildrenList();
 
     private int currentId = 2;
 
 
-
-//    public static final String TEMP_TOKEN = "EAALUm1y1RtcBAAfZCaA91aV9yvbKZCW940qo8gVdGSe1TkVNEgnaRnQt4dgiJft1hvNSs6EfPkLpKqg4MdMLzbT5Api0jY1C9wFP7EmuiJVHf8KejYZBcZAwZAF64wpvfxrZAS5YE2wBbV6SzVyP2gZAOXfsET4JDZCebcF9YJliRw0nCaFZBn24f0mUgYSJ45ql73w1o0YsF7oDMY4RLcC4Q";
+    //    public static final String TEMP_TOKEN = "EAALUm1y1RtcBAAfZCaA91aV9yvbKZCW940qo8gVdGSe1TkVNEgnaRnQt4dgiJft1hvNSs6EfPkLpKqg4MdMLzbT5Api0jY1C9wFP7EmuiJVHf8KejYZBcZAwZAF64wpvfxrZAS5YE2wBbV6SzVyP2gZAOXfsET4JDZCebcF9YJliRw0nCaFZBn24f0mUgYSJ45ql73w1o0YsF7oDMY4RLcC4Q";
     public static final String TEMP_TOKEN = "TEST_TOKEN";
     public static final int DEFAULT_CHILD = 0;
-    private Uri babysPhoto = DEFAULT_URI;
+    private String babysPhoto = "AA";
     private static LoginResult loginToken;
     private Observable<Integer> lastConnectionChild;
     private Observable<List<String>> languagesList;
+    private UserDetails userDetails;
+    private String facebookId;
 
-    private Date mockBirthday(int year, int month, int day){
+    private Date mockBirthday(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
@@ -68,7 +85,13 @@ public class LocalData {
         return Completable.complete();
     }
 
-    public Completable saveBabysPhoto(Uri photo) {
+
+    public Completable saveUserFBDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+        return Completable.complete();
+    }
+
+    public Completable saveBabysPhoto(String photo) {
         this.babysPhoto = photo; //temp
         return Completable.complete();
     }
@@ -76,6 +99,7 @@ public class LocalData {
 
     public Completable saveFacebookLoginToken(LoginResult loginResult) {
         loginToken = loginResult;
+        facebookId = loginResult.getAccessToken().getUserId();
         return Completable.complete();
     }
 
@@ -100,33 +124,95 @@ public class LocalData {
         });
     }
 
-    public Observable<Uri> getBaybsPhoto(String id) {
-        return Observable.fromCallable(new Callable<Uri>() {
+    public Observable<String> getBaybsPhoto(String id) {
+        return Observable.fromCallable(new Callable<String>() {
             @Override
-            public Uri call() throws Exception {
+            public String call() throws Exception {
                 return babysPhoto;
             }
         });
     }
 
 
-    public Observable<List<TipTicket>> getTipsList() {
-        return Observable.fromCallable(new Callable<List<TipTicket>>() {
+    public Completable saveTipRx(final String tipId, final String text, final boolean assertion, final String childID) {
+        return Completable.fromAction(new Action() {
             @Override
-            public List<TipTicket> call() throws Exception {
-                return generalTipList();
+            public void run() throws Exception {
+                saveTip(tipId, text, assertion, childID);
+            }
+
+
+        });
+    }
+
+    public void saveTip(final String tipId, final String text, final boolean assertion, final String childID) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmTip realmTip = new RealmTip(tipId, text, assertion, childID);
+                realm.copyToRealmOrUpdate(realmTip);
+            }
+        });
+        realm.close();
+
+    }
+
+    public Completable saveChildRx(final ChildModel childModel) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                saveChild(childModel.getId(), childModel.getName(), childModel.getBirthday(), childModel.getImage());
+            }
+
+        });
+    }
+
+    public void saveChild(final String childId, final String name, final long birthday, final String babyImg) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmChild realmChild = new RealmChild(childId, name, birthday, babyImg);
+                realm.copyToRealmOrUpdate(realmChild);
+            }
+        });
+        realm.close();
+
+    }
+
+
+    public Observable<List<RealmTip>> getTipsListRx(final String id) {
+        return Observable.fromCallable(new Callable<List<RealmTip>>() {
+            @Override
+            public List<RealmTip> call() throws Exception {
+                return getTipsList(id);
             }
         });
     }
 
-    private List<TipTicket> generalTipList() {
-        List<TipTicket> tipsList = new ArrayList<>();
-        tipsList.add(new TipTicket("Try to ask about the kids day", false));
-        tipsList.add(new TipTicket("bla bla bla bla", true));
-        tipsList.add(new TipTicket("aaaaa aaaaaaaaa aaaaaaaaa", false));
-        tipsList.add(new TipTicket("bbbbbbbbbbbbbbbbbbb bbb bbbb", true));
-        tipsList.add(new TipTicket("5 bbb bbbb", false));
-        tipsList.add(new TipTicket("6 bbb bbbb", true));
+    private List<RealmTip> getTipsList(final String id) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmTip> tipList = realm.where(RealmTip.class).equalTo("childID", id).findAll();
+        List<RealmTip> response = new ArrayList<>();
+        for (RealmTip realmTip : tipList) {
+            response.add(new RealmTip(realmTip));
+        }
+        realm.close();
+        return response;
+    }
+
+
+    private List<RealmTip> generalTipList(String id) {
+        List<RealmTip> tipsList = new ArrayList<>();
+//        tipsList.add(new TipTicket("Try to ask about the kids day", false, babyBossUri));
+//        tipsList.add(new TipTicket("bla bla bla bla", true, booUri));
+//        tipsList.add(new TipTicket("aaaaa aaaaaaaaa aaaaaaaaa", false, babyBossUri));
+//        tipsList.add(new TipTicket("bbbbbbbbbbbbbbbbbbb bbb bbbb", true, babyBossUri));
+//        tipsList.add(new TipTicket("5 bbb bbbb", false, booUri));
+//        tipsList.add(new TipTicket("6 bbb bbbb", true, babyBossUri));
 
         return tipsList;
     }
@@ -152,8 +238,8 @@ public class LocalData {
         });
     }
 
-    public Observable<List<Child>> getChildrenList() {
-        return Observable.fromCallable(new Callable<List<Child>>() {
+    public Single<List<Child>> getChildrenList() {
+        return Single.fromCallable(new Callable<List<Child>>() {
             @Override
             public List<Child> call() throws Exception {
                 return children;
@@ -163,11 +249,11 @@ public class LocalData {
 
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
-//        childrenList.add(new Child("1", "Sophie", birthday, Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
-        childrenList.add(new Child("1", "BabyBoss", birthday, Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA"), false));
-        childrenList.add(new Child("2", "Boo", birthday, Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg"), false));
-//        childrenList.add(new Child("4444", "Stewie", birthday, Uri.parse("http://vignette1.wikia.nocookie.net/family-guy-the-quest-for-stuff/images/e/ea/Stewie.png/revision/latest?cb=20140419144429")));
-//        childrenList.add(new Child("5555", "Jack Jack", birthday, Uri.parse("http://www.writeups.org/wp-content/uploads/Jack-Jack-The-Incredibles-baby-a.jpg")));
+//        childrenList.add(new ChildModel("1", "Sophie", birthday, Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
+//        childrenList.add(new ChildModel("1", "BabyBoss", birthday, Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA"), false));
+//        childrenList.add(new ChildModel("2", "Boo", birthday, Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg"), false));
+//        childrenList.add(new ChildModel("4444", "Stewie", birthday, Uri.parse("http://vignette1.wikia.nocookie.net/family-guy-the-quest-for-stuff/images/e/ea/Stewie.png/revision/latest?cb=20140419144429")));
+//        childrenList.add(new ChildModel("5555", "Jack Jack", birthday, Uri.parse("http://www.writeups.org/wp-content/uploads/Jack-Jack-The-Incredibles-baby-a.jpg")));
         return childrenList;
     }
 
@@ -176,7 +262,7 @@ public class LocalData {
             @Override
             public Child call() throws Exception {
 
-                //// TODO: 6/6/2017 getSpecific Child from DB - this solution is temporery
+                //// TODO: 6/6/2017 getSpecific ChildModel from DB - this solution is temporery
                 for (Child child : children) {
                     if (child.getId().equals(lastChildConnected)) {
                         return child;
@@ -220,38 +306,38 @@ public class LocalData {
     private List<RecordingObj> mockRecordings() {
         List<RecordingObj> recordings = new ArrayList<>();
 
-        recordings.add(new RecordingObj("1111", 1, new Date(1483726548L), new android.util.Pair<Integer, Integer>(15,20), 3600000L, false));
-        recordings.add(new RecordingObj("2222", 2, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L, false));
-        recordings.add(new RecordingObj("3333", 3, new Date(1507659612010L), new android.util.Pair<Integer, Integer>(4,100), 3600000L, false));
-        recordings.add(new RecordingObj("4444", 4, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L,false));
-        recordings.add(new RecordingObj("5555", 5, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4,100), 3600000L, false));
+        recordings.add(new RecordingObj("1", 1, new Date(1483726548L), new android.util.Pair<Integer, Integer>(15, 20), 3600000L, false));
+        recordings.add(new RecordingObj("2", 2, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
+        recordings.add(new RecordingObj("3", 3, new Date(1507659612010L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
+        recordings.add(new RecordingObj("4", 4, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
+        recordings.add(new RecordingObj("5", 5, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
 
         return recordings;
 
     }
 
 
-    private WordsCount mockWordsData(){
+    private WordsCount mockWordsData() {
 
-        return new WordsCount(new Pair<>(18,33), new Pair<>(2, 18), new Pair<>(20, 73));
+        return new WordsCount(new Pair<>(18, 33), new Pair<>(2, 18), new Pair<>(20, 73));
 
     }
 
-    private WordsCount mockWordsData(String id, Calendar date){
+    private WordsCount mockWordsData(String id, Calendar date) {
         Calendar birthdayCalTest = Calendar.getInstance();
         birthdayCalTest.setTime(birthday);
         birthdayCalTest.add(Calendar.DATE, 7);
 
-        if (date == birthdayCalTest){
-            return new WordsCount(new Pair<>(18,33), new Pair<>(2, 18), new Pair<>(20, 73));
+        if (date == birthdayCalTest) {
+            return new WordsCount(new Pair<>(18, 33), new Pair<>(2, 18), new Pair<>(20, 73));
 
         }
 
-        if(date.after(birthdayCalTest)){
-            return new WordsCount(new Pair<>(30,33), new Pair<>(16, 18), new Pair<>(60, 73));
+        if (date.after(birthdayCalTest)) {
+            return new WordsCount(new Pair<>(30, 33), new Pair<>(16, 18), new Pair<>(60, 73));
         }
 
-        return new WordsCount(new Pair<>(19,33), new Pair<>(5, 18), new Pair<>(25, 73));
+        return new WordsCount(new Pair<>(19, 33), new Pair<>(5, 18), new Pair<>(25, 73));
 
     }
 
@@ -284,7 +370,7 @@ public class LocalData {
         birthdayCal.setTime(birthday);
         Calendar todaysDate = Calendar.getInstance();
 
-        while(!birthdayCal.after(todaysDate)){
+        while (!birthdayCal.after(todaysDate)) {
             Date targetDay = birthdayCal.getTime();
             calendarData.add(new CalendarWordsObj(targetDay, mockWordsData("id", birthdayCal), false, mockRecordings()));
 
@@ -395,7 +481,7 @@ public class LocalData {
     private List<SpecialWords> mockAdvanceWords() {
         List<SpecialWords> newWords = new ArrayList<>();
         newWords.add(new SpecialWords("Advance", "Cat", 14, 9, 41, null));
-        newWords.add(new SpecialWords("Advance", "Puppy",3, 10, 30, null));
+        newWords.add(new SpecialWords("Advance", "Puppy", 3, 10, 30, null));
 
         return newWords;
     }
@@ -406,5 +492,31 @@ public class LocalData {
         newWords.add(new SpecialWords("Other", "Interesting", 6, 19, 20, null));
 
         return newWords;
+    }
+
+    public Observable<UserDetails> getUserDetails() {
+        return Observable.fromCallable(new Callable<UserDetails>() {
+            @Override
+            public UserDetails call() throws Exception {
+                return userDetails;
+            }
+
+
+        });
+    }
+
+
+    public Single<String> getToken() {
+        return Single.just("SOME_TOKEN");
+    }
+
+
+    public Single<String> getFacebookId() {
+        return Single.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return facebookId;
+            }
+        });
     }
 }

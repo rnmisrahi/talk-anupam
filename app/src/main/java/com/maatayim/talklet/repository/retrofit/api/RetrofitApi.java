@@ -1,5 +1,7 @@
 package com.maatayim.talklet.repository.retrofit.api;
 
+import com.maatayim.talklet.repository.retrofit.model.user.LoginRequest;
+import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
 import com.maatayim.talklet.repository.retrofit.model.general.CreateRecordingRequest;
 import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
@@ -9,7 +11,7 @@ import com.maatayim.talklet.repository.retrofit.model.general.ChildDataResponse;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -19,42 +21,30 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
- * Created by Sophie on 5/28/2017.
+ * Created by Sophie on 5/28/2017
  */
 
 public interface RetrofitApi {
 
-//    User
-    @GET("login")
-    Observable<String> getLogin(
+    //    User
+    @POST("login")
+    Single<LoginResponse> login(
+            @Body LoginRequest body
     );
 
-
-//    RecordingObj
-    @POST("recording")
-    void postRecordingMetadata(
-            @Header("Authorization") String authorization,
-            @Body RecordingMetadata body
-    );
-
-
-    @GET("recording")
-    Observable<RecordingNotificationResponse> getRecordingNotification(
-    );
-
-
-//    Children
-    @GET("children")
-    Observable<ChildrenListWrapper> getChildrenList(
+    //    Children
+    @GET("children/{myID}")
+    Single<ChildrenListWrapper> getChildrenList(
+            @Header("Authorization") String authorization
     );
 
 
     @PUT("children/{id}")
-    Observable<ChildrenListWrapper> putUpdateChild(
+    Single<ChildrenListWrapper> putUpdateChild(
     );
 
     @POST("children")
-    Observable<ChildrenListWrapper> postCreateChild(
+    Single<ChildrenListWrapper> postCreateChild(
     );
 
     @DELETE("children/{id}")
@@ -63,14 +53,26 @@ public interface RetrofitApi {
     );
 
 
-//    General
-    @GET("generaldata")
-    Observable<TipsWrapper> getGeneralData(
+    //    RecordingObj
+    @POST("recording")
+    void postRecordingMetadata(
+            @Header("Authorization") String authorization,
+            @Body RecordingMetadata body
     );
 
 
+    @GET("recording")
+    Single<RecordingNotificationResponse> getRecordingNotification(
+    );
+
+
+    //    General
+    @GET("generaldata")
+    Single<TipsWrapper> getGeneralData();
+
+
     @GET("childdata")
-    Observable<ChildDataResponse> getChildData(
+    Single<ChildDataResponse> getChildData(
             @Query("child") String child,
             @Header("Authorization") String authorization
     );
@@ -82,21 +84,20 @@ public interface RetrofitApi {
     );
 
 
-//    Word Data
+    //    Word Data
     @GET("worddata")
-    Observable<WordData> getWordData(
+    Single<WordData> getWordData(
             @Query("child") String child,
             @Header("Authorization") String authorization
     );
 
 
-//    Word Count Data
+    //    Word Count Data
     @GET("wordcountdata")
-    Observable<WordCountResponse> getWordCountData(
+    Single<WordCountResponse> getWordCountData(
             @Query("child") String child,
             @Header("Authorization") String authorization
     );
-
 
 
 }

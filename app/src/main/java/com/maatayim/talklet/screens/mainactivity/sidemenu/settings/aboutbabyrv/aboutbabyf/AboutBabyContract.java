@@ -1,14 +1,10 @@
-package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf;
-
-import android.net.Uri;
+package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
 
-import java.util.Date;
-
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/29/2017.
  */
 
 public interface AboutBabyContract {

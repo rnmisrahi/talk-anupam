@@ -37,7 +37,7 @@
     <string name="by_recording">By recording</string>
 
 
-    <!--Child General-->
+    <!--ChildModel General-->
     <string name="recording_text" formatted="false">| Record %d | %1s | %d:%d | %4s | </string>
     <string name="record_num" formatted="false">Record %d</string>
     <string name="record_details" formatted="false">| %d:%d | %s |</string>

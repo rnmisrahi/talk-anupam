@@ -1,7 +1,14 @@
 package com.maatayim.talklet.screens.mainactivity.record;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.transition.ChangeBounds;
+import android.support.transition.Transition;
+import android.support.transition.TransitionManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,14 +20,15 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
-import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.children.ChildrenAdapter;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipsAdapter;
 import com.maatayim.talklet.screens.mainactivity.record.children.RecordChildrenAdapter;
 import com.maatayim.talklet.screens.mainactivity.record.injection.RecordModule;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf.injection.AboutBabyModule;
 import com.maatayim.talklet.utils.Utils;
+import com.viewpagerindicator.CirclePageIndicator;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +39,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.HALF_GAP;
+import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.TOP_MARGIN;
+
 /**
  * Created by Sophie on 6/27/2017.
  */
@@ -38,22 +49,60 @@ import butterknife.OnClick;
 public class RecordingFragment extends TalkletFragment implements RecordContract.View {
 
 
+    public static final int RIGHT_GAP = 240;
+    public static final int LEFT_GAP = 10;
+    private static String ARG_RECORD = "mediaRecorder";
     @BindView(R.id.children_recyclerView)
     RecyclerView childrenRV;
 
     @BindView(R.id.record_time_duration)
     TextView recordTimer;
 
+    @BindView(R.id.message_flag)
+    ImageView message_flag;
+
+    @BindView(R.id.constraintLayout)
+    ConstraintLayout constraintLayout;
+
+
+    @BindView(R.id.tips_view_pager)
+    ViewPager tips_view_pager;
+
+    @BindView(R.id.tips_view_pager_indicator)
+    CirclePageIndicator pageIndicator;
+
+
     private Timer myTimer;
 
     @Inject
     RecordContract.Presenter presenter;
+
+    private boolean isOpened = false;
     private long tStart;
 
+    private MediaRecordWrapper mediaRecorder;
+    private ConstraintSet constraintSet1;
+    private ConstraintSet constraintSet2;
+    private boolean changed;
+    private RecordChildrenAdapter childrenAdapter;
+
+
+    public static RecordingFragment newInstance(MediaRecordWrapper mediaRecorder) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_RECORD, mediaRecorder);
+        RecordingFragment fragment = new RecordingFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mediaRecorder = getArguments().getParcelable(ARG_RECORD);
+        }
+
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new RecordModule(this)).inject(this);
     }
 
@@ -65,6 +114,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         ButterKnife.bind(this, view);
         presenter.getData();
         myTimer = new Timer();
+        setTimer(myTimer);
         myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -74,33 +124,46 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
 
         }, 0, 1000);
         tStart = System.currentTimeMillis();
+
+        constraintSet1 = new ConstraintSet();
+        constraintSet1.clone(getContext(), R.layout.fragment_record);
+        constraintSet2 = new ConstraintSet();
+        constraintSet2.clone(getContext(), R.layout.fragment_record_tips_opened);
+
+        changed = false;
         return view;
     }
 
 
     @Override
-    public void onDataReceived(List<Child> children) {
+    public void onDataReceived(List<MainScreenChild> mainScreenChildren) {
+
+        List<ChildRecObj> children = new ArrayList<>();
+        for (MainScreenChild mainScreenChild : mainScreenChildren) {
+            children.add(new ChildRecObj(mainScreenChild));
+        }
+
         setChildrenRecyclerView(children);
     }
 
 
-    private void setChildrenRecyclerView(List<Child> childrenList) {
+    private void setChildrenRecyclerView(List<ChildRecObj> childrenList) {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         childrenRV.setLayoutManager(linearLayoutManager);
-        RecordChildrenAdapter vendorsAdapter = new RecordChildrenAdapter(childrenList);
-        childrenRV.setAdapter(vendorsAdapter);
+        childrenAdapter = new RecordChildrenAdapter(childrenList);
+        childrenRV.setAdapter(childrenAdapter);
     }
 
 
     @OnClick(R.id.stop_recording_mic)
-    public void onStopRecordClick(){
+    public void onStopRecordClick() {
         //// TODO: 6/27/2017 stop streaming
         myTimer.cancel();
+        mediaRecorder.stop();
         getActivity().onBackPressed();
     }
 
-    private void TimerMethod()
-    {
+    private void TimerMethod() {
         //This method is called directly by the timer
         //and runs in the same thread as the timer.
 
@@ -122,6 +185,129 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
 
         }
     };
+
+
+    @OnClick({R.id.message_flag, R.id.exit_flag})
+    public void onShowTipsClick() {
+        if (!changed) {
+            if(childrenAdapter.getSelectedChildrenNum() > 1){
+                presenter.getAllChildrenTips();
+            }else{
+                ChildRecObj selectedChild= childrenAdapter.getSelectedChild();
+
+                initViewpager(tipsMappper(selectedChild));
+            }
+
+        }
+        handleTouch();
+    }
+
+    private List<TipTicket> tipsMappper(ChildRecObj selectedChild){
+        List<TipTicket> tickets = new ArrayList<>();
+        List<MainScreenChild.Tip> tips = selectedChild.getTips();
+
+        for (MainScreenChild.Tip tip : tips) {
+            tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), selectedChild.getUrl()));
+        }
+
+        return tickets;
+
+    }
+
+
+    public void handleTouch() {
+        if (changed) {
+            minimize();
+        } else {
+            maximize();
+        }
+        changed = !changed;
+    }
+
+    void minimize() {
+        ChangeBounds transition = new ChangeBounds();
+        transition.setDuration(200);
+        TransitionManager.beginDelayedTransition(constraintLayout, transition);
+        ConstraintSet constraint = constraintSet1;
+        constraint.applyTo(constraintLayout);
+
+    }
+
+
+    void maximize() {
+        ChangeBounds transition = new ChangeBounds();
+        transition.setDuration(200);
+        transition.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(@NonNull Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                makeViewPagerVisible();
+
+            }
+
+            private void makeViewPagerVisible() {
+                tips_view_pager.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTransitionCancel(@NonNull Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionPause(@NonNull Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(@NonNull Transition transition) {
+
+            }
+        });
+        TransitionManager.beginDelayedTransition(constraintLayout, transition);
+        ConstraintSet constraint = constraintSet2;
+        constraint.applyTo(constraintLayout);
+
+    }
+
+
+//    @OnClick(R.id.message_flag)
+//    public void onExitTipViewClick(){
+//        tips_view_pager.setVisibility(View.GONE);
+//        pageIndicator.setVisibility(View.GONE);
+//        exit_flag.setVisibility(View.GONE);
+//        viewPagerBg.setVisibility(View.GONE);
+//        message_flag.setImageDrawable(getResources().getDrawable(R.drawable.message));
+//
+//    }
+
+
+    @Override
+    public void initViewpager(List<TipTicket> tipsTickets) {
+
+        tips_view_pager.setPadding(LEFT_GAP, TOP_MARGIN, RIGHT_GAP, TOP_MARGIN);
+        tips_view_pager.setClipToPadding(false);
+        tips_view_pager.setPageMargin(HALF_GAP);
+
+        boolean isMorethanOneChildSelected = false;
+        if (childrenAdapter.getSelectedChildrenNum()>1){
+            isMorethanOneChildSelected = true;
+        }
+
+        TipsAdapter pagerAdapter = new TipsAdapter(
+                getChildFragmentManager(), tipsTickets, true, isMorethanOneChildSelected); //// TODO: 7/4/2017 show baby img if more than one selected
+        tips_view_pager.setAdapter(pagerAdapter);
+        pageIndicator.setViewPager(tips_view_pager);
+    }
+
+    @Override
+    public void onTipsLoadError() {
+
+    }
 
 
 }

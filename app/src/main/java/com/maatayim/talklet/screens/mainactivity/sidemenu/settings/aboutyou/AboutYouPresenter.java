@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maatayim.talklet.baseline.BaseContract;
+import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
 
     @Override
     public void getData() {
+        getUserProperties();
 
     }
 
@@ -78,5 +80,27 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
             linearLayout.addView(valueTV);
             view.setLanguageOnView(linearLayout, valueTV.getId(), textView);
         }
+    }
+
+    private void getUserProperties(){
+        repo.getUserDetails()
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableObserver<UserDetails>() {
+                    @Override
+                    public void onNext(@NonNull UserDetails userDetails) {
+                        view.loadUserDetails(userDetails);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.onLoadUserDetailsFilure();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

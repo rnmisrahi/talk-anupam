@@ -1,15 +1,12 @@
 package com.maatayim.talklet.screens.loginactivity.signup;
 
-import android.net.Uri;
-
 import com.maatayim.talklet.baseline.BaseContract;
-import java.util.Calendar;
+
 import java.util.Date;
 
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -54,7 +51,7 @@ public class SignUpPresenter implements SignupContract.Presenter {
 
     public void saveSignUpDetails(String name, Date date) {
 
-        repository.saveSignupDetails(name, date)
+        repository.saveSignupChildDetails(name, date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(new DisposableCompletableObserver() {

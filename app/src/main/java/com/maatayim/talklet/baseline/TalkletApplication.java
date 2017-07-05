@@ -2,11 +2,15 @@ package com.maatayim.talklet.baseline;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.injection.DaggerAppComponent;
 import com.maatayim.talklet.injection.AppComponent;
 import com.maatayim.talklet.injection.AppModule;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -16,8 +20,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class TalkletApplication extends Application {
     private AppComponent appComponent;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
+
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
+
+        Realm.setDefaultConfiguration(realmConfiguration);
+
+
         appComponent = initDagger(this);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -36,7 +56,6 @@ public class TalkletApplication extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
-
 
 
 //    public TalkletApplication getApplicationModule() {

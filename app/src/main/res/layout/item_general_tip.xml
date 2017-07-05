@@ -3,12 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="255dp"
+    android:layout_width="205dp"
     android:layout_height="151dp"
     tools:ignore="MissingPrefix"
     android:elevation="7dp"
     app:cardBackgroundColor="@color/tip_background">
 
+    <android.support.v4.widget.CircleImageView
+        android:id="@+id/child_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"/>
+    
+    
     <ImageView
         android:id="@+id/question_or_assertion"
         android:layout_width="wrap_content"
@@ -25,9 +32,11 @@
         android:layout_gravity="center"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         tools:text="Try ro ask about the kid's day" />
+    
+    
 
 
 </android.support.v7.widget.CardView>

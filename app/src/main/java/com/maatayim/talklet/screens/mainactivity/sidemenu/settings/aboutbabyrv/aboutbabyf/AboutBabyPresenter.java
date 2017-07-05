@@ -1,10 +1,7 @@
-package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf;
+package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutYouContract;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,7 +11,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/27/2017
  */
 
 public class AboutBabyPresenter implements AboutBabyContract.Presenter {

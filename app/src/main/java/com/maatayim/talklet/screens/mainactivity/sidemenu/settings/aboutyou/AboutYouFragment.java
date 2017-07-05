@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
+import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouModule;
 import com.maatayim.talklet.utils.Utils;
 
@@ -37,6 +38,12 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
     private Calendar birthdayDate = null;
     private PopupWindow mDropdown = null;
     private int languageCounter = 1;
+
+    @BindView(R.id.first_name)
+    TextView firstName;
+
+    @BindView(R.id.last_name)
+    TextView lastName;
 
     @BindView(R.id.birthday_text_view)
     TextView birthday;
@@ -139,6 +146,29 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
         item.setOnClickListener(spinnerListener);
     }
 
+    @Override
+    public void loadUserDetails(UserDetails userDetails) {
+        firstName.setText(userDetails.getName());
+        lastName.setText(userDetails.getLastName());
+//        birthday.setText(userDetails.getBirthday());
+
+        if (userDetails.getLanguage1() != null){
+            langugeField1.setText(userDetails.getLanguage1());
+        }
+
+        if (userDetails.getLanguage2() != null){
+            langugeField2.setText(userDetails.getLanguage2());
+        }
+
+        if (userDetails.getLanguage3() != null){
+            langugeField3.setText(userDetails.getLanguage3());
+        }
+    }
+
+    @Override
+    public void onLoadUserDetailsFilure() {
+
+    }
 
 
     @OnClick(R.id.birthday_text_view)

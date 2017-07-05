@@ -24,7 +24,7 @@ public interface MainContract {
     }
 
     interface View extends BaseContract.View{
-        void updateTipsViewPager(List<TipTicket> ticketList);
+        void updateTipsViewPager(List<TipTicket> ticketList, boolean isisMoreThanOneChild);
 
         void updateWordsCount(int numOfWords, int maxNumOfWords);
 
@@ -36,6 +36,6 @@ public interface MainContract {
 
         void onTipsLoadError();
 
-        void setChildrenRecyclerView(List<Child> childrenList);
+        void setChildrenRecyclerView(List<MainScreenChild> childrenList);
     }
 }

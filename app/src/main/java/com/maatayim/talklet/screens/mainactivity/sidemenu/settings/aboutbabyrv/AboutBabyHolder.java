@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf.AboutBabyFragment;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf.AboutBabyFragment;
 
 import org.greenrobot.eventbus.EventBus;
 

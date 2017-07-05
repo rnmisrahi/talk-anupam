@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenHolder>{
 
-    private List<Child> childrenList;
+    private List<MainScreenChild> childrenList;
 
-    public ChildrenAdapter(List<Child> childrenList){
+    public ChildrenAdapter(List<MainScreenChild> childrenList){
 
         this.childrenList = childrenList;
     }

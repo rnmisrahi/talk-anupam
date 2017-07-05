@@ -4,7 +4,7 @@ package com.maatayim.talklet.repository.retrofit.model.children;
  * Created by Sophie on 5/28/2017.
  */
 
-public class Child {
+public class ChildModel {
 
 
     private String id;
@@ -12,7 +12,7 @@ public class Child {
     private long birthday;
     private String image;
 
-    public Child(String id, String name, long birthday, String image){
+    public ChildModel(String id, String name, long birthday, String image){
 
         this.id = id;
         this.name = name;

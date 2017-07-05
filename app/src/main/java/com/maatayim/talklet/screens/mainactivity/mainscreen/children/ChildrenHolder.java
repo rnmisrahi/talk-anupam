@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.maatayim.talklet.AddFragmentWithSharedElementEvent;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.ChildFragment;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +29,7 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
     CircleImageView childView;
 
     private final Context context;
-    private Child child;
+    private MainScreenChild child;
 
     public ChildrenHolder(View itemView) {
         super(itemView);
@@ -37,16 +39,16 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new AddFragmentEvent(ChildFragment.newInstance(child.getId())));
+                EventBus.getDefault().post(new AddFragmentWithSharedElementEvent(ChildFragment.newInstance(child.getId()),childView));
             }
         });
     }
 
-    public void setData(Child child) {
+    public void setData(MainScreenChild child) {
 
         this.child = child;
         Picasso.with(context)
-                .load(child.getImg())
+                .load(child.getUrl())
                 .placeholder(R.drawable.pic)
                 .into(childView);
     }

@@ -8,6 +8,7 @@ import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.ChildFragment;
+import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +28,7 @@ public class RecordChildrenHolder extends RecyclerView.ViewHolder {
     CircleImageView childView;
 
     private final Context context;
-    private Child child;
+    private ChildRecObj child;
 
     public RecordChildrenHolder(View itemView, final RecordChildrenAdapter.onSelectChildListener onSelectChildListener) {
         super(itemView);
@@ -44,12 +45,12 @@ public class RecordChildrenHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setData(Child child) {
+    public void setData(ChildRecObj child) {
 
         this.child = child;
 
         Picasso.with(context)
-                .load(child.getImg())
+                .load(child.getUrl())
                 .placeholder(R.drawable.pic)
                 .into(childView);
 

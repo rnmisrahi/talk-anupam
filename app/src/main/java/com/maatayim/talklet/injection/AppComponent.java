@@ -2,6 +2,8 @@ package com.maatayim.talklet.injection;
 
 import com.maatayim.talklet.LoginActivity;
 import com.maatayim.talklet.MainActivity;
+import com.maatayim.talklet.MainActivityComponent;
+import com.maatayim.talklet.MainActivityModule;
 import com.maatayim.talklet.repository.injection.DataModule;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateComponent;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateModule;
@@ -27,8 +29,8 @@ import com.maatayim.talklet.screens.loginactivity.signup.dagger.SignupComponent;
 import com.maatayim.talklet.screens.loginactivity.signup.dagger.SignupModule;
 import com.maatayim.talklet.screens.mainactivity.record.injection.RecordComponent;
 import com.maatayim.talklet.screens.mainactivity.record.injection.RecordModule;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf.injection.AboutBabyComponent;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf.injection.AboutBabyModule;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf.injection.AboutBabyComponent;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf.injection.AboutBabyModule;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouComponent;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouModule;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.injection.SettingComponent;
@@ -51,6 +53,7 @@ public interface AppComponent {
 
     void inject(MainActivity target);
 
+//    MainActivityComponent plus(MainActivityModule mainActivityModule);
 
     ChoosePhotoComponent plus(ChoosePhotoModule module);
 
@@ -81,5 +84,7 @@ public interface AppComponent {
     AboutBabyComponent plus(AboutBabyModule aboutBabyModule);
 
     RecordComponent plus(RecordModule recordModule);
+
+
 }
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
+import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 
 import java.util.List;
 
@@ -16,17 +18,19 @@ import java.util.List;
 
 public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHolder>{
 
-    private List<Child> childrenList;
+    private List<ChildRecObj> childrenList;
+    private int selectedCounter = 0;
 
-    public RecordChildrenAdapter(List<Child> childrenList){
+    public RecordChildrenAdapter(List<ChildRecObj> childrenList){
 
         this.childrenList = childrenList;
         setAllChildSelected();
 
+
     }
 
     private void setAllChildSelected(){
-        for (Child child : childrenList) {
+        for (ChildRecObj child : childrenList) {
             child.setSelected(true);
         }
     }
@@ -40,6 +44,11 @@ public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHo
             @Override
             public void onSelect(int position){
                 notifyItemChanged(position);
+                if(childrenList.get(position).isSelected()){
+                    selectedCounter ++;
+                }else{
+                    selectedCounter --;
+                }
             }
         });
     }
@@ -56,5 +65,18 @@ public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHo
 
     interface onSelectChildListener{
         void onSelect(int position);
+    }
+
+    public int getSelectedChildrenNum(){
+        return selectedCounter;
+    }
+
+    public ChildRecObj getSelectedChild(){
+        for (ChildRecObj childRecObj : childrenList) {
+            if (childRecObj.isSelected()){
+                return childRecObj;
+            }
+        }
+        return null;
     }
 }

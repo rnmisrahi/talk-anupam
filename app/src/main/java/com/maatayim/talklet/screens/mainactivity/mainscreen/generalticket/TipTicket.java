@@ -1,6 +1,7 @@
 package com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket;
 
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,11 +13,13 @@ public class TipTicket implements Parcelable {
 
     private final String tip;
     private final boolean isAssertion;
+    private String babyPhoto;
 
-    public TipTicket(String tip, boolean isAssertion){
+    public TipTicket(String tip, boolean isAssertion, String babyPhoto){
 
         this.tip = tip;
         this.isAssertion = isAssertion;
+        this.babyPhoto = babyPhoto;
     }
 
     protected TipTicket(Parcel in) {
@@ -53,5 +56,13 @@ public class TipTicket implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(tip);
         dest.writeByte((byte) (isAssertion ? 1 : 0));
+    }
+
+    public String getBabyPhoto() {
+        return babyPhoto;
+    }
+
+    public void setBabyPhoto(String babyPhoto) {
+        this.babyPhoto = babyPhoto;
     }
 }

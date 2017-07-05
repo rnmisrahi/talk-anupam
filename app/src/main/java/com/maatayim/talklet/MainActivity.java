@@ -1,19 +1,24 @@
 package com.maatayim.talklet;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.maatayim.talklet.baseline.TalkletApplication;
@@ -21,19 +26,26 @@ import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.MainModule;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.DrawerHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
 
 
     public static final String EMPTY_TITLE = "";
-//    protected ActionBarDrawerToggle drawerToggle;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 29;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2222;
+    //    protected ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
 
     @BindView(R.id.drawer_layout)
@@ -42,12 +54,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.nav_view_drawer)
     NavigationView navigationView;
 
-//    @BindView(R.id.drawer_linear_layout)
-//    LinearLayout drawerLinearLayout;
-
     @BindView(R.id.drawer_menu_layout)
     ConstraintLayout drawerMenuLayout;
+
     private DrawerHandler drawerHandler;
+
+    @Inject
+    MainActivityContract.Presenter presenter;
 
 
     @Override
@@ -55,14 +68,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((TalkletApplication) getApplication()).getAppComponent().inject(this);
+//        ((TalkletApplication) getApplication()).getAppComponent().plus(new MainActivityModule(this)).inject(this);
 
         ButterKnife.bind(this);
         drawerHandler = new DrawerHandler(this);
         initToolbar(EMPTY_TITLE);
         initFragmentManager();
 
+        presenter.downloadData();
+
         EventBus.getDefault().register(this);
-        addFragment(new MainFragment(), true);
+        addFragment(new MainFragment(), true, null);
 
     }
 
@@ -107,15 +123,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void addFragment(AddFragmentEvent event) {
-        addFragment(event.getFragment(), false);
+        addFragment(event.getFragment(), false, null);
     }
 
     public void addFragment(SideMenuFragment sideMenuFragment) {
-        addFragment(sideMenuFragment, true);
+        addFragment(sideMenuFragment, true, null);
+    }
+
+    @Subscribe
+    public void addFragment(AddFragmentWithSharedElementEvent event) {
+        addFragment(event.getFragment(), false, event.getView());
     }
 
 
-    protected void addFragment(TalkletFragment fragment, boolean replace) {
+    protected void addFragment(TalkletFragment fragment, boolean replace, View view) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (replace) {
@@ -125,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             ft.add(R.id.frame_layout, fragment, fragment.getClass().getName());
+
+            if(view != null){
+                ft.addSharedElement(view, ViewCompat.getTransitionName(view));
+            }
+
             drawerHandler.onAddFragment();
             ft.addToBackStack(fragment.getClass().getName());
         }
@@ -159,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         else
             drawerHandler.onBackPressChangeHamburgerIcon(fm, false);
-            super.onBackPressed();
+        super.onBackPressed();
 
 
     }
@@ -198,6 +224,10 @@ public class MainActivity extends AppCompatActivity {
     protected void displayTitle(String title) {
         ((TextView) toolbar.findViewById(R.id.toolbar_title)).setText(title);
     }
+
+
+
+
 
 
 

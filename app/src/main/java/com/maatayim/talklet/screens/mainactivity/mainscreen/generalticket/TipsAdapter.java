@@ -13,16 +13,22 @@ import java.util.List;
 
 public class TipsAdapter extends FragmentPagerAdapter {
 
+    private final FragmentManager fm;
     private List<TipTicket> generalTicketList;
+    private final boolean isRec;
+    private boolean isMoreThanOneChild;
 
-    public TipsAdapter(FragmentManager fm, List<TipTicket> generalTicketList) {
+    public TipsAdapter(FragmentManager fm, List<TipTicket> generalTicketList, boolean isRec, boolean isMoreThanOneChild) {
         super(fm);
+        this.fm = fm;
         this.generalTicketList = generalTicketList;
+        this.isRec = isRec;
+        this.isMoreThanOneChild = isMoreThanOneChild;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return TipsFragment.newInstance(generalTicketList.get(position));
+        return TipsFragment.newInstance(generalTicketList.get(position), isRec, isMoreThanOneChild);
     }
 
     @Override

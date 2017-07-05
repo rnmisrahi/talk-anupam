@@ -1,4 +1,4 @@
-package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf;
+package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyf.injection.AboutBabyModule;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf.injection.AboutBabyModule;
 import com.maatayim.talklet.utils.Utils;
 
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Sophie on 6/27/2017
  */
 
-public class AboutBabyFragment extends TalkletFragment implements AboutBabyContract.View {
+public class AboutBabyFragment extends TalkletFragment implements AboutBabyContract.View{
 
     private String babyId;
     public static final String ARG_ID = "babyId";
