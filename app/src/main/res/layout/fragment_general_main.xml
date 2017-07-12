@@ -35,7 +35,8 @@
         android:layout_marginTop="68dp"
         android:text="@string/total_words"
         app:layout_constraintStart_toStartOf="@+id/words_progress_bar"
-        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager" />
+        app:layout_constraintTop_toBottomOf="@+id/tips_view_pager"
+        tools:layout_editor_absoluteX="53dp" />
 
     <TextView
         android:id="@+id/total_words_value"

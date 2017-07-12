@@ -27,6 +27,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.maatayim.talklet.screens.loginactivity.signup.SignupFragment;
+import com.maatayim.talklet.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -149,7 +150,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 //                                    profile.getProfilePictureUri()
 
                                     UserDetails userDetails = new UserDetails(
-                                            id, firstName, lastName, birthday, email, gender);
+                                            id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
 
                                     presenter.saveUserFBDetails(userDetails);
 
@@ -157,6 +158,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
                                     e.printStackTrace();
                                     Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
                                     LoginManager.getInstance().logOut();
+                                    isDisplayLoginButton(true);
                                 }
                             }
                         });
@@ -185,6 +187,16 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 
 
 
+    }
+
+    private void isDisplayLoginButton(boolean isDisplay){
+        if(isDisplay){
+            loginButton.setVisibility(View.VISIBLE);
+            connectText.setVisibility(View.VISIBLE);
+        }else{
+            loginButton.setVisibility(View.GONE);
+            connectText.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -217,8 +229,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @Override
     public void unlockLoginProcess() {
         LoginManager.getInstance().logOut();
-        connectText.setVisibility(View.VISIBLE);
-        loginButton.setVisibility(View.VISIBLE);
+        isDisplayLoginButton(true);
     }
 
     @Override
@@ -244,6 +255,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @OnClick(R.id.connect_with_fb_button)
     public void onFacebookClick() {
         displayFacebookLoginInterface();
+        isDisplayLoginButton(false);
 
     }
 

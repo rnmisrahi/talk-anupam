@@ -1,6 +1,7 @@
 package com.maatayim.talklet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.facebook.login.LoginResult;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
@@ -235,7 +237,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
 
-
-
-
+    @Override
+    public void backToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

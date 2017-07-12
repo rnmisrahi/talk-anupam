@@ -8,11 +8,13 @@ import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
 import com.maatayim.talklet.repository.retrofit.model.recording.RecordingMetadata;
 import com.maatayim.talklet.repository.retrofit.model.recording.RecordingNotificationResponse;
 import com.maatayim.talklet.repository.retrofit.model.general.ChildDataResponse;
+import com.maatayim.talklet.repository.retrofit.model.user.UserDetails;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 
 import javax.inject.Named;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -101,5 +103,9 @@ public interface RetrofitApi {
             @Header("Authorization") String authorization
     );
 
-
+    @POST("senduserdetails")
+    Completable sendUserDetails(
+            @Header("Authorization") String authorization,
+            @Body UserDetails body
+    );
 }

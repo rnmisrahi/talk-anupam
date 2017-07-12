@@ -122,5 +122,21 @@
 
 
 
+    <Button
+        android:id="@+id/save_new_data"
+        android:layout_width="130dp"
+        android:layout_height="51dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white_color"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="@id/birthday_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/another_language_button"
+        />
+
+
+
 
 </android.support.constraint.ConstraintLayout>

@@ -82,7 +82,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter{
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-
+                        view.backToLogin();
                     }
 
                     @Override

@@ -1,5 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +14,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -26,6 +29,8 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
     private final AboutYouContract.View view;
     private final BaseContract.Repository repo;
     private final Scheduler scheduler;
+
+    public static final String TAG = "AboutYouPresenter";
 
     @Inject
     public AboutYouPresenter(AboutYouContract.View view, BaseContract.Repository repo,
@@ -65,7 +70,27 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
                 });
     }
 
+    @Override
+    public void updateAboutYouData(AboutUserObj aboutUserObj) {
+        repo.updateUsersData(aboutUserObj)
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableCompletableObserver() {
 
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: save users data success");
+                        view.onUpdateDataSuccess();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+
+    }
 
 
     private void addTextViewToLayout(LinearLayout linearLayout, List<String> languages, TextView textView){
@@ -86,21 +111,19 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
         repo.getUserDetails()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<UserDetails>() {
+                .subscribeWith(new DisposableSingleObserver<AboutUserObj>() {
                     @Override
-                    public void onNext(@NonNull UserDetails userDetails) {
-                        view.loadUserDetails(userDetails);
+                    public void onSuccess(@NonNull AboutUserObj aboutUserObj) {
+                        view.loadUserDetails(aboutUserObj);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onLoadUserDetailsFilure();
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
+
+
+
     }
 }

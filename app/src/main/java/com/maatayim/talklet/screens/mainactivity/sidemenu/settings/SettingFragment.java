@@ -75,10 +75,10 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
         aboutChildRV.setAdapter(faboutBabyAdapter);
 
 
-//        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getName()));
+//        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getFirstName()));
 //        if (childrenNames.size() > 1){
 //            aboutChild2.setVisibility(View.VISIBLE);
-//            child2TextView.setText(getString(R.string.about_kid, childrenNames.get(1).getName()));
+//            child2TextView.setText(getString(R.string.about_kid, childrenNames.get(1).getFirstName()));
 //        }
     }
 

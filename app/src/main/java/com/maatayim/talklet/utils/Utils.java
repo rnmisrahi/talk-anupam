@@ -14,6 +14,7 @@ import com.maatayim.talklet.R;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class Utils {
 
     private static final java.lang.String defaultDateFormat = "MMM dd, yyyy";
     private static final java.lang.String shortDateFormat = ", d MMM";
+    private static final java.lang.String facebookDateFormat = "MM/dd/yyyy";
     private static final java.lang.String defaultTimeFormat = "%02d:%02d:%02d";
     private static final java.lang.String timerFormat = "hh:mm:ss";
     private static int todaysDateStr;
@@ -126,5 +128,19 @@ public class Utils {
 //                + ": "+ format.format(tDelta / minutesInMilli)
 //                + ": "+ format.format(tDelta % secondsInMilli);
 
+    }
+
+    public static String parseDateFromFB(String date){
+        SimpleDateFormat formatter = new SimpleDateFormat(facebookDateFormat, Locale.ENGLISH);
+        Date birthdayDate = new Date();
+        try {
+            birthdayDate = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar thatDay = Calendar.getInstance();
+        thatDay.setTime(birthdayDate);
+        return String.valueOf(thatDay.getTime().getTime());
     }
 }

@@ -12,6 +12,7 @@ public interface MainActivityContract {
 
     interface View extends BaseContract.View{
 
+        void backToLogin();
     }
 
     interface Presenter extends BaseContract.Presenter{

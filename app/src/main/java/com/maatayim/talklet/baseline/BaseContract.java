@@ -18,6 +18,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingO
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 import com.facebook.login.LoginResult;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
 
 import java.util.Date;
 import java.util.List;
@@ -77,7 +78,7 @@ public interface BaseContract {
 
         Observable<List<SpecialWords>> getOtherWords(String id);
 
-        Observable<UserDetails> getUserDetails();
+        Single<AboutUserObj> getUserDetails();
 
 
 
@@ -94,6 +95,8 @@ public interface BaseContract {
         Single<GeneralTabChildObj> getChildTipsAndWords(String id);
 
         Completable logout(Context context);
+
+        Completable updateUsersData(AboutUserObj aboutUserObj);
     }
 
 

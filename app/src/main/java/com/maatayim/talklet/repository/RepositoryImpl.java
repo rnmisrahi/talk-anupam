@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
+import com.maatayim.talklet.repository.realm.RealmUser;
 import com.maatayim.talklet.repository.retrofit.model.general.Tip;
 import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
@@ -19,6 +20,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingO
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 import com.facebook.login.LoginResult;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
 
 import java.util.Date;
 import java.util.List;
@@ -68,7 +70,13 @@ public class RepositoryImpl implements BaseContract.Repository {
 
     @Override
     public Completable saveUserFBDetails(UserDetails userDetails) {
-        return localRepo.saveUserFBDetails(userDetails);
+        return localRepo.getToken()
+                .flatMapCompletable(token -> remoteRepo.sendUsersData(token,
+                        new com.maatayim.talklet.repository.retrofit.model.user.UserDetails(userDetails)))
+                .andThen(localRepo.updateUsersDataRx(userDetails.getFirstName(), userDetails.getLastName(),
+                        userDetails.getBirthday(), userDetails.getLanguage1(), userDetails.getLanguage2(),
+                        userDetails.getLanguage3()));
+//        return localRepo.saveUserFBDetails(userDetails);
     }
 
     @Override
@@ -209,6 +217,19 @@ public class RepositoryImpl implements BaseContract.Repository {
         return localRepo.logout(context);
     }
 
+    @Override
+    public Completable updateUsersData(AboutUserObj aboutUserObj) {
+
+        return localRepo.getToken()
+                .flatMapCompletable(token -> remoteRepo.sendUsersData(token,
+                        new com.maatayim.talklet.repository.retrofit.model.user.UserDetails(aboutUserObj)))
+                .andThen(localRepo.updateUsersDataRx(aboutUserObj.getFirstName(), aboutUserObj.getLastName(),
+                        String.valueOf(aboutUserObj.getBirthday().getTime()), aboutUserObj.getLanguage1(),
+                        aboutUserObj.getLanguage2(), aboutUserObj.getLanguage3()));
+
+
+    }
+
 
     @Override
     public Single<Child> getChild(String id) {
@@ -230,9 +251,13 @@ public class RepositoryImpl implements BaseContract.Repository {
 
 
     @Override
-    public Observable<UserDetails> getUserDetails() {
-        return localRepo.getUserDetails();
+    public Single<AboutUserObj> getUserDetails() {
+        return localRepo.getUserDetailsRx().map(user -> new AboutUserObj(user.getFirstName(),
+                user.getLastName(), new Date(Long.valueOf(user.getBirthday())), user.getLanguage1(), user.getLanguage2(),
+                user.getLanguage3()));
     }
+
+
 
 
     @Override

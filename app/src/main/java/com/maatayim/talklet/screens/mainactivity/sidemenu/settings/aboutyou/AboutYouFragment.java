@@ -3,6 +3,7 @@ package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,11 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
-import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouModule;
 import com.maatayim.talklet.utils.Utils;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -27,15 +28,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Sophie on 6/18/2017.
+ * Created by Sophie on 6/18/2017
  */
 
 public class AboutYouFragment extends TalkletFragment implements AboutYouContract.View {
 
+    public static final String EMPTY_LANG = "";
     @Inject
     AboutYouContract.Presenter presenter;
 
-    private Calendar birthdayDate = null;
+    private Calendar birthdayDate = Calendar.getInstance();
     private PopupWindow mDropdown = null;
     private int languageCounter = 1;
 
@@ -57,6 +59,8 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
     @BindView(R.id.third_language)
     TextView langugeField3;
 
+    @BindView(R.id.another_language_button)
+    TextView addLanguageButton;
 
 
 
@@ -147,21 +151,29 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
     }
 
     @Override
-    public void loadUserDetails(UserDetails userDetails) {
-        firstName.setText(userDetails.getName());
+    public void loadUserDetails(AboutUserObj userDetails) {
+        firstName.setText(userDetails.getFirstName());
         lastName.setText(userDetails.getLastName());
-        birthday.setText(userDetails.getBirthday());
+        birthdayDate.setTime(userDetails.getBirthday());
+        birthday.setText(Utils.getFormattedDate(userDetails.getBirthday()));
 
-        if (userDetails.getLanguage1() != null){
+        if (!userDetails.getLanguage1().equals(EMPTY_LANG)){
             langugeField1.setText(userDetails.getLanguage1());
+            languageCounter = 1;
         }
 
-        if (userDetails.getLanguage2() != null){
+        if (!userDetails.getLanguage2().equals(EMPTY_LANG)){
             langugeField2.setText(userDetails.getLanguage2());
+            langugeField2.setVisibility(View.VISIBLE);
+            languageCounter = 2;
         }
 
-        if (userDetails.getLanguage3() != null){
+        if (!userDetails.getLanguage3().equals(EMPTY_LANG)){
             langugeField3.setText(userDetails.getLanguage3());
+            langugeField3.setVisibility(View.VISIBLE);
+            addLanguageButton.setVisibility(View.GONE);
+            languageCounter = 3;
+
         }
     }
 
@@ -170,10 +182,13 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
 
     }
 
+    @Override
+    public void onUpdateDataSuccess() {
+    }
+
 
     @OnClick(R.id.birthday_text_view)
     public void onSetChildsBirthdayClick(){
-        birthdayDate = Calendar.getInstance(); /// todo is it????
         setDay(birthday, birthdayDate);
     }
 
@@ -213,5 +228,31 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
             view.setVisibility(View.GONE);
             return;
         }
+    }
+
+
+    @OnClick(R.id.save_new_data)
+    public void onSaveData() {
+        String firstNameStr = firstName.getText().toString();
+        String lastNameStr = lastName.getText().toString();
+        Date birthdayStr = birthdayDate.getTime();
+
+        String languageOne = null;
+        String languageTwo = null;
+        String languageThree = null;
+
+        try{
+            languageOne = langugeField1.getText().toString();
+            languageTwo = langugeField2.getText().toString();
+            languageThree = langugeField3.getText().toString();
+        }catch (Exception e){
+            Log.d("log:", "onSaveData: language get text failed");
+        }
+
+        AboutUserObj aboutUserObj = new AboutUserObj(firstNameStr, lastNameStr, birthdayStr, languageOne, languageTwo, languageThree);
+
+        presenter.updateAboutYouData(aboutUserObj);
+        finish();
+
     }
 }

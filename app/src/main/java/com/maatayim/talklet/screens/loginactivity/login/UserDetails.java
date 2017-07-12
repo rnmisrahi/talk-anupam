@@ -6,8 +6,8 @@ package com.maatayim.talklet.screens.loginactivity.login;
 
 public class UserDetails {
 
-    private final String id;
-    private final String name;
+    private final String profileId;
+    private final String firstName;
     private final String lastName;
     private final String birthday;
     private String email;
@@ -16,12 +16,11 @@ public class UserDetails {
     private String language2;
     private String language3;
 
-    public UserDetails(String id, String name, String lastName, String birthday,
+    public UserDetails(String profileId, String name, String lastName, String birthday,
                        String email, String gender){
 
-
-        this.id = id;
-        this.name = name;
+        this.profileId = profileId;
+        this.firstName = name;
         this.lastName = lastName;
         this.birthday = birthday;
         this.email = email;
@@ -31,12 +30,9 @@ public class UserDetails {
         this.language3 = null;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getLastName() {
@@ -82,5 +78,9 @@ public class UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getProfileId() {
+        return profileId;
     }
 }

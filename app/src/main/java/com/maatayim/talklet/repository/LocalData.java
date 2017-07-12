@@ -7,8 +7,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.repository.realm.RealmChild;
-import com.maatayim.talklet.repository.realm.RealmFacebookId;
 import com.maatayim.talklet.repository.realm.RealmTip;
+import com.maatayim.talklet.repository.realm.RealmUser;
 import com.maatayim.talklet.repository.realm.RealmWordOfTheDay;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.screens.Child;
@@ -19,6 +19,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.Fo
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
 import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
 import com.facebook.login.LoginResult;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -138,6 +139,24 @@ public class LocalData {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(FACEBOOK_ID, id);
         editor.apply();
+    }
+
+
+    public Completable updateUsersDataRx(String firstName, String lastName, String birthday, String languageOne, String languageTwo, String languageThree) {
+        return Completable.fromAction(() -> saveUsersData(firstName, lastName, birthday, languageOne, languageTwo, languageThree));
+    }
+
+
+    public void saveUsersData(String firstName, String lastName, String birthday, String languageOne, String languageTwo, String languageThree) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmUser realmUser = new RealmUser(firstName, lastName,
+                    birthday, languageOne, languageTwo, languageThree);
+            realm1.copyToRealmOrUpdate(realmUser);
+        });
+        realm.close();
+
     }
 
 
@@ -557,16 +576,19 @@ public class LocalData {
         return newWords;
     }
 
-    public Observable<UserDetails> getUserDetails() {
-        return Observable.fromCallable(new Callable<UserDetails>() {
-            @Override
-            public UserDetails call() throws Exception {
-                return userDetails;
-            }
-
-
-        });
+    public Single<RealmUser> getUserDetailsRx() {
+        return Single.fromCallable(this::getUserDetails);
     }
+
+
+    private RealmUser getUserDetails() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmUser realmUser = realm.where(RealmUser.class).findFirst();
+        RealmUser response = new RealmUser(realmUser);
+        realm.close();
+        return response;
+    }
+
 
 
 

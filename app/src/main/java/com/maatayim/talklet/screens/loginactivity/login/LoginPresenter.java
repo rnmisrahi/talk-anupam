@@ -109,7 +109,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, "onError: ",e );
+                        Log.e(TAG, "onError: ", e );
                     }
                 });
 

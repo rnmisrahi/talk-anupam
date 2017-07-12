@@ -85,8 +85,14 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     @BindView(R.id.total_words_value)
     TextView totalWords;
 
+    @BindView(R.id.start_bar_value)
+    TextView startVal;
+
     @BindView(R.id.end_bar_value)
     TextView maxWordsNum;
+
+    @BindView(R.id.total_words_title)
+    TextView totalWordsTitle;
 
     @BindView(R.id.children_recyclerView)
     RecyclerView childrenRecyclerView;
@@ -185,6 +191,12 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         childrenRecyclerView.setLayoutManager(linearLayoutManager);
         ChildrenAdapter childrenAdapter = new ChildrenAdapter(childrenList);
         childrenRecyclerView.setAdapter(childrenAdapter);
+
+        if(childrenList.size() > 1){
+            wordsProgressBar.setVisibility(View.GONE);
+            totalWordsTitle.setVisibility(View.GONE);
+            startVal.setVisibility(View.GONE);
+        }
     }
 
 
