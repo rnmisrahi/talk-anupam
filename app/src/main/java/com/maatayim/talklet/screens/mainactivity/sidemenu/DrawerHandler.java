@@ -28,6 +28,8 @@ import com.maatayim.talklet.baseline.fragments.SideMenuFragment;
 import com.maatayim.talklet.screens.TempFragment;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.SettingFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +119,7 @@ public class DrawerHandler {
 
     @OnClick(R.id.logout_item)
     public void onLogoutClick(TextView view){
-
+        EventBus.getDefault().post(new LogoutEvent());
     }
 
     @OnClick(R.id.help_item)

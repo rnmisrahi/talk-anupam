@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Sophie on 5/26/2017.
+ * Created by Sophie on 5/26/2017
  */
 
 public class TipsFragment extends Fragment implements TipsContract.View{

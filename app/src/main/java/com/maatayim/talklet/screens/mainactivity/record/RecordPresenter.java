@@ -13,7 +13,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/27/2017
  */
 
 public class RecordPresenter implements RecordContract.Presenter {
@@ -33,6 +33,7 @@ public class RecordPresenter implements RecordContract.Presenter {
 
     @Override
     public void getData() {
+//        repo.downloadWordsOfTheDay()
         repo.getChildrenListWithTips()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
@@ -64,7 +65,7 @@ public class RecordPresenter implements RecordContract.Presenter {
 //
 //                    @Override
 //                    public void onError(@NonNull Throwable e) {
-//                        view.onTipsLoadError();
+//                        view.onDataLoadError();
 //                    }
 //
 //                    @Override

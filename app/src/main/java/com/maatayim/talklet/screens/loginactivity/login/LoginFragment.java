@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -65,6 +66,9 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @BindView(R.id.connect_with_fb_button)
     LoginButton loginButton;
 
+    @BindView(R.id.connect_text)
+    TextView connectText;
+
     private CallbackManager callbackManager;
 
 
@@ -82,10 +86,12 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
+//        loginButton.setFragment(this);
+
+//        loginButton.registerCallback(callbackManager, mFacebookCallback);
         presenter.checkIfLoggedIn();
         return view;
     }
-
 
 
     @Override
@@ -101,12 +107,16 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @Override
     public void displayFacebookLoginInterface() {
 
-        callbackManager = CallbackManager.Factory.create();
+        loginButton.setReadPermissions(Arrays.asList("user_birthday", "public_profile", "email", "user_friends"));
 
-        loginButton.setReadPermissions(EMAIL);
+
+
+//        loginButton.setReadPermissions(EMAIL);
+
         // If using in a fragment
         loginButton.setFragment(this);
         // Other app specific specialization
+        callbackManager = CallbackManager.Factory.create();
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -117,6 +127,10 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 
                 AccessToken accessToken = loginResult.getAccessToken();
 
+//                LoginManager.getInstance().logInWithReadPermissions(
+//                        getActivity(),
+//                        Arrays.asList("birthday"));
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -126,21 +140,23 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
                                 try {
                                     Log.i("Response", response.toString());
                                     String email = object.getString(EMAIL);
+                                    String birthday = object.getString("birthday");
                                     Profile profile = Profile.getCurrentProfile();
                                     String id = profile.getId();
                                     String firstName = object.getString(FIRST_NAME);
                                     String lastName = object.getString(LAST_NAME);
                                     String gender = object.getString(GENDER);
-//                                    String birthday = response.getJSONObject().getString(BIRTHDAY);
-//                                    String fbBirthday = object.getString(BIRTHDAY);
+//                                    profile.getProfilePictureUri()
 
                                     UserDetails userDetails = new UserDetails(
-                                            id, firstName, lastName, null, email, gender);
+                                            id, firstName, lastName, birthday, email, gender);
 
                                     presenter.saveUserFBDetails(userDetails);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
+                                    LoginManager.getInstance().logOut();
                                 }
                             }
                         });
@@ -179,6 +195,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 
     public void onAlreadySignedUpFailed(){
         EventBus.getDefault().post(new AddLoginFragmentEvent(SignupFragment.newInstance(true)));
+
     }
 
     public void onSignedUpSuccess(){
@@ -193,8 +210,20 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     }
 
     @Override
-    public void onaveUserFBDataFailed() {
-        Log.d(TAG, "onaveUserFBDataFailed: ");
+    public void onSaveUserFBDataFailed() {
+        Log.d(TAG, "onSaveUserFBDataFailed: ");
+    }
+
+    @Override
+    public void unlockLoginProcess() {
+        LoginManager.getInstance().logOut();
+        connectText.setVisibility(View.VISIBLE);
+        loginButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void alreadyLogedIn() {
+        presenter.checkIfSignedUp();
     }
 
     @Override
@@ -206,6 +235,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     public void setConnection() {
         Toast.makeText(getContext(), "You are already logged in", Toast.LENGTH_SHORT).show();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_birthday"));
 
         loginButton.setClickable(false);
         eventBus.post(new AddLoginFragmentEvent(SignupFragment.newInstance(true)));

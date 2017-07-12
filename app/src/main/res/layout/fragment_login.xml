@@ -17,6 +17,7 @@
 
 
     <TextView
+        android:id="@+id/connect_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/please_connect_to_talklet"
@@ -24,7 +25,8 @@
         android:textColor="@color/text_color"
         android:layout_marginTop="100dp"
         android:textSize="18sp"
-        fontPath="fonts/Avenir-Medium.ttf"/>
+        fontPath="fonts/Avenir-Medium.ttf"
+        android:visibility="invisible"/>
 
     <com.facebook.login.widget.LoginButton
         xmlns:facebook="http://schemas.android.com/apk/res-auto"
@@ -38,7 +40,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="26dp"
         android:textColor="@color/primary_background_color"
-        facebook:com_facebook_login_text="@string/connect_with_facebook"/>
+        facebook:com_facebook_login_text="@string/connect_with_facebook"
+        android:visibility="invisible"/>
 
 
 

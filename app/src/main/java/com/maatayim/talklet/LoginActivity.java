@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
- * Created by Sophie on 5/22/2017.
+ * Created by Sophie on 5/22/2017
  */
 
 public class LoginActivity extends AppCompatActivity implements BaseContract.View {

@@ -41,7 +41,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * Created by Sophie on 6/1/2017.
+ * Created by Sophie on 6/1/2017
  */
 
 
@@ -51,9 +51,9 @@ public interface AppComponent {
 
     void inject(LoginActivity target);
 
-    void inject(MainActivity target);
+//    void inject(MainActivity target);
 
-//    MainActivityComponent plus(MainActivityModule mainActivityModule);
+    MainActivityComponent plus(MainActivityModule mainActivityModule);
 
     ChoosePhotoComponent plus(ChoosePhotoModule module);
 

@@ -3,6 +3,7 @@ package com.maatayim.talklet.screens.mainactivity.mainscreen;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.baseline.BaseContract;
+import com.maatayim.talklet.baseline.events.DowmloadCompleteEvent;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
@@ -38,8 +39,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void getData() {
-        repository.downloadKids();
-        repository.downloadTips();
         getChildrenList();
 
     }
@@ -161,4 +160,7 @@ public class MainPresenter implements MainContract.Presenter {
                 });
 
     }
+
+
+
 }

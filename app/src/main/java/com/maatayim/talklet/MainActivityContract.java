@@ -1,5 +1,7 @@
 package com.maatayim.talklet;
 
+import android.content.Context;
+
 import com.maatayim.talklet.baseline.BaseContract;
 
 /**
@@ -14,5 +16,7 @@ public interface MainActivityContract {
 
     interface Presenter extends BaseContract.Presenter{
         void downloadData();
+
+        void logout(Context context);
     }
 }

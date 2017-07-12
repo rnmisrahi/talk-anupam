@@ -1,7 +1,7 @@
 package com.maatayim.talklet.screens.loginactivity.login;
 
 /**
- * Created by Sophie on 6/29/2017.
+ * Created by Sophie on 6/29/2017
  */
 
 public class UserDetails {
@@ -10,6 +10,7 @@ public class UserDetails {
     private final String name;
     private final String lastName;
     private final String birthday;
+    private String email;
     private String gender;
     private String language1;
     private String language2;
@@ -23,6 +24,7 @@ public class UserDetails {
         this.name = name;
         this.lastName = lastName;
         this.birthday = birthday;
+        this.email = email;
         this.gender = gender;
         this.language1 = null;
         this.language2 = null;
@@ -76,5 +78,9 @@ public class UserDetails {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

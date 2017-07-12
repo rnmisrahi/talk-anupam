@@ -85,4 +85,8 @@
     <!--about baby-->
     <string name="upload_new_photo">Upload new photo</string>
     <string name="please_select_at_least_one_child_to_begin_recording">Please select at least one child to begin recording.</string>
+    <string name="info">Info</string>
+    <string name="questions">Questions</string>
+    <string name="activities">Activities</string>
+    <string name="our_faves">Our Faves</string>
 </resources>

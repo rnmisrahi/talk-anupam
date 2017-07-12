@@ -53,7 +53,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void saveToken(LoginResult loginResult) {
-        repository.saveFacebookLoginToken(loginResult)
+        repository.saveFacebookLoginToken(loginResult, context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(new DisposableCompletableObserver() {
@@ -72,42 +72,29 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void checkIfLoggedIn() {
-        if (!accessToken.isNull()) {
-            repository.getFacebookLoginToken()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(scheduler)
-                    .subscribeWith(new DisposableObserver<String>() {
-                        @Override
-                        public void onNext(@NonNull String oldToken) {
-                            if (accessToken.getToken().equals(oldToken)) {
-                                // already connected
-                                view.setConnection();
-                            } else {
-                                view.onInvalidToken();
-                            }
+        repository.login(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull LoginResponse loginResponse) {
+                        if (loginResponse.getToken() == null){
+                            view.unlockLoginProcess();
+                        }else{
+                            view.alreadyLogedIn();
                         }
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-//                            Log.d(TAG, "onError: ");
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-
-        } else {
-            view.onInvalidToken();
-        }
-
-
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(TAG, "onError: ",e );
+                    }
+                });
     }
 
     @Override
     public void checkIfSignedUp() {
-        repository.login()
+        repository.login(context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
@@ -123,7 +110,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.e(TAG, "onError: ",e );
-                        //view.onLoginError();
                     }
                 });
 
@@ -143,7 +129,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        view.onaveUserFBDataFailed();
+                        view.onSaveUserFBDataFailed();
                     }
                 });
     }

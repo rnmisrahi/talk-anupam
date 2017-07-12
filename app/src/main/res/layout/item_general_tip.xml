@@ -9,11 +9,12 @@
     android:elevation="7dp"
     app:cardBackgroundColor="@color/tip_background">
 
-    <android.support.v4.widget.CircleImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/child_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"/>
     
     
     <ImageView

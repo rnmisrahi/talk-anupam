@@ -1,11 +1,15 @@
 package com.maatayim.talklet.repository;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.repository.realm.RealmChild;
+import com.maatayim.talklet.repository.realm.RealmFacebookId;
 import com.maatayim.talklet.repository.realm.RealmTip;
+import com.maatayim.talklet.repository.realm.RealmWordOfTheDay;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
@@ -14,7 +18,6 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
 import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 import com.facebook.login.LoginResult;
 
 import java.util.ArrayList;
@@ -26,14 +29,8 @@ import java.util.concurrent.Callable;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.realm.Realm;
 import io.realm.RealmResults;
-
-import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.BIRTHDAY;
-import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.FIRST_NAME;
-import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.ID;
-import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.LAST_NAME;
 
 /**
  * Created by Sophie on 5/28/2017
@@ -41,6 +38,11 @@ import static com.maatayim.talklet.screens.loginactivity.login.LoginFragment.LAS
 
 public class LocalData {
     public static final Uri DEFAULT_URI = Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg");
+    public static final String REALM_WORD_OF_THE_DAY_CHILDID = "childId";
+    public static final String REALM_CHILD_ID = "id";
+    public static final String REALM_TIP_CHILD_ID = "childId";
+    public static final String FACEBOOK_ID = "facebookID";
+    public static final String EMPTY_FB_ID = "";
     //temp child DB
     String babysName;
     Date birthday = mockBirthday(2017, 5, 1);
@@ -61,7 +63,7 @@ public class LocalData {
     private Observable<Integer> lastConnectionChild;
     private Observable<List<String>> languagesList;
     private UserDetails userDetails;
-    private String facebookId;
+    private String facebookId = ""; // = "123";
 
     private Date mockBirthday(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
@@ -74,6 +76,174 @@ public class LocalData {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+
+//    Save
+
+    public Completable saveTipRx(final String tipId, final String text, final boolean assertion, final String childID) {
+        return Completable.fromAction(() -> saveTip(tipId, text, assertion, childID));
+    }
+
+    public void saveTip(final String tipId, final String text, final boolean assertion, final String childID) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmTip realmTip = new RealmTip(tipId, text, assertion, childID);
+            realm1.copyToRealmOrUpdate(realmTip);
+        });
+        realm.close();
+
+    }
+
+    public Completable saveChildRx(final ChildModel childModel) {
+        return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(), childModel.getBirthday(), childModel.getImage()));
+    }
+
+    public void saveChild(final String childId, final String name, final long birthday, final String babyImg) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmChild realmChild = new RealmChild(childId, name, birthday, babyImg);
+            realm1.copyToRealmOrUpdate(realmChild);
+        });
+        realm.close();
+
+    }
+
+    public Completable saveWordOfDayRx(final String id, final String word, final String subtext, final String childID, final String topic) {
+        return Completable.fromAction(() -> saveWordOfDay(id, word, subtext, childID, topic));
+    }
+
+    public void saveWordOfDay(final String id, final String word, final String subtext, final String childID, final String topic) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmWordOfTheDay realmWordOfTheDay = new RealmWordOfTheDay(id, word, subtext, childID, topic);
+            realm1.copyToRealmOrUpdate(realmWordOfTheDay);
+        });
+        realm.close();
+
+    }
+
+
+    public Completable saveFacebookLoginToken(LoginResult loginResult, Context context) {
+        loginToken = loginResult;
+//        facebookId = loginResult.getAccessToken().getUserId();
+        saveFacebookIdRx(loginResult.getAccessToken().getUserId(), context);
+        return Completable.complete();
+    }
+
+
+    public void saveFacebookIdRx(final String id, Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(FACEBOOK_ID, id);
+        editor.apply();
+    }
+
+
+
+//    Get
+
+    public Single<String> getToken() {
+        return Single.just("SOME_TOKEN");
+    }
+
+
+//    public Single<String> getFacebookId() {
+//        return Single.fromCallable(() -> facebookId);
+//    }
+
+
+    public Single<List<RealmChild>> getChildrenListRx() {
+        return Single.fromCallable(() -> getChildrenList());
+    }
+
+    private List<RealmChild> getChildrenList() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmChild> childList = realm.where(RealmChild.class).findAll();
+        List<RealmChild> response = new ArrayList<>();
+        for (RealmChild realmChild : childList) {
+            response.add(new RealmChild(realmChild));
+        }
+        realm.close();
+        return response;
+    }
+
+
+    public Single<List<RealmTip>> getTipsListRx(final String id) {
+        return Single.fromCallable(() -> getTipListByChild(id));
+    }
+
+    private List<RealmTip> getTipListByChild(final String id) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmTip> tipList = realm.where(RealmTip.class).equalTo(REALM_TIP_CHILD_ID, id).findAll();
+        List<RealmTip> response = new ArrayList<>();
+        for (RealmTip realmTip : tipList) {
+            response.add(new RealmTip(realmTip));
+        }
+        realm.close();
+        return response;
+    }
+
+    public Single<RealmChild> getChildRx(final String id) {
+        return Single.fromCallable(() -> getChild(id));
+    }
+
+    public RealmChild getChild(final String id) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmChild child = realm.where(RealmChild.class).equalTo(REALM_CHILD_ID, id).findFirst();
+        RealmChild response = new RealmChild(child);
+        realm.close();
+        return response;
+    }
+
+
+    public Single<List<RealmWordOfTheDay>> getWordsOfTheDayListRx(final String id) {
+        return Single.fromCallable(() -> getWordsOfTheDayList(id));
+    }
+
+    private List<RealmWordOfTheDay> getWordsOfTheDayList(final String id) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmWordOfTheDay> wordsList = realm.where(RealmWordOfTheDay.class).equalTo(REALM_WORD_OF_THE_DAY_CHILDID, id).findAll();
+        List<RealmWordOfTheDay> response = new ArrayList<>();
+        for (RealmWordOfTheDay word : wordsList) {
+            response.add(new RealmWordOfTheDay(word));
+        }
+        realm.close();
+        return response;
+    }
+
+
+
+    public Single<String> getFacebookIdRx(Context context) {
+        return Single.fromCallable(() -> getFacebookId(context));
+    }
+
+    public String getFacebookId(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String facebookId = preferences.getString(FACEBOOK_ID, "");
+        if(!facebookId.equalsIgnoreCase(""))
+        {
+            return facebookId;
+        }
+        return EMPTY_FB_ID;
+    }
+
+
+    public Completable logout(Context context){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPref.edit().remove(FACEBOOK_ID).apply();
+        return Completable.complete();
+    }
+
+
+
+
+
+
+
+
+
 
 
     public Completable savePersonalSignUpDetails(String name, Date birthday) {
@@ -97,134 +267,47 @@ public class LocalData {
     }
 
 
-    public Completable saveFacebookLoginToken(LoginResult loginResult) {
-        loginToken = loginResult;
-        facebookId = loginResult.getAccessToken().getUserId();
-        return Completable.complete();
-    }
+
 
 
 //    Getters
 
     public Observable<String> getName(String id) {
-        return Observable.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return "Sophie";
-            }
-        });
+        return Observable.fromCallable(() -> "Sophie");
     }
 
     public Observable<Date> getBirthday(String id) {
-        return Observable.fromCallable(new Callable<Date>() {
-            @Override
-            public Date call() throws Exception {
-                return new Date();
-            }
-        });
+        return Observable.fromCallable(() -> new Date());
     }
 
     public Observable<String> getBaybsPhoto(String id) {
-        return Observable.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return babysPhoto;
-            }
-        });
+        return Observable.fromCallable(() -> babysPhoto);
     }
 
 
-    public Completable saveTipRx(final String tipId, final String text, final boolean assertion, final String childID) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                saveTip(tipId, text, assertion, childID);
-            }
 
 
-        });
-    }
-
-    public void saveTip(final String tipId, final String text, final boolean assertion, final String childID) {
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmTip realmTip = new RealmTip(tipId, text, assertion, childID);
-                realm.copyToRealmOrUpdate(realmTip);
-            }
-        });
-        realm.close();
-
-    }
-
-    public Completable saveChildRx(final ChildModel childModel) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                saveChild(childModel.getId(), childModel.getName(), childModel.getBirthday(), childModel.getImage());
-            }
-
-        });
-    }
-
-    public void saveChild(final String childId, final String name, final long birthday, final String babyImg) {
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmChild realmChild = new RealmChild(childId, name, birthday, babyImg);
-                realm.copyToRealmOrUpdate(realmChild);
-            }
-        });
-        realm.close();
-
-    }
 
 
-    public Observable<List<RealmTip>> getTipsListRx(final String id) {
-        return Observable.fromCallable(new Callable<List<RealmTip>>() {
-            @Override
-            public List<RealmTip> call() throws Exception {
-                return getTipsList(id);
-            }
-        });
-    }
-
-    private List<RealmTip> getTipsList(final String id) {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<RealmTip> tipList = realm.where(RealmTip.class).equalTo("childID", id).findAll();
-        List<RealmTip> response = new ArrayList<>();
-        for (RealmTip realmTip : tipList) {
-            response.add(new RealmTip(realmTip));
-        }
-        realm.close();
-        return response;
-    }
 
 
-    private List<RealmTip> generalTipList(String id) {
-        List<RealmTip> tipsList = new ArrayList<>();
-//        tipsList.add(new TipTicket("Try to ask about the kids day", false, babyBossUri));
-//        tipsList.add(new TipTicket("bla bla bla bla", true, booUri));
-//        tipsList.add(new TipTicket("aaaaa aaaaaaaaa aaaaaaaaa", false, babyBossUri));
-//        tipsList.add(new TipTicket("bbbbbbbbbbbbbbbbbbb bbb bbbb", true, babyBossUri));
-//        tipsList.add(new TipTicket("5 bbb bbbb", false, booUri));
-//        tipsList.add(new TipTicket("6 bbb bbbb", true, babyBossUri));
-
-        return tipsList;
-    }
+//    private List<RealmTip> generalTipList(String id) {
+//        List<RealmTip> tipsList = new ArrayList<>();
+////        tipsList.add(new TipTicket("Try to ask about the kids day", false, babyBossUri));
+////        tipsList.add(new TipTicket("bla bla bla bla", true, booUri));
+////        tipsList.add(new TipTicket("aaaaa aaaaaaaaa aaaaaaaaa", false, babyBossUri));
+////        tipsList.add(new TipTicket("bbbbbbbbbbbbbbbbbbb bbb bbbb", true, babyBossUri));
+////        tipsList.add(new TipTicket("5 bbb bbbb", false, booUri));
+////        tipsList.add(new TipTicket("6 bbb bbbb", true, babyBossUri));
+//
+//        return tipsList;
+//    }
 
 
     public Observable<String> getFacebookLoginToken() {
-        return Observable.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
+        return Observable.fromCallable(() -> {
 //                return loginToken.getAccessToken().getToken();
-                return TEMP_TOKEN;
-            }
+            return TEMP_TOKEN;
         });
     }
 
@@ -238,14 +321,7 @@ public class LocalData {
         });
     }
 
-    public Single<List<Child>> getChildrenList() {
-        return Single.fromCallable(new Callable<List<Child>>() {
-            @Override
-            public List<Child> call() throws Exception {
-                return children;
-            }
-        });
-    }
+
 
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
@@ -273,24 +349,11 @@ public class LocalData {
         });
     }
 
-    public Observable<Boolean> checkIfSignedUp() {
-        return Observable.just(true);
-    }
+//    public Observable<Boolean> checkIfSignedUp() {
+//        return Observable.just(true);
+//    }
 
-    public Observable<Child> getChild(final String id) {
 
-        return Observable.fromCallable(new Callable<Child>() {
-            @Override
-            public Child call() throws Exception {
-                for (Child child : children) {
-                    if (child.getId().equals(id)) {
-                        return child;
-                    }
-                }
-                return children.get(0); //// TODO: 6/6/2017 What default value????
-            }
-        });
-    }
 
     public Observable<List<RecordingObj>> getRecordings(String id) {
         return Observable.fromCallable(new Callable<List<RecordingObj>>() {
@@ -506,17 +569,5 @@ public class LocalData {
     }
 
 
-    public Single<String> getToken() {
-        return Single.just("SOME_TOKEN");
-    }
 
-
-    public Single<String> getFacebookId() {
-        return Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return facebookId;
-            }
-        });
-    }
 }

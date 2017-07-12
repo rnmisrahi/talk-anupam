@@ -2,19 +2,17 @@ package com.maatayim.talklet.screens.mainactivity.childinfo.generaltab;
 
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class ChildMainPresenter implements ChildMainContract.Presenter {
@@ -34,53 +32,43 @@ public class ChildMainPresenter implements ChildMainContract.Presenter {
 
     @Override
     public void getData(String id) {
-        getTips(id);
-        getRecordings(id);
-    }
 
-
-    private void getTips(final String id) {
-        repository.getTipsList(id)
+        repository.downloadWordsOfTheDay(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<TipTicket>>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onNext(@NonNull List<TipTicket> generalTipTickets) {
-                        view.updateTipsViewPager(generalTipTickets);
+                    public void onComplete() {
+                        getChildTipsAndWords(id);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        view.onTipsLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        view.onDownloadError();
                     }
                 });
+
+
+
     }
 
-    private void getRecordings(final String id) {
-        repository.getRecordings(id)
+
+    private void getChildTipsAndWords(String id){
+        repository.getChildTipsAndWords(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<RecordingObj>>() {
+                .subscribeWith(new DisposableSingleObserver<GeneralTabChildObj>() {
                     @Override
-                    public void onNext(@NonNull List<RecordingObj> recordings) {
-                        view.initRecordingsRecyclerView(recordings);
+                    public void onSuccess(@NonNull GeneralTabChildObj generalTabChildObj) {
+                        view.onDataReceived(generalTabChildObj);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        view.onTipsLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        view.onDataLoadError();
                     }
                 });
     }
+
 
 }

@@ -11,6 +11,8 @@ import com.maatayim.talklet.repository.retrofit.model.general.ChildDataResponse;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 
+import javax.inject.Named;
+
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -33,7 +35,7 @@ public interface RetrofitApi {
     );
 
     //    Children
-    @GET("children/{myID}")
+    @GET("children")
     Single<ChildrenListWrapper> getChildrenList(
             @Header("Authorization") String authorization
     );

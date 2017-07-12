@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -34,9 +35,9 @@ public class AboutBabyPresenter implements AboutBabyContract.Presenter {
         repo.getChild(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<Child>() {
+                .subscribeWith(new DisposableSingleObserver<Child>() {
                     @Override
-                    public void onNext(@NonNull Child child) {
+                    public void onSuccess(@NonNull Child child) {
                         view.onDataReceived(child);
                     }
 
@@ -44,12 +45,10 @@ public class AboutBabyPresenter implements AboutBabyContract.Presenter {
                     public void onError(@NonNull Throwable e) {
                         view.onChildLoadError();
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
+
+
+
 
     }
 }

@@ -115,6 +115,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         presenter.getData();
         myTimer = new Timer();
         setTimer(myTimer);
+
         myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -124,6 +125,8 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
 
         }, 0, 1000);
         tStart = System.currentTimeMillis();
+
+        mediaRecorder.start();
 
         constraintSet1 = new ConstraintSet();
         constraintSet1.clone(getContext(), R.layout.fragment_record);
@@ -158,8 +161,6 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     @OnClick(R.id.stop_recording_mic)
     public void onStopRecordClick() {
         //// TODO: 6/27/2017 stop streaming
-        myTimer.cancel();
-        mediaRecorder.stop();
         getActivity().onBackPressed();
     }
 
@@ -309,5 +310,10 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
 
     }
 
-
+    @Override
+    public boolean onBackPressed() {
+        myTimer.cancel();
+        mediaRecorder.stop();
+        return super.onBackPressed();
+    }
 }

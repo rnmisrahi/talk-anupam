@@ -178,9 +178,9 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
                             Date date){
         todaysSaidWords.setText(String.valueOf(totalWordsCount.first));
         todaysDate.setText(Utils.getTodaysDateStr(date));
-        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
-        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
-        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
+//        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
+//        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
+//        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
     }
 
 

@@ -16,29 +16,14 @@ public class MediaRecordWrapper implements Parcelable {
     private MediaRecorder mediaRecord;
 //    private FileDescriptor fileSavePath;
 
-    public MediaRecordWrapper(MediaRecorder mediaRecord){
+    public MediaRecordWrapper(MediaRecorder mediaRecord) {
 
         this.mediaRecord = mediaRecord;
-//        this.fileSavePath = fileSavePath;
     }
 
-
-
-//    public FileDescriptor getFileSavePath() {
-//        return fileSavePath;
-//    }
-//
-//    public void setFileSavePath(FileDescriptor fileSavePath) {
-//        this.fileSavePath = fileSavePath;
-//    }
-
-//    public MediaRecorder getMediaRecord() {
-//        return mediaRecord;
-//    }
-
-//    public void setMediaRecord(MediaRecorder mediaRecord) {
-//        this.mediaRecord = mediaRecord;
-//    }
+    public void start(){
+        this.mediaRecord.start();
+    }
 
     public void stop(){
         this.mediaRecord.stop();

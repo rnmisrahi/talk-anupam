@@ -28,6 +28,7 @@ import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.MainModule;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.DrawerHandler;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.LogoutEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((TalkletApplication) getApplication()).getAppComponent().inject(this);
-//        ((TalkletApplication) getApplication()).getAppComponent().plus(new MainActivityModule(this)).inject(this);
+//        ((TalkletApplication) getApplication()).getAppComponent().inject(this);
+        ((TalkletApplication) getApplication()).getAppComponent().plus(new MainActivityModule(this)).inject(this);
 
         ButterKnife.bind(this);
         drawerHandler = new DrawerHandler(this);
@@ -226,6 +227,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
 
+    @Subscribe
+    public void onLogoutEvent(LogoutEvent event){
+        if (event.isLogout()){
+            presenter.logout(getBaseContext());
+        }
+    }
 
 
 

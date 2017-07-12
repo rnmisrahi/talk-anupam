@@ -16,11 +16,13 @@ public interface ChildMainContract {
     }
 
     interface View extends BaseContract.View{
-        void onDataReceived();
+        void onDataReceived(GeneralTabChildObj generalTabChildObj);
 
         void updateTipsViewPager(List<TipTicket> ticketList);
 
-        void onTipsLoadError();
+        void onDataLoadError();
         void initRecordingsRecyclerView(List<RecordingObj> recordings);
+
+        void onDownloadError();
     }
 }

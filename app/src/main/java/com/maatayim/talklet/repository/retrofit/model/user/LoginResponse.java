@@ -7,9 +7,14 @@ package com.maatayim.talklet.repository.retrofit.model.user;
 public class LoginResponse {
 
     private String token;
-private boolean signedUp;
+    private boolean signedUp;
 
     public LoginResponse() {
+    }
+
+    public LoginResponse(String token, boolean signedUp) {
+        this.token = token;
+        this.signedUp = signedUp;
     }
 
     public String getToken() {

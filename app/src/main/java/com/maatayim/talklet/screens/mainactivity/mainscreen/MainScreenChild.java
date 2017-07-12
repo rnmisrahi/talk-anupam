@@ -61,4 +61,8 @@ public class MainScreenChild{
     public String getId() {
         return id;
     }
+
+    public void setTips(List<Tip> tips) {
+        this.tips = tips;
+    }
 }

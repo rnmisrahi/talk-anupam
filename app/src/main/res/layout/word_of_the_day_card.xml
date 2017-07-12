@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/subText"
@@ -33,27 +33,19 @@
             tools:text="41% of 18 month olds use this word"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/words_title"/>
-
-        <View
-            android:id="@+id/saparator"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/darker_background_color"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subText"
-            android:layout_margin="20dp"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/how_to_use_word_rv"
-            android:layout_width="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/words_title"
+            android:paddingBottom="30dp"/>
+        
+        <ImageView
+            android:id="@+id/plus_extend"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/groupppp"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saparator"
-            android:layout_margin="20dp"
-             />
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
 
     </android.support.constraint.ConstraintLayout>

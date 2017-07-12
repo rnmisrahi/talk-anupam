@@ -1,8 +1,10 @@
 package com.maatayim.talklet.baseline;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 
+import com.maatayim.talklet.repository.realm.RealmChild;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.screens.Child;
@@ -11,6 +13,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.c
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
+import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.GeneralTabChildObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
@@ -41,11 +44,11 @@ public interface BaseContract {
     {
         Completable saveSignupChildDetails(String name, Date birthday);
         Completable saveBabysPhoto(String photo);
-        Completable saveFacebookLoginToken(LoginResult loginResult);
+        Completable saveFacebookLoginToken(LoginResult loginResult, Context context);
         Completable saveUserFBDetails(UserDetails userDetails);
 
 
-        Observable<Child> getChild(String id);
+        Single<Child> getChild(String id);
         Observable<String> getName(String id);
         Observable<Date> getBirthday(String id);
         Observable<String> getBaybsPhoto(String id);
@@ -55,7 +58,7 @@ public interface BaseContract {
         Single<List<MainScreenChild>> getChildrenListWithTips();
         Single<List<Child>> getChildrenList();
         Observable<Child> getLastConnectionChild();
-        Single<LoginResponse> login();
+        Single<LoginResponse> login(Context context);
 
 
         Observable<List<RecordingObj>> getRecordings(String id);
@@ -84,6 +87,13 @@ public interface BaseContract {
         Completable downloadKids();
 
         Completable downloadTips();
+
+        Completable downloadWordsOfTheDay(final String childId);
+
+
+        Single<GeneralTabChildObj> getChildTipsAndWords(String id);
+
+        Completable logout(Context context);
     }
 
 

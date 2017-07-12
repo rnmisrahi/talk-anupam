@@ -22,7 +22,7 @@ public class TipTicket implements Parcelable {
         this.babyPhoto = babyPhoto;
     }
 
-    protected TipTicket(Parcel in) {
+    public TipTicket(Parcel in) {
         tip = in.readString();
         isAssertion = in.readByte() != 0;
     }

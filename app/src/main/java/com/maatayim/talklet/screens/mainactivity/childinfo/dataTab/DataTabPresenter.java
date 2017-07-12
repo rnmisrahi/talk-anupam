@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -36,21 +37,15 @@ public class DataTabPresenter implements DataTabContract.Presenter {
         repository.getChild(babyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<Child>() {
+                .subscribeWith(new DisposableSingleObserver<Child>() {
                     @Override
-                    public void onNext(@NonNull Child child) {
+                    public void onSuccess(@NonNull Child child) {
                         view.onDataReceived(child);
                     }
-
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onBabyPhotoLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
 

@@ -1,6 +1,7 @@
 package com.maatayim.talklet.repository.realm;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Sophie on 7/5/2017
@@ -8,10 +9,13 @@ import io.realm.RealmObject;
 
 public class RealmChild extends RealmObject {
 
+    @PrimaryKey
     private String id;
+
     private String name;
     private long birthday;
     private String image;
+
 
     public RealmChild(){
 
@@ -22,6 +26,13 @@ public class RealmChild extends RealmObject {
         this.name = name;
         this.birthday = birthday;
         this.image = image;
+    }
+
+    public RealmChild(RealmChild child){
+        this.id = child.getId();
+        this.name = child.getName();
+        this.birthday = child.getBirthday();
+        this.image = child.getImage();
     }
 
     public String getId() {

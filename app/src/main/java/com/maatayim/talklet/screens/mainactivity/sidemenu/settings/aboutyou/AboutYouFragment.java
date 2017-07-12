@@ -150,7 +150,7 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
     public void loadUserDetails(UserDetails userDetails) {
         firstName.setText(userDetails.getName());
         lastName.setText(userDetails.getLastName());
-//        birthday.setText(userDetails.getBirthday());
+        birthday.setText(userDetails.getBirthday());
 
         if (userDetails.getLanguage1() != null){
             langugeField1.setText(userDetails.getLanguage1());

@@ -1,7 +1,7 @@
 package com.maatayim.talklet.repository.retrofit.model.user;
 
 /**
- * Created by Sophie on 7/4/2017.
+ * Created by Sophie on 7/4/2017
  */
 
 public class LoginRequest {

@@ -30,7 +30,7 @@ public class WordAdviceFragment extends Fragment{
     @BindView(R.id.words_title)
     TextView title;
 
-    @BindView(R.id.subtext)
+    @BindView(R.id.subText)
     TextView subtext;
 
 

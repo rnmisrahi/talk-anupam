@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
+import com.maatayim.talklet.baseline.events.DowmloadCompleteEvent;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.children.ChildrenAdapter;
@@ -37,6 +38,7 @@ import com.maatayim.talklet.screens.mainactivity.record.RecordingFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -103,6 +105,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     public byte[] buffer;
     public static DatagramSocket socket;
     private int port=50005;
+    TipsAdapter pagerAdapter;
 
 
     @Override
@@ -165,7 +168,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         wordsProgressBar.setProgress((numOfWords * 100) / maxNumOfWords);
     }
 
-    TipsAdapter pagerAdapter;
+
 
     private void initializeViewPager(List<TipTicket> ticketList, boolean isMoreThanOneChild) {
 
@@ -298,7 +301,6 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
             Log.d(TAG, "startRecording: exception in prepare record");
         }
 
-        mediaRecorder.start();
         return new MediaRecordWrapper(mediaRecorder);
     }
 
@@ -345,6 +347,28 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
             return;
         }
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        // Unregister
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe
+    public void onDownloadComplete(DowmloadCompleteEvent event){
+        if(event.isDownloadComplete()){
+            presenter.getData();
+        }
     }
 
 

@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by Sophie on 7/4/2017.
+ * Created by Sophie on 7/4/2017
  */
 
 public class RealmTip extends RealmObject {
@@ -14,7 +14,7 @@ public class RealmTip extends RealmObject {
 
     private String tipText;
     private boolean assertion;
-    private String childID;
+    private String childId;
 
     public RealmTip() {
     }
@@ -23,7 +23,7 @@ public class RealmTip extends RealmObject {
         this.id = id;
         this.tipText = tipText;
         this.assertion = assertion;
-        this.childID = childID;
+        this.childId = childID;
     }
 
     public String getId() {
@@ -34,7 +34,7 @@ public class RealmTip extends RealmObject {
         this.id = copy.getId();
         this.tipText = copy.getTipText();
         this.assertion = copy.isAssertion();
-        this.childID = copy.getChildID();
+        this.childId = copy.getChildId();
     }
 
 
@@ -54,11 +54,11 @@ public class RealmTip extends RealmObject {
         this.assertion = assertion;
     }
 
-    public String getChildID() {
-        return childID;
+    public String getChildId() {
+        return childId;
     }
 
-    public void setChildID(String childID) {
-        this.childID = childID;
+    public void setChildId(String childId) {
+        this.childId = childId;
     }
 }

@@ -1,7 +1,7 @@
 package com.maatayim.talklet.repository.retrofit.model.general;
 
 /**
- * Created by Sophie on 5/28/2017.
+ * Created by Sophie on 5/28/2017
  */
 
 public class Recording {
@@ -9,10 +9,10 @@ public class Recording {
     private String id;
     private int number;
     private long date;
-    private WordCount wordCount;
+    private int wordCount;
     private long duration;
 
-    public Recording(String id, int number, long date, WordCount wordCount, long duration){
+    public Recording(String id, int number, long date, int wordCount, long duration){
 
         this.id = id;
         this.number = number;
@@ -45,11 +45,11 @@ public class Recording {
         this.date = date;
     }
 
-    public WordCount getWordCount() {
+    public int getWordCount() {
         return wordCount;
     }
 
-    public void setWordCount(WordCount wordCount) {
+    public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
     }
 

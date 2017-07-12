@@ -1,6 +1,7 @@
 package com.maatayim.talklet.screens.loginactivity.login;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.maatayim.talklet.baseline.BaseContract;
@@ -47,6 +48,10 @@ public interface LoginContract {
 
         void onSaveUserFBDataSuccess();
 
-        void onaveUserFBDataFailed();
+        void onSaveUserFBDataFailed();
+
+        void unlockLoginProcess();
+
+        void alreadyLogedIn();
     }
 }
