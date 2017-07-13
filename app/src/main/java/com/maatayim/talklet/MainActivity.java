@@ -130,7 +130,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     public void addFragment(SideMenuFragment sideMenuFragment) {
-        addFragment(sideMenuFragment, true, null);
+//        if (isAlreadyOneSideMenuOpened()){ / // TODO: 7/13/2017  
+//            addFragment(sideMenuFragment, true, null);
+//        }else{
+        addFragment(sideMenuFragment, false, null);
+//        }
     }
 
     @Subscribe
@@ -193,6 +197,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     }
 
+    private boolean isAlreadyOneSideMenuOpened(){
+        FragmentManager fm = getSupportFragmentManager();
+        int index = fm.getBackStackEntryCount();
+        return index >= 2 ;
+    }
 
     private boolean isHomeFragment() {
         FragmentManager fm = getSupportFragmentManager();

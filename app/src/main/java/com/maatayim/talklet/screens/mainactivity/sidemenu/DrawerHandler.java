@@ -1,8 +1,10 @@
 package com.maatayim.talklet.screens.mainactivity.sidemenu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -113,7 +115,8 @@ public class DrawerHandler {
 
     @OnClick(R.id.website_item)
     public void onWebsiteClick(TextView view){
-        onItemCheck(view, new TempFragment());
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.talklet_website)));
+        activity.startActivity(browserIntent);
     }
 
 

@@ -18,8 +18,10 @@ import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.injection.AboutYouModule;
 import com.maatayim.talklet.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,6 +36,7 @@ import butterknife.OnClick;
 public class AboutYouFragment extends TalkletFragment implements AboutYouContract.View {
 
     public static final String EMPTY_LANG = "";
+    public static final String WMPTY_STR = "";
     @Inject
     AboutYouContract.Presenter presenter;
 
@@ -61,6 +64,8 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
 
     @BindView(R.id.another_language_button)
     TextView addLanguageButton;
+
+    private List<String> chosenLanguages = new ArrayList<>();
 
 
 
@@ -112,15 +117,15 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
 
         try {
             View layout = inflater.inflate(R.layout.dropdown_lang_menu, null);
-
-            layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            View linearLayout = layout.findViewById(R.id.vendor_filter_linear_layout);
+            linearLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
             mDropdown = new PopupWindow(layout, textView.getMeasuredWidth(),
                     FrameLayout.LayoutParams.WRAP_CONTENT, true);
             mDropdown.showAsDropDown(textView, 0, 0);
             textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.triangle2, 0);
 
 //            setLanguageOnView(layout, R.id.language_default);
-            presenter.setLanguageList(layout, textView);
+            presenter.setLanguageList(linearLayout, textView);
 
 
 
@@ -157,28 +162,28 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
         birthdayDate.setTime(userDetails.getBirthday());
         birthday.setText(Utils.getFormattedDate(userDetails.getBirthday()));
 
-        if (!userDetails.getLanguage1().equals(EMPTY_LANG)){
+        if(userDetails.getLanguage1()!= null){
             langugeField1.setText(userDetails.getLanguage1());
             languageCounter = 1;
         }
 
-        if (!userDetails.getLanguage2().equals(EMPTY_LANG)){
+
+        if(userDetails.getLanguage2()!= null) {
             langugeField2.setText(userDetails.getLanguage2());
             langugeField2.setVisibility(View.VISIBLE);
             languageCounter = 2;
         }
 
-        if (!userDetails.getLanguage3().equals(EMPTY_LANG)){
+        if(userDetails.getLanguage3()!= null) {
             langugeField3.setText(userDetails.getLanguage3());
             langugeField3.setVisibility(View.VISIBLE);
             addLanguageButton.setVisibility(View.GONE);
             languageCounter = 3;
-
         }
     }
 
     @Override
-    public void onLoadUserDetailsFilure() {
+    public void onLoadUserDetailsFailure() {
 
     }
 
@@ -237,22 +242,31 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
         String lastNameStr = lastName.getText().toString();
         Date birthdayStr = birthdayDate.getTime();
 
-        String languageOne = null;
-        String languageTwo = null;
-        String languageThree = null;
 
-        try{
-            languageOne = langugeField1.getText().toString();
-            languageTwo = langugeField2.getText().toString();
-            languageThree = langugeField3.getText().toString();
-        }catch (Exception e){
-            Log.d("log:", "onSaveData: language get text failed");
-        }
-
-        AboutUserObj aboutUserObj = new AboutUserObj(firstNameStr, lastNameStr, birthdayStr, languageOne, languageTwo, languageThree);
+        AboutUserObj aboutUserObj = new AboutUserObj(firstNameStr, lastNameStr, birthdayStr,
+                getLanguage(langugeField1), getLanguage(langugeField2), getLanguage(langugeField3));
 
         presenter.updateAboutYouData(aboutUserObj);
         finish();
 
     }
+
+    private String getLanguage(TextView langView){
+        String langStr = langView.getText().toString();
+        if(langStr.equals(WMPTY_STR)){
+            return null;
+        }else{
+            for (String chosenLanguage : chosenLanguages) {
+                if (chosenLanguage.equals(langStr)){
+                    return null;
+                }
+            }
+            chosenLanguages.add(langStr);
+            return langStr;
+
+
+        }
+    }
+
+
 }

@@ -27,7 +27,7 @@ public interface AboutYouContract {
 
         void loadUserDetails(AboutUserObj aboutUserObj);
 
-        void onLoadUserDetailsFilure();
+        void onLoadUserDetailsFailure();
 
         void onUpdateDataSuccess();
 

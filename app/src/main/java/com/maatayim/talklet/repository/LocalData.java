@@ -401,7 +401,7 @@ public class LocalData {
 
     private WordsCount mockWordsData() {
 
-        return new WordsCount(new Pair<>(18, 33), new Pair<>(2, 18), new Pair<>(20, 73));
+        return new WordsCount(new Pair<>(20, 33), new Pair<>(18, 18), new Pair<>(73, 73));
 
     }
 

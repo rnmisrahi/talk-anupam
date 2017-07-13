@@ -1,142 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background_color">
 
-    <EditText
-        android:id="@+id/first_name"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/first_name"
-        android:paddingBottom="10dp"
-        android:textColor="@color/text_color"/>
+        android:background="@color/primary_background_color">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/first_name"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_color"/>
 
 
 
-    <EditText
-        android:id="@+id/last_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_name"
-        android:layout_marginTop="31dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/last_name"
-        android:paddingBottom="10dp"
-        android:textColor="@color/text_color"/>
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_name"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/last_name"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_color"/>
 
 
-    <TextView
-        android:id="@+id/birthday_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last_name"
-        android:layout_marginTop="31dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/birthday"
-        android:paddingBottom="10dp"
-        android:drawableEnd="@drawable/schedule"
-        android:clickable="true"/>
+        <TextView
+            android:id="@+id/birthday_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/last_name"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/birthday"
+            android:paddingBottom="10dp"
+            android:drawableEnd="@drawable/schedule"
+            android:clickable="true"/>
 
 
-    <TextView
-        android:id="@+id/first_language"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthday_text_view"
-        android:layout_marginTop="31dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/first_language"
-        android:paddingBottom="10dp"
-        android:drawableEnd="@drawable/triangle2"/>
+        <TextView
+            android:id="@+id/first_language"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birthday_text_view"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/first_language"
+            android:paddingBottom="10dp"
+            android:drawableEnd="@drawable/triangle2"/>
 
-    <TextView
-        android:id="@+id/second_language"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_language"
-        android:layout_marginTop="31dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/second_language"
-        android:paddingBottom="10dp"
-        android:drawableEnd="@drawable/triangle2"
-        android:visibility="gone"/>
-
-
-    <TextView
-        android:id="@+id/third_language"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/second_language"
-        android:layout_marginTop="31dp"
-        android:background="@drawable/edit_text_line"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:hint="@string/third_language"
-        android:paddingBottom="10dp"
-        android:drawableEnd="@drawable/triangle2"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/second_language"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_language"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/second_language"
+            android:paddingBottom="10dp"
+            android:drawableEnd="@drawable/triangle2"
+            android:visibility="gone"/>
 
 
-    <TextView
-        android:id="@+id/another_language_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/third_language"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="52dp"
-        android:text="@string/i_speak_another_language"
-        android:textColor="@color/colorPrimary"/>
+        <TextView
+            android:id="@+id/third_language"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/second_language"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/edit_text_line"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:hint="@string/third_language"
+            android:paddingBottom="10dp"
+            android:drawableEnd="@drawable/triangle2"
+            android:visibility="gone"/>
 
 
-
-    <Button
-        android:id="@+id/save_new_data"
-        android:layout_width="130dp"
-        android:layout_height="51dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/white_color"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="end"
-        app:layout_constraintEnd_toEndOf="@id/birthday_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/another_language_button"
-        />
+        <TextView
+            android:id="@+id/another_language_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/third_language"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="31dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginEnd="52dp"
+            android:text="@string/i_speak_another_language"
+            android:textColor="@color/colorPrimary"/>
 
 
 
+        <Button
+            android:id="@+id/save_new_data"
+            android:layout_width="130dp"
+            android:layout_height="51dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white_color"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="@id/birthday_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/another_language_button"
+            />
 
-</android.support.constraint.ConstraintLayout>
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

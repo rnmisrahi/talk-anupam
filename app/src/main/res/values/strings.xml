@@ -89,4 +89,10 @@
     <string name="questions">Questions</string>
     <string name="activities">Activities</string>
     <string name="our_faves">Our Faves</string>
+
+
+    <!--SideMenu-->
+    <string name="talklet_website">http://www.google.com</string>
+
+
 </resources>

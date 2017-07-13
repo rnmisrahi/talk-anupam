@@ -98,9 +98,10 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
 
         initializePieChart(totalwordsCount.first, totalwordsCount.second);
 
-        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalwordsCount.first, "Unique");
-        newProgressBar.initProgressBar(newWordsCount.first, totalwordsCount.first, "New");
-        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalwordsCount.first, "Advance");
+        // // TODO: 7/13/2017  don't erase! - will be relevant in the future versions
+//        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalwordsCount.first, "Unique");
+//        newProgressBar.initProgressBar(newWordsCount.first, totalwordsCount.first, "New");
+//        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalwordsCount.first, "Advance");
     }
 
 

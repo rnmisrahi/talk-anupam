@@ -6,7 +6,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 
 import java.util.List;
 
@@ -119,7 +118,7 @@ public class AboutYouPresenter implements AboutYouContract.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        view.onLoadUserDetailsFilure();
+                        view.onLoadUserDetailsFailure();
                     }
                 });
 

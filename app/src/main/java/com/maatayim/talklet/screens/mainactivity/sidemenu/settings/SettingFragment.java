@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Sophie on 6/18/2017.
+ * Created by Sophie on 6/18/2017
  */
 
 public class SettingFragment extends SideMenuFragment implements SettingContract.View {
