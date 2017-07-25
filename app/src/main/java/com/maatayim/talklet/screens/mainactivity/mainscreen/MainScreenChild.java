@@ -4,7 +4,7 @@ package com.maatayim.talklet.screens.mainactivity.mainscreen;
 import java.util.List;
 
 /**
- * Created by Sophie on 7/4/2017.
+ * Created by Sophie on 7/4/2017
  */
 
 public class MainScreenChild{
@@ -64,5 +64,13 @@ public class MainScreenChild{
 
     public void setTips(List<Tip> tips) {
         this.tips = tips;
+    }
+
+    public void setWordCount(int wordCount) {
+        this.wordCount = wordCount;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

@@ -17,7 +17,7 @@ public interface SettingContract {
     }
 
     interface View extends BaseContract.View{
-        void onDataReceived(List<Child> children);
+        void onDataReceived(List<SettingChild> children);
 
         void onChildrenLoadError();
     }

@@ -1,6 +1,7 @@
 package com.maatayim.talklet.screens.loginactivity.signup.choosephoto;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
 
@@ -11,8 +12,10 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.facebook.login.widget.ProfilePictureView.TAG;
+
 /**
- * Created by Sophie on 5/25/2017.
+ * Created by Sophie on 5/25/2017
  */
 
 public class ChoosePhotoPresenter implements ChoosePhotoContract.Presenter {
@@ -28,9 +31,8 @@ public class ChoosePhotoPresenter implements ChoosePhotoContract.Presenter {
     }
 
     @Override
-    public void saveImage(Uri photo) {
+    public void saveImage(String photo) {
         //// TODO: 5/25/2017 save image
-//        EventBus.getDefault().post();
 
         repository.saveBabysPhoto(photo.toString())
                 .subscribeOn(Schedulers.io())
@@ -39,11 +41,12 @@ public class ChoosePhotoPresenter implements ChoosePhotoContract.Presenter {
                     @Override
                     public void onComplete() {
                         //// TODO: 5/25/2017 Save data
+                        Log.d(TAG, "onComplete: baby's image saved successfuly");
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        Log.d(TAG, "onError: baby's image error");
                     }
                 });
 

@@ -9,10 +9,10 @@ public class ChildModel {
 
     private String id;
     private String name;
-    private long birthday;
+    private String birthday;
     private String image;
 
-    public ChildModel(String id, String name, long birthday, String image){
+    public ChildModel(String id, String name, String birthday, String image){
 
         this.id = id;
         this.name = name;
@@ -37,11 +37,11 @@ public class ChildModel {
         this.name = name;
     }
 
-    public long getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(long birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

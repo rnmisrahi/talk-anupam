@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -43,26 +44,41 @@ public class ByDatePresenter implements ByDateContract.Presenter {
 
 
     private void setCalendarData(String id) {
-        repository.getCalendarData(id)
+
+        repository.getChildWordsByDate(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<List<CalendarWordsObj>>() {
+                .subscribeWith(new DisposableSingleObserver<List<CalendarWordsObj>>() {
                     @Override
-                    public void onNext(@NonNull List<CalendarWordsObj> calendarList) {
-                        view.loadCalendarData(calendarList);
-
+                    public void onSuccess(@NonNull List<CalendarWordsObj> dateObjs) {
+                        view.loadCalendarData(dateObjs);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.errorOnLoadCalendarData();
                     }
-
-                    @Override
-                    public void onComplete() {
-                        view.onComplete();
-                    }
                 });
+//        repository.getCalendarData(id)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(scheduler)
+//                .subscribeWith(new DisposableObserver<List<CalendarWordsObj>>() {
+//                    @Override
+//                    public void onNext(@NonNull List<CalendarWordsObj> calendarList) {
+//                        view.loadCalendarData(calendarList);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        view.errorOnLoadCalendarData();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        view.onComplete();
+//                    }
+//                });
 
     }
 }

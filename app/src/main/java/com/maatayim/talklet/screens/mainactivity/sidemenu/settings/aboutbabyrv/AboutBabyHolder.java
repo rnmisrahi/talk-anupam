@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.SettingChild;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutbabyrv.aboutbabyf.AboutBabyFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +23,7 @@ public class AboutBabyHolder extends ViewHolder {
     TextView childsName;
 
     private Context context;
-    private Child child;
+    private SettingChild child;
 
     public AboutBabyHolder(View itemView) {
         super(itemView);
@@ -37,7 +38,7 @@ public class AboutBabyHolder extends ViewHolder {
     }
 
 
-    public void setData(Child child) {
+    public void setData(SettingChild child) {
         this.child = child;
         childsName.setText(context.getString(R.string.about_kid, child.getName()));
 

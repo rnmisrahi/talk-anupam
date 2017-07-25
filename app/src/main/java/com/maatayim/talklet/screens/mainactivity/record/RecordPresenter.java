@@ -34,7 +34,7 @@ public class RecordPresenter implements RecordContract.Presenter {
     @Override
     public void getData() {
 //        repo.downloadWordsOfTheDay()
-        repo.getChildrenListWithTips()
+        repo.getMainScreenChildrenList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribeWith(new DisposableSingleObserver<List<MainScreenChild>>() {

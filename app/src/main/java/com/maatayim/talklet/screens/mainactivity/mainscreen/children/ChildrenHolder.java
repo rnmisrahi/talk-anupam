@@ -3,6 +3,7 @@ package com.maatayim.talklet.screens.mainactivity.mainscreen.children;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.maatayim.talklet.AddFragmentWithSharedElementEvent;
 import com.maatayim.talklet.R;
@@ -28,6 +29,9 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.child_item)
     CircleImageView childView;
 
+    @BindView(R.id.words_count_view)
+    TextView wordCount;
+
     private final Context context;
     private MainScreenChild child;
 
@@ -51,5 +55,7 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
                 .load(child.getUrl())
                 .placeholder(R.drawable.pic)
                 .into(childView);
+
+        wordCount.setText(context.getString(R.string.word_count, child.getWordCount(), child.getTotal()));
     }
 }

@@ -13,7 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.maatayim.talklet.R;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.DateObj;
 import com.maatayim.talklet.utils.Utils;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,17 +72,17 @@ public class CustomCalendarViewHolder extends ViewHolder {
     }
 
 
-    public void setData(CalendarWordsObj item,boolean isVisibleProgressBar) {
+    public void setData(CalendarWordsObj item, boolean isVisibleProgressBar) {
         if (isVisibleProgressBar){
             wordsProgressBar.setVisibility(View.VISIBLE);
         }else{
             wordsProgressBar.setVisibility(View.GONE);
         }
 
-        if (item.getWordsCount()!=null){
+        if (item.getTotalWords()!=-1){
 //            bgView.setBackgroundColor(context.getResources().getColor(R.color.primary_background_color));
-            wordsProgressBar.setMax(item.getWordsCount().getTotalWordsCount().second);
-//            String date = Utils.getSpecificFormattedDate(item.getDate(), "d/M");
+            wordsProgressBar.setMax(item.getTotalWords());
+//            String date = Utils.getSpecificFormattedDate(item.getDates(), "d/M");
 
             if(item.isMiddle()){
                 wordsProgressBar.setProgressDrawable(context.getResources().getDrawable(R.drawable.progress_bar_vertical_accent));
@@ -95,8 +98,9 @@ public class CustomCalendarViewHolder extends ViewHolder {
             }
 
 
-            wordsProgressBar.setProgress(item.getWordsCount().getTotalWordsCount().first);
-            dateStr.setText(Utils.getSpecificFormattedDate(item.getDate(), "d/M"));
+            wordsProgressBar.setProgress(item.getWordsCount());
+            String datte = Utils.getSpecificFormattedDate(item.getDate(), "d/M");
+            dateStr.setText(datte);
 
         }else{
             wordsProgressBar.setMax(0);

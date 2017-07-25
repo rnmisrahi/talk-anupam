@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.repository.realm.RealmChild;
+import com.maatayim.talklet.repository.realm.RealmCountData;
 import com.maatayim.talklet.repository.realm.RealmTip;
 import com.maatayim.talklet.repository.realm.RealmUser;
 import com.maatayim.talklet.repository.realm.RealmWordOfTheDay;
@@ -19,7 +20,6 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.Fo
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
 import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingObj;
 import com.facebook.login.LoginResult;
-import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -96,7 +96,7 @@ public class LocalData {
     }
 
     public Completable saveChildRx(final ChildModel childModel) {
-        return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(), childModel.getBirthday(), childModel.getImage()));
+        return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(), Long.valueOf(childModel.getBirthday()), childModel.getImage()));
     }
 
     public void saveChild(final String childId, final String name, final long birthday, final String babyImg) {
@@ -159,6 +159,20 @@ public class LocalData {
 
     }
 
+    public Completable saveCountDataRx(final String id, final String childId, final int countData, final int totalData, final long date) {
+        return Completable.fromAction(() -> saveCountData(id, childId, countData, totalData, date));
+    }
+
+    public void saveCountData(final String id, final String childId, final int countData, final int totalData, final long date) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmCountData realmCountData = new RealmCountData(id, childId, countData, totalData, date);
+            realm1.copyToRealmOrUpdate(realmCountData);
+        });
+        realm.close();
+
+    }
 
 
 //    Get
@@ -208,7 +222,7 @@ public class LocalData {
         return Single.fromCallable(() -> getChild(id));
     }
 
-    public RealmChild getChild(final String id) {
+    private RealmChild getChild(final String id) {
         Realm realm = Realm.getDefaultInstance();
         RealmChild child = realm.where(RealmChild.class).equalTo(REALM_CHILD_ID, id).findFirst();
         RealmChild response = new RealmChild(child);
@@ -233,7 +247,6 @@ public class LocalData {
     }
 
 
-
     public Single<String> getFacebookIdRx(Context context) {
         return Single.fromCallable(() -> getFacebookId(context));
     }
@@ -241,24 +254,49 @@ public class LocalData {
     public String getFacebookId(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String facebookId = preferences.getString(FACEBOOK_ID, "");
-        if(!facebookId.equalsIgnoreCase(""))
-        {
+        if (!facebookId.equalsIgnoreCase("")) {
             return facebookId;
         }
         return EMPTY_FB_ID;
     }
 
 
-    public Completable logout(Context context){
+    public Completable logout(Context context) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPref.edit().remove(FACEBOOK_ID).apply();
         return Completable.complete();
     }
 
 
+    public Single<RealmCountData> getWordsCountRx(final String id) {
+        return Single.fromCallable(() -> getWordsCount(id)).map(realmCountDatas -> {
+            RealmCountData response = new RealmCountData();
+            int total = 0;
+            int words = 0;
+            for (RealmCountData realmCountData : realmCountDatas) {
+                total += realmCountData.getExpectedWordCount();
+                words += realmCountData.getWordCount();
+            }
+            response.setExpectedWordCount(total);
+            response.setWordCount(words);
+            return response;
+        });
+    }
 
+    private List<RealmCountData> getWordsCount(final String id) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmCountData> countDataList = realm.where(RealmCountData.class).equalTo(REALM_TIP_CHILD_ID, id).findAll();
+        List<RealmCountData> response = new ArrayList<>();
+        for (RealmCountData countData : countDataList) {
+            response.add(new RealmCountData(countData));
+        }
+        realm.close();
+        return response;
+    }
 
-
+    public Single<List<RealmCountData>> getWordsCountByDateRx(final String id) {
+        return Single.fromCallable(() -> getWordsCount(id));
+    }
 
 
 
@@ -286,9 +324,6 @@ public class LocalData {
     }
 
 
-
-
-
 //    Getters
 
     public Observable<String> getName(String id) {
@@ -302,12 +337,6 @@ public class LocalData {
     public Observable<String> getBaybsPhoto(String id) {
         return Observable.fromCallable(() -> babysPhoto);
     }
-
-
-
-
-
-
 
 
 //    private List<RealmTip> generalTipList(String id) {
@@ -341,7 +370,6 @@ public class LocalData {
     }
 
 
-
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
 //        childrenList.add(new ChildModel("1", "Sophie", birthday, Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
@@ -371,7 +399,6 @@ public class LocalData {
 //    public Observable<Boolean> checkIfSignedUp() {
 //        return Observable.just(true);
 //    }
-
 
 
     public Observable<List<RecordingObj>> getRecordings(String id) {
@@ -435,6 +462,7 @@ public class LocalData {
         });
     }
 
+
     public Observable<List<CalendarWordsObj>> getCalendarData(String id) {
         return Observable.fromCallable(new Callable<List<CalendarWordsObj>>() {
             @Override
@@ -454,7 +482,7 @@ public class LocalData {
 
         while (!birthdayCal.after(todaysDate)) {
             Date targetDay = birthdayCal.getTime();
-            calendarData.add(new CalendarWordsObj(targetDay, mockWordsData("id", birthdayCal), false, mockRecordings()));
+            calendarData.add(new CalendarWordsObj(targetDay, 50, 100, false, mockRecordings()));
 
             birthdayCal.add(Calendar.DATE, 1);
 
@@ -588,8 +616,6 @@ public class LocalData {
         realm.close();
         return response;
     }
-
-
 
 
 }

@@ -1,5 +1,6 @@
 package com.maatayim.talklet.repository.retrofit.api;
 
+import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginRequest;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
@@ -9,6 +10,7 @@ import com.maatayim.talklet.repository.retrofit.model.recording.RecordingMetadat
 import com.maatayim.talklet.repository.retrofit.model.recording.RecordingNotificationResponse;
 import com.maatayim.talklet.repository.retrofit.model.general.ChildDataResponse;
 import com.maatayim.talklet.repository.retrofit.model.user.UserDetails;
+import com.maatayim.talklet.repository.retrofit.model.wordcountdata.AllWordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 
@@ -48,7 +50,9 @@ public interface RetrofitApi {
     );
 
     @POST("children")
-    Single<ChildrenListWrapper> postCreateChild(
+    Single<ChildModel> postCreateChild(
+            @Header("Authorization") String authorization,
+            @Body ChildModel body
     );
 
     @DELETE("children/{id}")
@@ -96,16 +100,15 @@ public interface RetrofitApi {
     );
 
 
-    //    Word Count Data
-    @GET("wordcountdata")
-    Single<WordCountResponse> getWordCountData(
-            @Query("child") String child,
-            @Header("Authorization") String authorization
-    );
 
     @POST("senduserdetails")
     Completable sendUserDetails(
             @Header("Authorization") String authorization,
             @Body UserDetails body
+    );
+
+    @GET("allcountdata")
+    Single<AllWordCountResponse> getAllWordsCountData(
+            @Header("Authorization") String authorization
     );
 }

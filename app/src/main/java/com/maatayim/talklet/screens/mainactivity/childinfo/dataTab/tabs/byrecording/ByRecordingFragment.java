@@ -162,24 +162,33 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
     }
 
     private void changeDisplayDataByDay(int middle, List<CalendarWordsObj> calendarList) {
-        WordsCount wordsCount = calendarList.get(middle).getWordsCount();
+        CalendarWordsObj midDay = calendarList.get(middle);
 
-        if (wordsCount != null){
-            updateView(wordsCount.getTotalWordsCount(),
+        if (midDay != null){
+            updateView(midDay.getWordsCount(),
                     calendarList.get(middle).getDate(),
                     calendarList.get(middle).getRecordsList());
         }
 
     }
 
-
-    private void updateView(Pair<Integer, Integer> totalWordsCount,
-                            Date date,
-                            List<RecordingObj> recordsList){
-        wordsTitle.setText(getString(R.string.words_num, totalWordsCount.first));
+    private void updateView(int wordsCount, Date date, List<RecordingObj> recordsList){
+        wordsTitle.setText(getString(R.string.words_num, wordsCount));
         todaysDate.setText(Utils.getTodaysDateStr(date));
-        initRecordingRecyclerView(recordsList);
+
+        if (recordsList != null){
+            initRecordingRecyclerView(recordsList);
+        }
     }
+
+    // for future version
+//    private void updateView(Pair<Integer, Integer> totalWordsCount,
+//                            Date date,
+//                            List<RecordingObj> recordsList){
+//        wordsTitle.setText(getString(R.string.words_num, totalWordsCount.first));
+//        todaysDate.setText(Utils.getTodaysDateStr(date));
+//        initRecordingRecyclerView(recordsList);
+//    }
 
 
     private void initRecordingRecyclerView(List<RecordingObj> recordsList){

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.DateObj;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
         this.itemsList = itemsList;
         this.isVisibleProgressBar = isVisibleProgressBar;
         for (int i=0; i<MAX_PADDING; i++){
-            itemsList.add(0, new CalendarWordsObj(null, null, false, null));
-            itemsList.add(new CalendarWordsObj(null, null, false, null));
+            itemsList.add(0, new CalendarWordsObj(null, -1, -1, false, null));
+            itemsList.add(new CalendarWordsObj(null, -1, -1, false, null));
             paddingCounter++;
         }
     }

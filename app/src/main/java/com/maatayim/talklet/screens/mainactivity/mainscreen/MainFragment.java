@@ -361,6 +361,11 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void onStart() {
@@ -368,12 +373,12 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void onDestroy() {
-        // Unregister
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+//    @Override
+//    public void onDestroy() {
+//        // Unregister
+//        super.onDestroy();
+//        EventBus.getDefault().unregister(this);
+//    }
 
 
     @Subscribe

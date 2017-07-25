@@ -1,19 +1,25 @@
 package com.maatayim.talklet.screens.loginactivity.signup;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.maatayim.talklet.MainActivity;
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
@@ -26,6 +32,7 @@ import com.maatayim.talklet.screens.loginactivity.signup.events.DisplayPhotoEven
 import com.maatayim.talklet.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
@@ -35,10 +42,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Sophie on 5/22/2017.
+ * Created by Sophie on 5/22/2017
  */
 
 public class SignupFragment extends TalkletFragment implements SignupContract.View {
@@ -63,6 +71,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
     private Calendar birthdayDate = null;
     private boolean isFromLogin;
+    private String babysPhotoUrl;
 
     public static SignupFragment newInstance(boolean isFromLogin) {
 
@@ -80,6 +89,8 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
             isFromLogin = getArguments().getBoolean(IS_LOGIN_ACTIVITY);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new SignupModule(this)).inject(this);
+        EventBus.getDefault().register(this);
+
 
     }
 
@@ -88,7 +99,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
+
 
         if (!isFromLogin){
             setTitle(getString(R.string.add_another_kid));
@@ -96,6 +107,15 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         }else{
             fragmentTitle.setVisibility(View.VISIBLE);
         }
+
+        name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         return view;
     }
@@ -110,7 +130,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
    @OnClick(R.id.camera_image)
    public void onChoosePhotoClick(){
        if(isFromLogin){
-       EventBus.getDefault().post(new AddLoginFragmentEvent(new ChoosePhotoFragment()));
+           EventBus.getDefault().post(new AddLoginFragmentEvent(new ChoosePhotoFragment()));
        }else{
            EventBus.getDefault().post(new AddFragmentEvent(new ChoosePhotoFragment()));
        }
@@ -122,6 +142,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
     @OnClick({R.id.birthday_text_view, R.id.calendar_intent})
     public void onSetChildsBirthdayClick(){
+        hideKeyboard(name);
         birthdayDate = Calendar.getInstance(); /// todo is it????
         setDay(birthday, birthdayDate);
     }
@@ -152,10 +173,28 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         Glide.with(getContext()).load(uri).centerCrop().into(babysPhoto);
     }
 
-
+    private static final String TAG = "SignupFragment";
     @Subscribe
     public void onSetPhotoEvent(DisplayPhotoEvent event){
-        Glide.with(getContext()).load(event.getPhoto()).centerCrop().into(babysPhoto);
+        babysPhotoUrl = event.getPhotoUrl();
+        Glide.with(getContext())
+                .load(event.getPhoto())
+                .listener(new RequestListener<Uri, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        Log.d(TAG, "onException: ");
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        Log.d(TAG, "onResourceReady: ");
+                        return false;
+                    }
+                })
+                .centerCrop()
+                .into(babysPhoto);
+
     }
 
 
@@ -164,12 +203,12 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         if (!checkAllDetailsWereFilled()){
             Toast.makeText(getContext(), "Please fill all the details", Toast.LENGTH_SHORT).show();
         }else{
-            presenter.saveSignUpDetails(name.getText().toString(), birthdayDate.getTime());
+            presenter.saveSignUpDetails(name.getText().toString(), birthdayDate.getTime(), babysPhotoUrl);
         }
     }
 
     private boolean checkAllDetailsWereFilled() {
-        if (name.getText().toString().equals("") || birthdayDate == null){
+        if (name.getText().toString().equals("") || birthdayDate == null || babysPhotoUrl == null){
             return false;
         }else{
             return true;
@@ -190,4 +229,10 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         Toast.makeText(getContext(), "Save data failed", Toast.LENGTH_SHORT).show();
     }
 
+
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

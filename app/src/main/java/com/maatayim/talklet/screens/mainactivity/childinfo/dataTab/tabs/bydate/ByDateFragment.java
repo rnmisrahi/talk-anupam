@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Sophie on 6/11/2017.
+ * Created by Sophie on 6/11/2017
  */
 
 public class ByDateFragment extends TalkletFragment implements ByDateContract.View {
@@ -161,26 +161,30 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     }
 
     private void changeDisplayDataByDay(int middle, List<CalendarWordsObj> calendarList) {
-        WordsCount wordsCount = calendarList.get(middle).getWordsCount();
+        CalendarWordsObj midDate = calendarList.get(middle);
 
-        if (wordsCount != null){
-            updateView(wordsCount.getTotalWordsCount(),
-                    wordsCount.getUniqueWords(),
-                    wordsCount.getNewWords(),
-                    wordsCount.getAdvanceWords(),
-                    calendarList.get(middle).getDate());
+        if (midDate != null){
+            updateView(midDate.getWordsCount(), (midDate.getDate()));
         }
 
     }
 
-    private void updateView(Pair<Integer, Integer> totalWordsCount, Pair<Integer, Integer> uniqueWordsCount,
-                            Pair<Integer, Integer> newWordsCount, Pair<Integer, Integer> advanceWordsCount,
-                            Date date){
-        todaysSaidWords.setText(String.valueOf(totalWordsCount.first));
-        todaysDate.setText(Utils.getTodaysDateStr(date));
-//        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
-//        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
-//        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
+    ////////////This is for future version
+//    private void updateView(Pair<Integer, Integer> totalWordsCount, Pair<Integer, Integer> uniqueWordsCount,
+//                            Pair<Integer, Integer> newWordsCount, Pair<Integer, Integer> advanceWordsCount,
+//                            Date date){
+//        todaysSaidWords.setText(String.valueOf(totalWordsCount.first));
+//        todaysDate.setText(Utils.getTodaysDateStr(date));
+////        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalWordsCount.first, "Unique");
+////        newProgressBar.initProgressBar(newWordsCount.first, totalWordsCount.first, "New");
+////        advanceProgressBar.initProgressBar(advanceWordsCount.first, totalWordsCount.first, "Advance");
+//    }
+
+    private void updateView(int totalWordsCount,  Date date){
+        todaysSaidWords.setText(String.valueOf(totalWordsCount));
+        if(date!=null){
+            todaysDate.setText(Utils.getTodaysDateStr(date));
+        }
     }
 
 

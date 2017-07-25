@@ -7,16 +7,17 @@ import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.SettingChild;
 
 import java.util.List;
 
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/27/2017
  */
 public class AboutBabyAdapter extends RecyclerView.Adapter<AboutBabyHolder> {
-    private List<Child> Childlist;
+    private List<SettingChild> Childlist;
 
-    public AboutBabyAdapter(List<Child> Childlist) {
+    public AboutBabyAdapter(List<SettingChild> Childlist) {
         this.Childlist = Childlist;
     }
 

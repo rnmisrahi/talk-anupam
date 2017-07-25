@@ -9,7 +9,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.
 import java.util.List;
 
 /**
- * Created by Sophie on 6/11/2017.
+ * Created by Sophie on 6/11/2017
  */
 
 public interface ByDateContract {

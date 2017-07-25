@@ -60,7 +60,7 @@ public class SignUpPresenterTest {
 
     @Test
     public void saveSignUpDetails_repositorySuccess() throws Exception {
-        when(repository.saveSignupChildDetails(any(String.class), any(Date.class))).thenReturn(Completable.complete());
+        when(repository.addChild(any(String.class), any(Date.class))).thenReturn(Completable.complete());
 
         presenter.saveSignUpDetails(TEST_STR, birthday);
         verify(view, only()).onDataSaveSuccess();
@@ -68,7 +68,7 @@ public class SignUpPresenterTest {
 
     @Test
     public void saveSignUpDetails_repositoryFailure() throws Exception {
-        when(repository.saveSignupChildDetails(any(String.class), any(Date.class))).thenReturn(Completable.error(new Exception()));
+        when(repository.addChild(any(String.class), any(Date.class))).thenReturn(Completable.error(new Exception()));
         presenter.saveSignUpDetails(TEST_STR, birthday);
         verify(view, only()).onDataSaveFailure();
     }

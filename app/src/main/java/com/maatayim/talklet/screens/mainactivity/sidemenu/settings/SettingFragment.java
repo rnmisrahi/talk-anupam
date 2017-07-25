@@ -66,13 +66,13 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
 
 
     @Override
-    public void onDataReceived(List<Child> childrenNames) {
+    public void onDataReceived(List<SettingChild> childrenNames) {
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         aboutChildRV.setLayoutManager(linearLayoutManager);
 
-        AboutBabyAdapter faboutBabyAdapter = new AboutBabyAdapter(childrenNames);
-        aboutChildRV.setAdapter(faboutBabyAdapter);
+        AboutBabyAdapter aboutBabyAdapter = new AboutBabyAdapter(childrenNames);
+        aboutChildRV.setAdapter(aboutBabyAdapter);
 
 
 //        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getFirstName()));

@@ -9,15 +9,17 @@ import java.util.List;
  * Created by Sophie on 5/28/2017
  */
 
-public class Date {
+public class DailyWords {
 
+    private String id;
     private long date;
-    private WordCount wordCount;
-    private WordCount expectedWordCount;
+    private int wordCount;
+    private int expectedWordCount;
     private List<Recording> recordings;
+    private String childId;
 
-    public Date(long date, WordCount wordCount, WordCount expectedWordCount, List<Recording> recordings){
-
+    public DailyWords(String id, long date, int wordCount, int expectedWordCount, List<Recording> recordings) {
+        this.id = id;
         this.date = date;
         this.wordCount = wordCount;
         this.expectedWordCount = expectedWordCount;
@@ -32,19 +34,19 @@ public class Date {
         this.date = date;
     }
 
-    public WordCount getWordCount() {
+    public int getWordCount() {
         return wordCount;
     }
 
-    public void setWordCount(WordCount wordCount) {
+    public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
     }
 
-    public WordCount getExpectedWordCount() {
+    public int getExpectedWordCount() {
         return expectedWordCount;
     }
 
-    public void setExpectedWordCount(WordCount expectedWordCount) {
+    public void setExpectedWordCount(int expectedWordCount) {
         this.expectedWordCount = expectedWordCount;
     }
 
@@ -54,5 +56,17 @@ public class Date {
 
     public void setRecordings(List<Recording> recordings) {
         this.recordings = recordings;
+    }
+
+    public String getChildId() {
+        return childId;
+    }
+
+    public void setChildId(String childId) {
+        this.childId = childId;
+    }
+
+    public String getId() {
+        return id;
     }
 }

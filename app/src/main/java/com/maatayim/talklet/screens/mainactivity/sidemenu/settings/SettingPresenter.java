@@ -3,6 +3,7 @@ package com.maatayim.talklet.screens.mainactivity.sidemenu.settings;
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +43,21 @@ public class SettingPresenter implements SettingContract.Presenter {
 
 
     private void getChildrenList() {
-//        repo.getChildrenList()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(scheduler)
-//                .subscribeWith(new  DisposableSingleObserver<List<Child>>() {
-//                    @Override
-//                    public void onSuccess(@NonNull List<Child> children) {
-//                        view.onDataReceived(children);
-//                    }
-//
-//                    @Override
-//                    public void onError(@NonNull Throwable e) {
-//                        view.onChildrenLoadError();
-//                    }
-//                });
+        repo.getSettingChildList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableSingleObserver<List<SettingChild>>() {
+                    @Override
+                    public void onSuccess(@NonNull List<SettingChild> settingChildren) {
+                        view.onDataReceived(settingChildren);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.onChildrenLoadError();
+                    }
+                });
+
     }
 
 

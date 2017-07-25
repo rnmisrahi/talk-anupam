@@ -1,5 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
@@ -28,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 
 /**
  * Created by Sophie on 6/18/2017
@@ -88,7 +91,16 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
         setListenerOnView(langugeField2, inflater);
         setListenerOnView(langugeField3, inflater);
 
+
         return view;
+    }
+
+
+    @OnFocusChange({R.id.first_name, R.id.last_name})
+    public void hideKeyBoardOnFocuseChanged(View v, boolean hasFocus){
+        if (!hasFocus) {
+            hideKeyboard(v);
+        }
     }
 
 
@@ -267,6 +279,12 @@ public class AboutYouFragment extends TalkletFragment implements AboutYouContrac
 
         }
     }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
 
 }

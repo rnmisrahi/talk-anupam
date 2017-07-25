@@ -80,7 +80,7 @@ public class GeneralPresenterTest {
         childList.add(new Child("12", TEST_NAME + "!@!@!@!@!@", new Date(), Uri.EMPTY));
 
 
-        when(repository.getChildrenListWithTips()).thenReturn(Observable.<List<Child>>just(childList));
+        when(repository.getMainScreenChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
         when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>just(tipsList));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>just(wordsCount));
@@ -101,7 +101,7 @@ public class GeneralPresenterTest {
         childList.add(new Child("11", TEST_NAME, new Date(), Uri.EMPTY));
         childList.add(new Child("12", TEST_NAME + "!@!@!@!@!@", new Date(), Uri.EMPTY));
 
-        when(repository.getChildrenListWithTips()).thenReturn(Observable.<List<Child>>error(new Exception()));
+        when(repository.getMainScreenChildrenList()).thenReturn(Observable.<List<Child>>error(new Exception()));
 
         presenter.getData();
         verify(view, only()).onDisplayChildrenError();
@@ -115,7 +115,7 @@ public class GeneralPresenterTest {
         childList.add(new Child("12", TEST_NAME + "!@!@!@!@!@", new Date(), Uri.EMPTY));
 
 
-        when(repository.getChildrenListWithTips()).thenReturn(Observable.<List<Child>>just(childList));
+        when(repository.getMainScreenChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>error(new Exception()));
 
         presenter.getData();
@@ -131,7 +131,7 @@ public class GeneralPresenterTest {
         childList.add(new Child("12", TEST_NAME + "!@!@!@!@!@", new Date(), Uri.EMPTY));
 
 
-        when(repository.getChildrenListWithTips()).thenReturn(Observable.<List<Child>>just(childList));
+        when(repository.getMainScreenChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
         when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>error(new Exception()));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>just(wordsCount));
@@ -150,7 +150,7 @@ public class GeneralPresenterTest {
         childList.add(new Child("12", TEST_NAME + "!@!@!@!@!@", new Date(), Uri.EMPTY));
 
 
-        when(repository.getChildrenListWithTips()).thenReturn(Observable.<List<Child>>just(childList));
+        when(repository.getMainScreenChildrenList()).thenReturn(Observable.<List<Child>>just(childList));
         when(repository.getLastConnectionChild()).thenReturn(Observable.<Child>just(childList.get(CHILD_IDX)));
         when(repository.getTipsList(any(String.class))).thenReturn(Observable.<List<TipTicket>>just(tipsList));
         when(repository.getWordsCount(any(String.class))).thenReturn(Observable.<Pair<Integer, Integer>>error(new Exception()));

@@ -1,6 +1,7 @@
 package com.maatayim.talklet.baseline;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 
@@ -9,6 +10,7 @@ import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapp
 import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.DateObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
@@ -18,6 +20,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.generaltab.RecordingO
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 import com.facebook.login.LoginResult;
+import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.SettingChild;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
 
 import java.util.Date;
@@ -43,7 +46,7 @@ public interface BaseContract {
 
     interface Repository
     {
-        Completable saveSignupChildDetails(String name, Date birthday);
+        Completable addChild(String name, Date birthday, String babysPhoto);
         Completable saveBabysPhoto(String photo);
         Completable saveFacebookLoginToken(LoginResult loginResult, Context context);
         Completable saveUserFBDetails(UserDetails userDetails);
@@ -56,8 +59,8 @@ public interface BaseContract {
         Observable<List<TipTicket>> getTipsList(String id);
         Observable<Pair<Integer, Integer>> getWordsCount(String id);
         Observable<String> getFacebookLoginToken();
-        Single<List<MainScreenChild>> getChildrenListWithTips();
-        Single<List<Child>> getChildrenList();
+        Single<List<MainScreenChild>> getMainScreenChildrenList();
+        Single<List<SettingChild>> getSettingChildList();
         Observable<Child> getLastConnectionChild();
         Single<LoginResponse> login(Context context);
 
@@ -80,7 +83,7 @@ public interface BaseContract {
 
         Single<AboutUserObj> getUserDetails();
 
-
+        Single<List<CalendarWordsObj>> getChildWordsByDate(String id);
 
         Observable<List<TipTicket>> getAllChildrenTips();
 
@@ -88,6 +91,8 @@ public interface BaseContract {
         Completable downloadKids();
 
         Completable downloadTips();
+
+        Completable downloadCountData();
 
         Completable downloadWordsOfTheDay(final String childId);
 

@@ -152,7 +152,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 ft.addToBackStack(fragment.getClass().getName());
             }
         } else {
-            ft.add(R.id.frame_layout, fragment, fragment.getClass().getName());
+//            ft.add(R.id.frame_layout, fragment, fragment.getClass().getName());
+            ft.replace(R.id.frame_layout, fragment, fragment.getClass().getName());
+            ft.addToBackStack(fragment.getClass().getName());
 
             if(view != null){
                 ft.addSharedElement(view, ViewCompat.getTransitionName(view));
@@ -251,5 +253,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

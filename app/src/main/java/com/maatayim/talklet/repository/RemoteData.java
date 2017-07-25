@@ -1,11 +1,13 @@
 package com.maatayim.talklet.repository;
 
 import com.maatayim.talklet.repository.retrofit.api.BackEndApi;
+import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginRequest;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
 import com.maatayim.talklet.repository.retrofit.model.user.UserDetails;
+import com.maatayim.talklet.repository.retrofit.model.wordcountdata.AllWordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.settings.aboutyou.AboutUserObj;
@@ -39,13 +41,23 @@ public class RemoteData {
         return BackEndApi.getApi().getWordData(childId, token);
     }
 
-    public Single<WordCountResponse> downloadWordCountData(String childId, String token) {
-        return BackEndApi.getApi().getWordCountData(childId, token);
+//    public Single<WordCountResponse> downloadWordCountData(String childId, String token) {
+//        return BackEndApi.getApi().getWordCountData(childId, token);
+//    }
+
+    public Single<AllWordCountResponse> downloadAllWordCountData(String token) {
+        return BackEndApi.getApi().getAllWordsCountData(token);
     }
+
+
 
 
     public Completable sendUsersData(String token, UserDetails userDetails) {
         return BackEndApi.getApi().sendUserDetails(token, userDetails);
+    }
+
+    public Single<ChildModel> addChild(String token, ChildModel child) {
+        return BackEndApi.getApi().postCreateChild(token, child);
     }
 
 
