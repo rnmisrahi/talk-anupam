@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/27/2017
  */
 
 public interface RecordContract {
@@ -17,7 +17,7 @@ public interface RecordContract {
     interface View extends BaseContract.View{
 
         void onDataReceived(List<MainScreenChild> mainScreenChildren);
-        void initViewpager(List<TipTicket> tipsTickets);
+        void initViewpager(List<TipTicket> tipsTickets, boolean isMoreThanOnChild);
 
         void onTipsLoadError();
     }
@@ -25,7 +25,6 @@ public interface RecordContract {
     interface Presenter extends BaseContract.Presenter{
 
         void getData();
-        void getAllChildrenTips();
 
     }
 }

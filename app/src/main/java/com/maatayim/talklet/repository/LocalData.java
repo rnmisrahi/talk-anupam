@@ -8,10 +8,12 @@ import android.support.v4.util.Pair;
 
 import com.maatayim.talklet.repository.realm.RealmChild;
 import com.maatayim.talklet.repository.realm.RealmCountData;
+import com.maatayim.talklet.repository.realm.RealmRecording;
 import com.maatayim.talklet.repository.realm.RealmTip;
 import com.maatayim.talklet.repository.realm.RealmUser;
 import com.maatayim.talklet.repository.realm.RealmWordOfTheDay;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
+import com.maatayim.talklet.repository.retrofit.model.general.Recording;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
@@ -31,6 +33,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -159,15 +162,22 @@ public class LocalData {
 
     }
 
-    public Completable saveCountDataRx(final String id, final String childId, final int countData, final int totalData, final long date) {
-        return Completable.fromAction(() -> saveCountData(id, childId, countData, totalData, date));
+    public Completable saveCountDataRx(final String id, final String childId, final int countData,
+                                       final int totalData, final long date, final List<Recording> recordingsList) {
+        return Completable.fromAction(() -> saveCountData(id, childId, countData, totalData, date, recordingsList));
     }
 
-    public void saveCountData(final String id, final String childId, final int countData, final int totalData, final long date) {
+    public void saveCountData(final String id, final String childId, final int countData, final int totalData, final long date, final List<Recording> recordingsList) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            RealmCountData realmCountData = new RealmCountData(id, childId, countData, totalData, date);
+            RealmList<RealmRecording> recordList = new RealmList<RealmRecording>();
+            for (Recording recording : recordingsList) {
+                recordList.add(new RealmRecording(recording.getId(), recording.getNumber(), recording.getDate(),
+                        recording.getWordCount(), totalData, recording.getDuration()));
+
+            }
+            RealmCountData realmCountData = new RealmCountData(id, childId, countData, totalData, date, recordList);
             realm1.copyToRealmOrUpdate(realmCountData);
         });
         realm.close();
@@ -288,7 +298,7 @@ public class LocalData {
         RealmResults<RealmCountData> countDataList = realm.where(RealmCountData.class).equalTo(REALM_TIP_CHILD_ID, id).findAll();
         List<RealmCountData> response = new ArrayList<>();
         for (RealmCountData countData : countDataList) {
-            response.add(new RealmCountData(countData));
+            response.add(realm.copyFromRealm(countData));
         }
         realm.close();
         return response;
@@ -415,11 +425,11 @@ public class LocalData {
     private List<RecordingObj> mockRecordings() {
         List<RecordingObj> recordings = new ArrayList<>();
 
-        recordings.add(new RecordingObj("1", 1, new Date(1483726548L), new android.util.Pair<Integer, Integer>(15, 20), 3600000L, false));
-        recordings.add(new RecordingObj("2", 2, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
-        recordings.add(new RecordingObj("3", 3, new Date(1507659612010L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
-        recordings.add(new RecordingObj("4", 4, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
-        recordings.add(new RecordingObj("5", 5, new Date(1507659612000L), new android.util.Pair<Integer, Integer>(4, 100), 3600000L, false));
+        recordings.add(new RecordingObj("1", 1, new Date(1483726548L), 15, 20, 3600000L, false));
+        recordings.add(new RecordingObj("2", 2, new Date(1507659612000L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj("3", 3, new Date(1507659612010L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj("4", 4, new Date(1507659612000L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj("5", 5, new Date(1507659612000L), 4, 10, 3600000L, false));
 
         return recordings;
 

@@ -33,7 +33,7 @@ import butterknife.OnPageChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class ChildFragment extends TalkletFragment implements ChildContract.View{

@@ -123,7 +123,7 @@ public class LoginPresenterTest {
 
     @Test
     public void saveToken_repositorySuccess() throws Exception {
-        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.complete());
+//        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.complete());
         presenter.saveToken(loginResult);
         verify(view, only()).onFacebookLoginSuccess();
     }
@@ -131,7 +131,7 @@ public class LoginPresenterTest {
 
     @Test
     public void saveToken_repositoryFailure() throws Exception {
-        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.error(new Exception()));
+//        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.error(new Exception()));
         presenter.saveToken(loginResult);
         verify(view, only()).onFacebookLoginFailed();
     }

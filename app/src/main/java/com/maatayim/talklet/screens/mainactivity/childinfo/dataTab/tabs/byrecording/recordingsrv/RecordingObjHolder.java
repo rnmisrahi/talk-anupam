@@ -57,7 +57,8 @@ public class RecordingObjHolder extends ViewHolder {
             @Override
             public void onClick(View v) {
                 // TODO: 6/21/2017 update all
-//                itemView.setSelected(!itemView.isSelected());
+                itemView.setSelected(!itemView.isSelected());
+                item.setSelected(!item.isSelected());
                 int itemPosition = RecordingObjHolder.this.getAdapterPosition();
                 onClickListener.onClick(itemPosition);
             }
@@ -72,12 +73,12 @@ public class RecordingObjHolder extends ViewHolder {
 
             recordNum.setText(context.getString(R.string.record_num, item.getNumber()));
             recordDetails.setText(context.getString(R.string.record_details,
-                    item.getWordCount().first,
-                    item.getWordCount().second,
+                    item.getWordCount(),
+                    item.getWordCountGoal(),
                     item.getDurationStr()));
 
-            wordsCounter.setText(String.valueOf(item.getWordCount().first));
-            wordsDetails.setText(context.getString(R.string.words_details, 2, 18, 36));
+            wordsCounter.setText(String.valueOf(item.getWordCount()));
+//            wordsDetails.setText(context.getString(R.string.words_details, 2, 18, 36));
 
             if (item.isSelected()) {
                 setSelectedItem();

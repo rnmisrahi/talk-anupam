@@ -33,11 +33,15 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
     TextView wordCount;
 
     private final Context context;
+    private final View itemView;
+    private final boolean isCountDataChildItemVisable;
     private MainScreenChild child;
 
-    public ChildrenHolder(View itemView) {
+    public ChildrenHolder(View itemView, boolean isCountDataChildItemVisable) {
         super(itemView);
         context = itemView.getContext();
+        this.itemView = itemView;
+        this.isCountDataChildItemVisable = isCountDataChildItemVisable;
         ButterKnife.bind(this, itemView);
 
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +60,13 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
                 .placeholder(R.drawable.pic)
                 .into(childView);
 
-        wordCount.setText(context.getString(R.string.word_count, child.getWordCount(), child.getTotal()));
+        if(isCountDataChildItemVisable){
+            wordCount.setVisibility(View.VISIBLE);
+            wordCount.setText(context.getString(R.string.word_count, child.getWordCount(), child.getTotal()));
+        }
+        else{
+            wordCount.setVisibility(View.GONE);
+        }
+
     }
 }

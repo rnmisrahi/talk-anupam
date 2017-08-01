@@ -6,7 +6,7 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.c
 import java.util.List;
 
 /**
- * Created by Sophie on 6/20/2017.
+ * Created by Sophie on 6/20/2017
  */
 
 public interface ByRecordingContract {

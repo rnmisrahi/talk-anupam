@@ -2,16 +2,20 @@ package com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/7/2017.
+ * Created by Sophie on 6/7/2017
  */
 
 public class GeneralTabPresenter implements GeneralTabContract.Presenter {
@@ -31,26 +35,51 @@ public class GeneralTabPresenter implements GeneralTabContract.Presenter {
 
     @Override
     public void getData(String id) {
-        repository.getTotalWordsCount(id)
+//        repository.getTotalWordsCount(id)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(scheduler)
+//                .subscribeWith(new DisposableObserver<WordsCount>() {
+//                    @Override
+//                    public void onNext(@NonNull WordsCount wordsCount) {
+//                        view.onDataReceived(wordsCount.getTotalWordsCount(),
+//                                wordsCount.getUniqueWords(),
+//                                wordsCount.getNewWords(),
+//                                wordsCount.getAdvanceWords());
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        view.wordsCountLoadError();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+
+
+        repository.getChildWordsByDate(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
-                .subscribeWith(new DisposableObserver<WordsCount>() {
+                .subscribeWith(new DisposableSingleObserver<List<CalendarWordsObj>>() {
                     @Override
-                    public void onNext(@NonNull WordsCount wordsCount) {
-                        view.onDataReceived(wordsCount.getTotalWordsCount(),
-                                wordsCount.getUniqueWords(),
-                                wordsCount.getNewWords(),
-                                wordsCount.getAdvanceWords());
+                    public void onSuccess(@NonNull List<CalendarWordsObj> dateObjs) {
+
+                        int saidWordsCount = 0;
+                        int totlaGoalWords = 0;
+
+                        for (CalendarWordsObj dateObj : dateObjs) {
+                            saidWordsCount = saidWordsCount + dateObj.getWordsCount();
+                            totlaGoalWords = totlaGoalWords + dateObj.getTotalWords();
+                        }
+
+                        view.onDataReceived(saidWordsCount, totlaGoalWords);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.wordsCountLoadError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
 

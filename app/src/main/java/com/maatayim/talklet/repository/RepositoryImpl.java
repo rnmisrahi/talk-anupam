@@ -39,6 +39,8 @@ import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
+import static com.maatayim.talklet.repository.Mapper.mapRealmRecordingListToRecordsObj;
+
 /**
  * Created by Sophie on 5/24/2017
  */
@@ -96,6 +98,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                 if (facebookId.isEmpty()) {
                     return Single.just(new LoginResponse(null, false));
                 } else {
+//                    return remoteRepo.login(/*facebookId*/"RubenMisrahi");
                     return remoteRepo.login(facebookId);
                 }
             }
@@ -280,7 +283,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                 .flatMapObservable(realmChild->localRepo.getWordsCountByDateRx(realmChild.getId())
                 .flatMapObservable(Observable::fromIterable)
                         .map(countData -> new CalendarWordsObj(new Date(countData.getDate()), countData.getWordCount(),
-                                countData.getExpectedWordCount(), false, null)) //// TODO: 7/23/2017 insert recordings
+                                countData.getExpectedWordCount(), false, mapRealmRecordingListToRecordsObj(countData.getRecordings()))) //// TODO: 7/23/2017 insert recordings
                 ).toList();
     }
 
@@ -325,7 +328,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                 .flatMapObservable(allWordCountResponse -> Observable.fromIterable(allWordCountResponse.getWordCountList()))
                 .flatMap(childWordModel -> Observable.fromIterable(childWordModel.getDays()))
                 .flatMapCompletable(dailyWords -> localRepo.saveCountDataRx(dailyWords.getId(), dailyWords.getChildId(),
-                        dailyWords.getWordCount(), dailyWords.getExpectedWordCount(), dailyWords.getDate()));
+                        dailyWords.getWordCount(), dailyWords.getExpectedWordCount(), dailyWords.getDate(), dailyWords.getRecordings()));
     }
 
 

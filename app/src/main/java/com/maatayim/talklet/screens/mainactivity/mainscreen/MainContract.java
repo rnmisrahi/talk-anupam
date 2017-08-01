@@ -36,6 +36,8 @@ public interface MainContract {
 
         void onTipsLoadError();
 
-        void setChildrenRecyclerView(List<MainScreenChild> childrenList);
+        void setChildrenRecyclerView(List<MainScreenChild> childrenList, boolean countDataOnChildItem);
+
+        void updateWordsCountManyChildren();
     }
 }

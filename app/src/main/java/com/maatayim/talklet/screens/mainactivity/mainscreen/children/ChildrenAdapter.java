@@ -18,17 +18,19 @@ import java.util.List;
 public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenHolder>{
 
     private List<MainScreenChild> childrenList;
+    private boolean isCountDataChildItemVisable;
 
-    public ChildrenAdapter(List<MainScreenChild> childrenList){
+    public ChildrenAdapter(List<MainScreenChild> childrenList, boolean isCountDataChildItemVisable){
 
         this.childrenList = childrenList;
+        this.isCountDataChildItemVisable = isCountDataChildItemVisable;
     }
 
 
     @Override
     public ChildrenHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_item_img, parent, false);
-        return new ChildrenHolder(view);
+        return new ChildrenHolder(view, isCountDataChildItemVisable);
     }
 
     @Override

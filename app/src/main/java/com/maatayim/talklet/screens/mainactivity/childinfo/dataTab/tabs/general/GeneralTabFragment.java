@@ -90,13 +90,16 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
 
     }
 
-    @Override
-    public void onDataReceived(Pair<Integer, Integer> totalwordsCount,
-                               Pair<Integer, Integer> uniqueWordsCount,
-                               Pair<Integer, Integer> newWordsCount,
-                               Pair<Integer, Integer> advanceWordsCount) {
+//    @Override
+//    public void onDataReceived(Pair<Integer, Integer> totalwordsCount,
+//                               Pair<Integer, Integer> uniqueWordsCount,
+//                               Pair<Integer, Integer> newWordsCount,
+//                               Pair<Integer, Integer> advanceWordsCount) {
 
-        initializePieChart(totalwordsCount.first, totalwordsCount.second);
+    @Override
+    public void onDataReceived(int wordsSaidCount, int totalGoalWords) {
+
+        initializePieChart(wordsSaidCount, totalGoalWords);
 
         // // TODO: 7/13/2017  don't erase! - will be relevant in the future versions
 //        uniqueProgressBar.initProgressBar(uniqueWordsCount.first, totalwordsCount.first, "Unique");

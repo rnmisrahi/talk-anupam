@@ -1,5 +1,6 @@
 package com.maatayim.talklet.repository.realm;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -15,13 +16,15 @@ public class RealmCountData extends RealmObject {
     private String childId;
     private int wordCount;
     private int expectedWordCount;
+    private RealmList<RealmRecording> recordings;
 
-    public RealmCountData(String id, String childId, int wordCount, int expectedWordCount, long date) {
+    public RealmCountData(String id, String childId, int wordCount, int expectedWordCount, long date, RealmList<RealmRecording> recordings) {
         this.id = id;
         this.childId = childId;
         this.wordCount = wordCount;
         this.expectedWordCount = expectedWordCount;
         this.date = date;
+        this.recordings = recordings;
     }
 
     public RealmCountData() {
@@ -34,6 +37,7 @@ public class RealmCountData extends RealmObject {
         this.wordCount = countData.getWordCount();
         this.expectedWordCount = countData.getExpectedWordCount();
         this.date = countData.getDate();
+        this.recordings = countData.getRecordings();
     }
 
 
@@ -72,5 +76,9 @@ public class RealmCountData extends RealmObject {
 
     public long getDate() {
         return date;
+    }
+
+    public RealmList<RealmRecording> getRecordings() {
+        return recordings;
     }
 }

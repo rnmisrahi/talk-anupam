@@ -10,10 +10,11 @@ import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHolder>{
@@ -33,6 +34,7 @@ public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHo
         for (ChildRecObj child : childrenList) {
             child.setSelected(true);
         }
+        selectedCounter = childrenList.size();
     }
 
 
@@ -71,12 +73,14 @@ public class RecordChildrenAdapter extends RecyclerView.Adapter<RecordChildrenHo
         return selectedCounter;
     }
 
-    public ChildRecObj getSelectedChild(){
+    public List<ChildRecObj> getSelectedChildren(){
+        List<ChildRecObj> selectedChildren = new ArrayList<>();
+
         for (ChildRecObj childRecObj : childrenList) {
             if (childRecObj.isSelected()){
-                return childRecObj;
+                selectedChildren.add(childRecObj);
             }
         }
-        return null;
+        return selectedChildren;
     }
 }

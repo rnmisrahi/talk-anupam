@@ -8,6 +8,7 @@ import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.childinfo.ChildFragment;
+import com.maatayim.talklet.screens.mainactivity.record.ChildClickEvent;
 import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 import com.squareup.picasso.Picasso;
 
@@ -39,7 +40,9 @@ public class RecordChildrenHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 child.setSelected(!child.isSelected());
                 int itemPosition = RecordChildrenHolder.this.getAdapterPosition();
+
                 onSelectChildListener.onSelect(itemPosition);
+                EventBus.getDefault().post(new ChildClickEvent(true));
 
             }
         });

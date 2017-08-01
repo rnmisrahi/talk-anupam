@@ -1,27 +1,35 @@
-package com.maatayim.talklet.repository.retrofit.model.general;
+package com.maatayim.talklet.repository.realm;
 
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by Sophie on 5/28/2017
+ * Created by Sophie on 7/31/2017
  */
 
-public class Recording {
+public class RealmRecording extends RealmObject{
 
+    @PrimaryKey
     private String id;
+
     private int number;
     private String date;
     private int wordCounter;
+    private int wordCounterGoal;
     private String duration;
 
-    public Recording(String id, int number, String date, int wordCounter, String duration){
+    public RealmRecording() {
+    }
 
+    public RealmRecording(String id, int number, String date, int wordCounter, int wordCounterGoal, String duration) {
         this.id = id;
         this.number = number;
         this.date = date;
         this.wordCounter = wordCounter;
+        this.wordCounterGoal = wordCounterGoal;
         this.duration = duration;
     }
+
 
     public String getId() {
         return id;
@@ -47,11 +55,11 @@ public class Recording {
         this.date = date;
     }
 
-    public int getWordCount() {
+    public int getWordCounter() {
         return wordCounter;
     }
 
-    public void setWordCount(int wordCounter) {
+    public void setWordCounter(int wordCounter) {
         this.wordCounter = wordCounter;
     }
 
@@ -61,5 +69,13 @@ public class Recording {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public int getWordCounterGoal() {
+        return wordCounterGoal;
+    }
+
+    public void setWordCounterGoal(int wordCounterGoal) {
+        this.wordCounterGoal = wordCounterGoal;
     }
 }

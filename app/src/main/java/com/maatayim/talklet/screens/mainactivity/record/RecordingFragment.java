@@ -28,6 +28,9 @@ import com.maatayim.talklet.screens.mainactivity.record.injection.RecordModule;
 import com.maatayim.talklet.utils.Utils;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -85,6 +88,8 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     private ConstraintSet constraintSet2;
     private boolean changed;
     private RecordChildrenAdapter childrenAdapter;
+    private TipsAdapter pagerAdapter;
+    private static List<TipTicket> originalTipsList = new ArrayList<>();
 
 
     public static RecordingFragment newInstance(MediaRecordWrapper mediaRecorder) {
@@ -102,6 +107,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         if (getArguments() != null) {
             mediaRecorder = getArguments().getParcelable(ARG_RECORD);
         }
+        EventBus.getDefault().register(this);
 
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new RecordModule(this)).inject(this);
     }
@@ -147,6 +153,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         }
 
         setChildrenRecyclerView(children);
+
     }
 
 
@@ -191,24 +198,33 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     @OnClick({R.id.message_flag, R.id.exit_flag})
     public void onShowTipsClick() {
         if (!changed) {
-            if(childrenAdapter.getSelectedChildrenNum() > 1){
-                presenter.getAllChildrenTips();
-            }else{
-                ChildRecObj selectedChild= childrenAdapter.getSelectedChild();
-
-                initViewpager(tipsMappper(selectedChild));
-            }
+//            if(childrenAdapter.getSelectedChildrenNum() == 1){
+//                List<ChildRecObj> selectedChildren = childrenAdapter.getSelectedChildren();
+//                List<TipTicket> tipTickets = tipsMapper(selectedChildren);
+//                pagerAdapter.setDataSet(tipTickets);
+//                pagerAdapter.updateBaseId(tipTickets.size());
+//                tips_view_pager.setAdapter(pagerAdapter);
+//
+//            }else{
+//                pagerAdapter.setDataSet(originalTipsList);
+//                pagerAdapter.updateBaseId(originalTipsList.size());
+//                tips_view_pager.setAdapter(pagerAdapter);
+//            }
 
         }
         handleTouch();
     }
 
-    private List<TipTicket> tipsMappper(ChildRecObj selectedChild){
+    private List<TipTicket> tipsMapper(List<ChildRecObj> selectedChildren){
         List<TipTicket> tickets = new ArrayList<>();
-        List<MainScreenChild.Tip> tips = selectedChild.getTips();
 
-        for (MainScreenChild.Tip tip : tips) {
-            tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), selectedChild.getUrl()));
+        for (ChildRecObj selectedChild : selectedChildren) {
+
+            List<MainScreenChild.Tip> tips = selectedChild.getTips();
+
+            for (MainScreenChild.Tip tip : tips) {
+                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), selectedChild.getUrl()));
+            }
         }
 
         return tickets;
@@ -288,19 +304,22 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
 
 
     @Override
-    public void initViewpager(List<TipTicket> tipsTickets) {
+    public void initViewpager(List<TipTicket> tipsTickets, boolean isMorethanOneChildSelected) {
 
         tips_view_pager.setPadding(LEFT_GAP, TOP_MARGIN, RIGHT_GAP, TOP_MARGIN);
         tips_view_pager.setClipToPadding(false);
         tips_view_pager.setPageMargin(HALF_GAP);
 
-        boolean isMorethanOneChildSelected = false;
-        if (childrenAdapter.getSelectedChildrenNum()>1){
-            isMorethanOneChildSelected = true;
-        }
+//        boolean isMorethanOneChildSelected = false;
+//        if (childrenAdapter.getSelectedChildrenNum()>1){
+//            isMorethanOneChildSelected = true;
+//        }
 
-        TipsAdapter pagerAdapter = new TipsAdapter(
-                getChildFragmentManager(), tipsTickets, true, isMorethanOneChildSelected); //// TODO: 7/4/2017 show baby img if more than one selected
+        originalTipsList = tipsTickets;
+
+        //// TODO: 7/4/2017 show baby img if more than one selected
+        pagerAdapter = new TipsAdapter(
+                getChildFragmentManager(), tipsTickets, true, isMorethanOneChildSelected);
         tips_view_pager.setAdapter(pagerAdapter);
         pageIndicator.setViewPager(tips_view_pager);
     }
@@ -315,5 +334,22 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         myTimer.cancel();
         mediaRecorder.stop();
         return super.onBackPressed();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void childSetChanged(ChildClickEvent event){
+        if (event.isClickedChildSetChanged()){
+            List<ChildRecObj> selectedChildren = childrenAdapter.getSelectedChildren();
+            List<TipTicket> tipTickets = tipsMapper(selectedChildren);
+            pagerAdapter.setDataSet(tipTickets);
+            pagerAdapter.updateBaseId(tipTickets.size());
+            tips_view_pager.setAdapter(pagerAdapter);
+        }
     }
 }

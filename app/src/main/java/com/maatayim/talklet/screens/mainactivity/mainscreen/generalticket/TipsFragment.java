@@ -54,11 +54,6 @@ public class TipsFragment extends Fragment implements TipsContract.View{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            ticket = getArguments().getParcelable(TICKET);
-            isRec = getArguments().getBoolean(IS_REC);
-            isMoreThanOneChild = getArguments().getBoolean(IS_MORE_THAN_CHILD);
-        }
     }
 
     @Override
@@ -66,12 +61,19 @@ public class TipsFragment extends Fragment implements TipsContract.View{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.item_general_tip, container, false);
         ButterKnife.bind(this, view);
+        if (getArguments() != null) {
+            ticket = getArguments().getParcelable(TICKET);
+            isRec = getArguments().getBoolean(IS_REC);
+            isMoreThanOneChild = getArguments().getBoolean(IS_MORE_THAN_CHILD);
+        }
         setTip(ticket);
         return view;
     }
 
 
     public void setTip(TipTicket generalTipTicket){
+
+//        if(generalTipTicket.isDisplay()) {
         tipText.setText(generalTipTicket.getTip());
 
         if (generalTipTicket.isAssertion()) {
@@ -87,20 +89,21 @@ public class TipsFragment extends Fragment implements TipsContract.View{
             view.setBackgroundColor(getResources().getColor(R.color.tip_background));
         }
 
-        if(!isMoreThanOneChild) {
-            childImg.setVisibility(View.INVISIBLE);
+//        if(!isMoreThanOneChild) {
+//            childImg.setVisibility(View.GONE);
+//
+//        }else{
 
-        }else{
+        Picasso.with(getContext())
+                .load(generalTipTicket.getBabyPhoto())
+                .placeholder(R.drawable.pic)
+                .into(childImg);
 
-            Picasso.with(getContext())
-                    .load(generalTipTicket.getBabyPhoto())
-                    .placeholder(R.drawable.pic)
-                    .into(childImg);
-
-            childImg.setVisibility(View.VISIBLE);
+        childImg.setVisibility(View.VISIBLE);
+//        }
 
 
-        }
+//        }
 
 
 

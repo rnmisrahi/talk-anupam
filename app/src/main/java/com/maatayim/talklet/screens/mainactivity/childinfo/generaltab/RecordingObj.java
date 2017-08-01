@@ -7,7 +7,7 @@ import com.maatayim.talklet.utils.Utils;
 import java.util.Date;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class RecordingObj {
@@ -16,17 +16,21 @@ public class RecordingObj {
     private String id;
     private int number;
     private Date date;
-    private Pair<Integer, Integer> wordCount;
+    private int wordCount;
+    private int wordCountGoal;
     private long duration;
     private boolean isSelected;
 
-    public RecordingObj(String id, int number, Date date, Pair<Integer, Integer> wordCount,
-                        long duration, boolean isSelected){
+
+
+    public RecordingObj(String id, int number, Date date, int wordCount,
+                        int wordCountGoal, long duration, boolean isSelected){
 
         this.id = id;
         this.number = number;
         this.date = date;
         this.wordCount = wordCount;
+        this.wordCountGoal = wordCountGoal;
         this.duration = duration;
         this.isSelected = isSelected;
     }
@@ -55,11 +59,11 @@ public class RecordingObj {
         this.date = date;
     }
 
-    public Pair<Integer, Integer> getWordCount() {
+    public int getWordCount() {
         return wordCount;
     }
 
-    public void setWordCount(Pair<Integer, Integer> wordCount) {
+    public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
     }
 
@@ -83,5 +87,13 @@ public class RecordingObj {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public int getWordCountGoal() {
+        return wordCountGoal;
+    }
+
+    public void setWordCountGoal(int wordCountGoal) {
+        this.wordCountGoal = wordCountGoal;
     }
 }

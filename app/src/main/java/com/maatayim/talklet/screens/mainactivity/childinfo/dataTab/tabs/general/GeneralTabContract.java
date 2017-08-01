@@ -15,10 +15,7 @@ public interface GeneralTabContract {
     }
 
     interface View extends  BaseContract.View{
-        void onDataReceived(Pair<Integer, Integer> totalwordsCount,
-                            Pair<Integer, Integer> uniqueWordsCount,
-                            Pair<Integer, Integer> newWordsCount,
-                            Pair<Integer, Integer> advanceWordsCount);
+        void onDataReceived(int wordsSaidCount, int totalGoalWords);
 
         void wordsCountLoadError();
     }

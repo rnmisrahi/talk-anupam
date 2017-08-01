@@ -110,7 +110,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     private boolean status = true;
     public byte[] buffer;
     public static DatagramSocket socket;
-    private int port=50005;
+    private int port = 50005;
     TipsAdapter pagerAdapter;
 
 
@@ -171,7 +171,8 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
                 String.valueOf(numOfWords),
                 String.valueOf(maxNumOfWords)));
         wordsProgressBar.setMax(maxNumOfWords);
-        wordsProgressBar.setProgress((numOfWords * 100) / maxNumOfWords);
+        wordsProgressBar.setProgress(numOfWords);
+        wordsProgressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -186,17 +187,24 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     }
 
     @Override
-    public void setChildrenRecyclerView(List<MainScreenChild> childrenList) {
+    public void setChildrenRecyclerView(List<MainScreenChild> childrenList, boolean countDataOnChildItem) {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         childrenRecyclerView.setLayoutManager(linearLayoutManager);
-        ChildrenAdapter childrenAdapter = new ChildrenAdapter(childrenList);
+        ChildrenAdapter childrenAdapter = new ChildrenAdapter(childrenList, countDataOnChildItem);
         childrenRecyclerView.setAdapter(childrenAdapter);
 
         if(childrenList.size() > 1){
             wordsProgressBar.setVisibility(View.GONE);
             totalWordsTitle.setVisibility(View.GONE);
             startVal.setVisibility(View.GONE);
+            maxWordsNum.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void updateWordsCountManyChildren() {
+//        wordsProgressBar.setVisibility(View.GONE);
+//
     }
 
 

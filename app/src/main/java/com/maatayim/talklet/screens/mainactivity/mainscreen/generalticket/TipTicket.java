@@ -14,12 +14,14 @@ public class TipTicket implements Parcelable {
     private final String tip;
     private final boolean isAssertion;
     private String babyPhoto;
+    private boolean isDisplay;
 
     public TipTicket(String tip, boolean isAssertion, String babyPhoto){
 
         this.tip = tip;
         this.isAssertion = isAssertion;
         this.babyPhoto = babyPhoto;
+        this.isDisplay = true;
     }
 
     public TipTicket(Parcel in) {
@@ -64,5 +66,13 @@ public class TipTicket implements Parcelable {
 
     public void setBabyPhoto(String babyPhoto) {
         this.babyPhoto = babyPhoto;
+    }
+
+    public boolean isDisplay() {
+        return isDisplay;
+    }
+
+    public void setDisplay(boolean display) {
+        isDisplay = display;
     }
 }

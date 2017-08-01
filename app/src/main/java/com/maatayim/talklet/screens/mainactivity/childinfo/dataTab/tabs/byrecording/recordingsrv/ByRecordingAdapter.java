@@ -36,11 +36,9 @@ public class ByRecordingAdapter extends RecyclerView.Adapter<RecordingObjHolder>
             @Override
             public void onClick(int itemPosition) {
                 for(int i=0; i< recordingObjList.size(); i++){
-
+//
                     if (i != itemPosition){
                         recordingObjList.get(i).setSelected(false);
-                    }else{
-                        recordingObjList.get(i).setSelected(true);
                     }
                 }
                 notifyDataSetChanged();

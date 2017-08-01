@@ -127,6 +127,8 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
             }
         });
 
+
+
     }
 
     @Override
@@ -137,6 +139,7 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
     private void selectItem(List<CalendarWordsObj> calendarList, int middle, boolean isSingleItemChanged){
         calendarList.get(middle).setMiddle(true);
         prevMiddle = middle;
+
         if(isSingleItemChanged){
             calendarAdapter.notifyItemChanged(prevMiddle);
         }else{
@@ -173,11 +176,15 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
     }
 
     private void updateView(int wordsCount, Date date, List<RecordingObj> recordsList){
-        wordsTitle.setText(getString(R.string.words_num, wordsCount));
-        todaysDate.setText(Utils.getTodaysDateStr(date));
+        if (wordsCount != -1) {
 
-        if (recordsList != null){
-            initRecordingRecyclerView(recordsList);
+
+            wordsTitle.setText(getString(R.string.words_num, wordsCount));
+            todaysDate.setText(Utils.getTodaysDateStr(date));
+
+            if (recordsList != null) {
+                initRecordingRecyclerView(recordsList);
+            }
         }
     }
 

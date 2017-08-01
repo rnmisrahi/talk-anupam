@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Created by Sophie on 6/4/2017.
+ * Created by Sophie on 6/4/2017
  */
 
 
@@ -33,7 +33,7 @@ public class GeneralTipFragmentTest {
 
     @Before
     public void setUp() throws Exception {
-        fragment = TipsFragment.newInstance(new TipTicket(TEST_TIP, true));
+//        fragment = TipsFragment.newInstance(new TipTicket(TEST_TIP, true));
         fragmentActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.test_frame_container, fragment, null).commit();
     }
 

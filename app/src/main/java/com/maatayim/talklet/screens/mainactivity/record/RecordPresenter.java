@@ -2,7 +2,9 @@ package com.maatayim.talklet.screens.mainactivity.record;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,7 +35,6 @@ public class RecordPresenter implements RecordContract.Presenter {
 
     @Override
     public void getData() {
-//        repo.downloadWordsOfTheDay()
         repo.getMainScreenChildrenList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
@@ -41,11 +42,23 @@ public class RecordPresenter implements RecordContract.Presenter {
                     @Override
                     public void onSuccess(@NonNull List<MainScreenChild> mainScreenChildren) {
                         view.onDataReceived(mainScreenChildren);
+
+                        List<TipTicket> tickets = new ArrayList<TipTicket>();
+
+                        for (MainScreenChild child : mainScreenChildren) {
+                            for (MainScreenChild.Tip tip : child.getTips()) {
+                                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), child.getUrl()));
+                            }
+                        }
+
+                        view.initViewpager(tickets, mainScreenChildren.size() > 1);
+
+
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        view.onTipsLoadError();
                     }
                 });
 

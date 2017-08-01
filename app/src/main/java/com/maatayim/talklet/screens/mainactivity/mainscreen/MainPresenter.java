@@ -50,7 +50,7 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribeWith(new DisposableSingleObserver<List<MainScreenChild>>() {
                     @Override
                     public void onSuccess(@NonNull List<MainScreenChild> children) {
-                        view.setChildrenRecyclerView(children);
+
                         List<TipTicket> tickets = new ArrayList<TipTicket>();
 
                         for (MainScreenChild child : children) {
@@ -61,8 +61,10 @@ public class MainPresenter implements MainContract.Presenter {
                         if (children.size() == 1) {
                             MainScreenChild mainScreenChild = children.get(0);
                             view.updateWordsCount(mainScreenChild.getWordCount(), mainScreenChild.getTotal());
+                            view.setChildrenRecyclerView(children, false);
                         }else{
-//                            view.updateWordsCount(wordsCount.first, wordsCount.second);
+//                            view.updateWordsCountManyChildren();
+                            view.setChildrenRecyclerView(children, true);
                         }
 
                         view.updateTipsViewPager(tickets, children.size() > 1);

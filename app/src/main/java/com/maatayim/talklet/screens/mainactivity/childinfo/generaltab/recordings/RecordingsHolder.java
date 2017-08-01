@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Sophie on 6/7/2017.
+ * Created by Sophie on 6/7/2017
  */
 
 public class RecordingsHolder extends ViewHolder {
@@ -35,8 +35,8 @@ public class RecordingsHolder extends ViewHolder {
         recordingTextView.setText(context.getString(R.string.recording_text,
                 recordingObj.getNumber(),
                 dateStr,
-                recordingObj.getWordCount().first,
-                recordingObj.getWordCount().second,
+                recordingObj.getWordCount(),
+                recordingObj.getWordCount(),
                 recordingObj.getDurationStr()));
     }
 
