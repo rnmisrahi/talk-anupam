@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +20,10 @@ import com.maatayim.talklet.baseline.fragments.TalkletFragment;
 import com.maatayim.talklet.repository.AsyncCloudinaryUploader;
 import com.maatayim.talklet.screens.loginactivity.signup.choosephoto.dagger.ChoosePhotoModule;
 import com.maatayim.talklet.screens.loginactivity.signup.events.DisplayPhotoEvent;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+
 import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,11 +41,14 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
 
     private static final String BABYS_PHOTO = "Baby's Profile Photo";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1022;
+    private static final int MY_PERMISSIONS_REQUEST_STORAGE = 1032;
 
     private Uri imageUri;
 
     @Inject
     ChoosePhotoPresenter presenter;
+    private boolean permissionCamera = false;
+    private boolean permissionStorage = false;
 
 
     @Override
@@ -62,6 +65,7 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
         ButterKnife.bind(this, view);
 
 //        EventBus.getDefault().register(this);
+
 
 
         return view;
@@ -105,13 +109,24 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
 
     @OnClick(R.id.camera_button)
     public void onCameraClick(){
-        if (!hasPermissions()){
-            requestPermissions(new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
-        }else{
+        if (!hasPermissions()) {
+
+            new RxPermissions(getActivity())
+                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA)
+                    .subscribe(granted -> {
+                        if (granted) { // Always true pre-M
+                            takePhotoWhenPermissionGranted();
+                        } else {
+                            // Oups permission denied
+                            Toast.makeText(getContext(), "permission not granted", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else {
             takePhotoWhenPermissionGranted();
         }
     }
+
 
     private void takePhotoWhenPermissionGranted(){
         ContentValues values = new ContentValues();
@@ -122,29 +137,6 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(cameraIntent, REQUEST_CODE_TAKE_PHOTO);
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA){
-            // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                takePhotoWhenPermissionGranted();
-
-            } else {
-                // permission denied
-                Toast.makeText(getContext(), "Can't use camera. Please permit or choose a photo from gallery", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-
-        // other 'case' lines to check for other
-        // permissions this app might request
     }
 
 
@@ -171,21 +163,15 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
         Uri[] image = new Uri[1];
         if (resultCode == RESULT_OK){
             if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
-
                 image[0] = imageUri;
                 String photoUrl = AsyncCloudinaryUploader.uploadPhotoToCloud(getContext(), image);
-//                presenter.saveImage(photoUrl);//Dont think we should save the photo here
                 EventBus.getDefault().post(new DisplayPhotoEvent(imageUri, photoUrl));
                 finish();
             }
 
             if (requestCode == REQUEST_CODE_PICK_FROM_GALLERY) {
-//                presenter.saveImage(data.getData());
-
-
                 image[0] = data.getData();
                 String photoUrl = AsyncCloudinaryUploader.uploadPhotoToCloud(getContext(), image);
-//                presenter.saveImage(photoUrl);
                 EventBus.getDefault().post(new DisplayPhotoEvent(data.getData(), photoUrl));
                 finish();
             }

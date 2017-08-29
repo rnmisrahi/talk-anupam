@@ -47,7 +47,7 @@ public class RecordPresenter implements RecordContract.Presenter {
 
                         for (MainScreenChild child : mainScreenChildren) {
                             for (MainScreenChild.Tip tip : child.getTips()) {
-                                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), child.getUrl()));
+                                tickets.add(new TipTicket(tip.getText(), tip.getTipType(), child.getUrl()));
                             }
                         }
 

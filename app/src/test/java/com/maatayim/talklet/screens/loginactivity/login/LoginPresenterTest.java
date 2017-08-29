@@ -17,13 +17,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
@@ -124,7 +121,7 @@ public class LoginPresenterTest {
     @Test
     public void saveToken_repositorySuccess() throws Exception {
 //        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.complete());
-        presenter.saveToken(loginResult);
+        presenter.saveAndSendFacebookId(loginResult);
         verify(view, only()).onFacebookLoginSuccess();
     }
 
@@ -132,7 +129,7 @@ public class LoginPresenterTest {
     @Test
     public void saveToken_repositoryFailure() throws Exception {
 //        when(repository.saveFacebookLoginToken(any(LoginResult.class))).thenReturn(Completable.error(new Exception()));
-        presenter.saveToken(loginResult);
+        presenter.saveAndSendFacebookId(loginResult);
         verify(view, only()).onFacebookLoginFailed();
     }
 }

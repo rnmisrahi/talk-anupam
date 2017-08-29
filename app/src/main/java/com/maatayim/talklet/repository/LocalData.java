@@ -83,15 +83,15 @@ public class LocalData {
 
 //    Save
 
-    public Completable saveTipRx(final String tipId, final String text, final boolean assertion, final String childID) {
-        return Completable.fromAction(() -> saveTip(tipId, text, assertion, childID));
+    public Completable saveTipRx(final String tipId, final String text, final String tipType, final String childID) {
+        return Completable.fromAction(() -> saveTip(tipId, text, tipType, childID));
     }
 
-    public void saveTip(final String tipId, final String text, final boolean assertion, final String childID) {
+    public void saveTip(final String tipId, final String text, final String tipType, final String childID) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            RealmTip realmTip = new RealmTip(tipId, text, assertion, childID);
+            RealmTip realmTip = new RealmTip(tipId, text, tipType, childID);
             realm1.copyToRealmOrUpdate(realmTip);
         });
         realm.close();

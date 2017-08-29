@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
@@ -123,49 +122,49 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                presenter.saveToken(loginResult);
+                presenter.saveAndSendFacebookId(loginResult);
 
 
-                AccessToken accessToken = loginResult.getAccessToken();
+//                AccessToken accessToken = loginResult.getAccessToken();
 
 //                LoginManager.getInstance().logInWithReadPermissions(
 //                        getActivity(),
 //                        Arrays.asList("birthday"));
 
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                // Application code
-                                try {
-                                    Log.i("Response", response.toString());
-                                    String email = object.getString(EMAIL);
-                                    String birthday = object.getString("birthday");
-                                    Profile profile = Profile.getCurrentProfile();
-                                    String id = profile.getId();
-                                    String firstName = object.getString(FIRST_NAME);
-                                    String lastName = object.getString(LAST_NAME);
-                                    String gender = object.getString(GENDER);
-//                                    profile.getProfilePictureUri()
-
-                                    UserDetails userDetails = new UserDetails(
-                                            id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
-
-                                    presenter.saveUserFBDetails(userDetails);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
-                                    LoginManager.getInstance().logOut();
-                                    isDisplayLoginButton(true);
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," + GENDER + "," + BIRTHDAY);
-                request.setParameters(parameters);
-                request.executeAsync();
+//                GraphRequest request = GraphRequest.newMeRequest(
+//                        loginResult.getAccessToken(),
+//                        new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object, GraphResponse response) {
+//                                // Application code
+//                                try {
+//                                    Log.i("Response", response.toString());
+//                                    String email = object.getString(EMAIL);
+//                                    String birthday = object.getString("birthday");
+//                                    Profile profile = Profile.getCurrentProfile();
+//                                    String id = profile.getId();
+//                                    String firstName = object.getString(FIRST_NAME);
+//                                    String lastName = object.getString(LAST_NAME);
+//                                    String gender = object.getString(GENDER);
+////                                    profile.getProfilePictureUri()
+//
+//                                    UserDetails userDetails = new UserDetails(
+//                                            id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
+//
+//                                    presenter.saveUserFBDetails(userDetails);
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                    Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
+//                                    LoginManager.getInstance().logOut();
+//                                    isDisplayLoginButton(true);
+//                                }
+//                            }
+//                        });
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," + GENDER + "," + BIRTHDAY);
+//                request.setParameters(parameters);
+//                request.executeAsync();
 
             }
 
@@ -203,6 +202,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     public void onFacebookLoginSuccess(){
         Log.d(TAG, "onFacebookLoginSuccess: ");
 
+
     }
 
     public void onAlreadySignedUpFailed(){
@@ -233,8 +233,47 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     }
 
     @Override
-    public void alreadyLogedIn() {
+    public void alreadyLoggedIn() {
         presenter.checkIfSignedUp();
+    }
+
+    @Override
+    public void receiveServerTokenSuccess(LoginResult loginResult) {
+        Toast.makeText(getContext(), "IdSucess", Toast.LENGTH_SHORT).show();
+        GraphRequest request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // Application code
+                        try {
+                            Log.i("Response", response.toString());
+                            String email = object.getString(EMAIL);
+                            String birthday = object.getString("birthday");
+                            Profile profile = Profile.getCurrentProfile();
+                            String id = profile.getId();
+                            String firstName = object.getString(FIRST_NAME);
+                            String lastName = object.getString(LAST_NAME);
+                            String gender = object.getString(GENDER);
+//                                    profile.getProfilePictureUri()
+
+                            UserDetails userDetails = new UserDetails(
+                                    id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
+
+                            presenter.saveUserFBDetails(userDetails);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
+                            LoginManager.getInstance().logOut();
+                            isDisplayLoginButton(true);
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," + GENDER + "," + BIRTHDAY);
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     @Override

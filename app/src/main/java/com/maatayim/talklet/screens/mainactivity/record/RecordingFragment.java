@@ -223,7 +223,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
             List<MainScreenChild.Tip> tips = selectedChild.getTips();
 
             for (MainScreenChild.Tip tip : tips) {
-                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), selectedChild.getUrl()));
+                tickets.add(new TipTicket(tip.getText(), tip.getTipType(), selectedChild.getUrl()));
             }
         }
 

@@ -1,7 +1,6 @@
 package com.maatayim.talklet.repository.retrofit.model.wordcountdata;
 
 import com.maatayim.talklet.repository.retrofit.model.general.Recording;
-import com.maatayim.talklet.repository.retrofit.model.general.WordCount;
 
 import java.util.List;
 

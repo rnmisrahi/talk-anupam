@@ -1,11 +1,10 @@
 package com.maatayim.talklet.repository;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.util.Pair;
+import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.repository.realm.RealmCountData;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.repository.retrofit.model.general.Tip;
 import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
@@ -13,7 +12,6 @@ import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
-import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.DateObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
@@ -37,6 +35,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 import static com.maatayim.talklet.repository.Mapper.mapRealmRecordingListToRecordsObj;
@@ -76,7 +75,7 @@ public class RepositoryImpl implements BaseContract.Repository {
 
     @Override
     public Completable saveFacebookLoginToken(LoginResult loginResult, Context context) {
-        return localRepo.saveFacebookLoginToken(loginResult, context);
+        return localRepo.saveFacebookLoginToken(loginResult, context); // // TODO: 8/28/2017 save and send facebook id
     }
 
     @Override
@@ -87,7 +86,6 @@ public class RepositoryImpl implements BaseContract.Repository {
                 .andThen(localRepo.updateUsersDataRx(userDetails.getFirstName(), userDetails.getLastName(),
                         userDetails.getBirthday(), userDetails.getLanguage1(), userDetails.getLanguage2(),
                         userDetails.getLanguage3()));
-//        return localRepo.saveUserFBDetails(userDetails);
     }
 
     @Override
@@ -191,7 +189,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                 .map(realmChild -> new MainScreenChild(realmChild.getId(), realmChild.getImage(), 0, 0, null))
                 .flatMapSingle(child -> localRepo.getTipsListRx(child.getId())
                         .flatMapObservable(Observable::fromIterable)
-                        .map(realmTip -> new MainScreenChild.Tip(realmTip.getTipText(), realmTip.isAssertion()))
+                        .map(realmTip -> new MainScreenChild.Tip(realmTip.getTipText(), realmTip.getType()))
                         .toList()
                         .map(tipTickets -> {
                             child.setTips(tipTickets);
@@ -247,6 +245,7 @@ public class RepositoryImpl implements BaseContract.Repository {
 
 
     }
+
 
 
     @Override
@@ -307,6 +306,12 @@ public class RepositoryImpl implements BaseContract.Repository {
     public Completable downloadTips() {
         return localRepo.getToken()
                 .flatMap(token -> remoteRepo.downloadTips(token))
+                .doOnSuccess(new Consumer<TipsWrapper>() {
+                    @Override
+                    public void accept(@NonNull TipsWrapper tipsWrapper) throws Exception {
+                        Log.d("a","A");
+                    }
+                })
                 .flatMapObservable(new Function<TipsWrapper, ObservableSource<Tip>>() {
                     @Override
                     public ObservableSource<Tip> apply(@NonNull TipsWrapper tipsWrapper) throws Exception {
@@ -316,7 +321,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                 .flatMapCompletable(new Function<Tip, Completable>() {
                     @Override
                     public Completable apply(@NonNull Tip tip) throws Exception {
-                        return localRepo.saveTipRx(tip.getId(), tip.getText(), tip.isAssertion(), tip.getChildId());
+                        return localRepo.saveTipRx(tip.getId(), tip.getText(), tip.getType(), tip.getChildId());
                     }
                 });
     }

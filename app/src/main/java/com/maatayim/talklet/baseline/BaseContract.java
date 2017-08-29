@@ -32,7 +32,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
- * Created by Sophie on 5/21/2017.
+ * Created by Sophie on 5/21/2017
  */
 
 @Module
@@ -102,6 +102,7 @@ public interface BaseContract {
         Completable logout(Context context);
 
         Completable updateUsersData(AboutUserObj aboutUserObj);
+
     }
 
 

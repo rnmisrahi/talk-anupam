@@ -25,7 +25,7 @@
 //import static org.mockito.Mockito.when;
 //
 ///**
-// * Created by Sophie on 6/5/2017.
+// * Created by Sophie on 6/5/2017
 // */
 //public class SignUpPresenterTest {
 //
@@ -49,6 +49,7 @@
 //    @Before
 //    public void setUp() throws Exception {
 //        presenter = new SignUpPresenter(view, repository, Schedulers.trampoline());
+//
 //        RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
 //            @Override
 //            public Scheduler apply(@NonNull Scheduler scheduler) throws Exception {

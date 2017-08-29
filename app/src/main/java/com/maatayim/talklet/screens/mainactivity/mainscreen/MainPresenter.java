@@ -55,7 +55,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                         for (MainScreenChild child : children) {
                             for (MainScreenChild.Tip tip : child.getTips()) {
-                                tickets.add(new TipTicket(tip.getText(), tip.isAssertion(), child.getUrl()));
+                                tickets.add(new TipTicket(tip.getText(), tip.getTipType(), child.getUrl()));
                             }
                         }
                         if (children.size() == 1) {

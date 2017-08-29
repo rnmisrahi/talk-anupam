@@ -13,16 +13,16 @@ public class RealmTip extends RealmObject {
     private String id;
 
     private String tipText;
-    private boolean assertion;
+    private String type;
     private String childId;
 
     public RealmTip() {
     }
 
-    public RealmTip(String id, String tipText, boolean assertion, String childID) {
+    public RealmTip(String id, String tipText, String type, String childID) {
         this.id = id;
         this.tipText = tipText;
-        this.assertion = assertion;
+        this.type = type;
         this.childId = childID;
     }
 
@@ -33,7 +33,7 @@ public class RealmTip extends RealmObject {
     public RealmTip(RealmTip copy) {
         this.id = copy.getId();
         this.tipText = copy.getTipText();
-        this.assertion = copy.isAssertion();
+        this.type = copy.getType();
         this.childId = copy.getChildId();
     }
 
@@ -46,12 +46,12 @@ public class RealmTip extends RealmObject {
         this.tipText = tipText;
     }
 
-    public boolean isAssertion() {
-        return assertion;
+    public String getType() {
+        return type;
     }
 
-    public void setAssertion(boolean assertion) {
-        this.assertion = assertion;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getChildId() {

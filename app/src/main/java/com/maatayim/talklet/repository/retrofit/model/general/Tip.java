@@ -9,13 +9,13 @@ public class Tip {
     private String id;
     private String childId;
     private String text;
-    private boolean assertion;
+    private String type;
 
-    public Tip(String id, String text, boolean assertion, String childId){
+    public Tip(String id, String text, String type, String childId){
 
         this.id = id;
         this.text = text;
-        this.assertion = assertion;
+        this.type = type;
         this.childId = childId;
     }
 
@@ -45,11 +45,11 @@ public class Tip {
         this.childId = childId;
     }
 
-    public boolean isAssertion() {
-        return assertion;
+    public String getType() {
+        return type;
     }
 
-    public void setAssertion(boolean assertion) {
-        this.assertion = assertion;
+    public void setType(String type) {
+        this.type = type;
     }
 }

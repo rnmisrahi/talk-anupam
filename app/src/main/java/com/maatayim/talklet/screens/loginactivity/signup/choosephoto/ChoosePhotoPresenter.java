@@ -51,4 +51,9 @@ public class ChoosePhotoPresenter implements ChoosePhotoContract.Presenter {
                 });
 
     }
+
+    public void registerDeviceButtonsListener() {
+
+
+    }
 }

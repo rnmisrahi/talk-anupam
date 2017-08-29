@@ -1,7 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket;
 
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,42 +11,23 @@ import android.os.Parcelable;
 public class TipTicket implements Parcelable {
 
     private final String tip;
-    private final boolean isAssertion;
+    private final String tipType;
     private String babyPhoto;
     private boolean isDisplay;
 
-    public TipTicket(String tip, boolean isAssertion, String babyPhoto){
+    public TipTicket(String tip, String tipType, String babyPhoto){
 
         this.tip = tip;
-        this.isAssertion = isAssertion;
+        this.tipType = tipType;
         this.babyPhoto = babyPhoto;
         this.isDisplay = true;
     }
 
-    public TipTicket(Parcel in) {
-        tip = in.readString();
-        isAssertion = in.readByte() != 0;
-    }
-
-    public static final Creator<TipTicket> CREATOR = new Creator<TipTicket>() {
-        @Override
-        public TipTicket createFromParcel(Parcel in) {
-            return new TipTicket(in);
-        }
-
-        @Override
-        public TipTicket[] newArray(int size) {
-            return new TipTicket[size];
-        }
-    };
 
     public String getTip() {
         return tip;
     }
 
-    public boolean isAssertion() {
-        return isAssertion;
-    }
 
     @Override
     public int describeContents() {
@@ -56,9 +36,9 @@ public class TipTicket implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(tip);
-        dest.writeByte((byte) (isAssertion ? 1 : 0));
+
     }
+
 
     public String getBabyPhoto() {
         return babyPhoto;
@@ -74,5 +54,9 @@ public class TipTicket implements Parcelable {
 
     public void setDisplay(boolean display) {
         isDisplay = display;
+    }
+
+    public String getTipType() {
+        return tipType;
     }
 }

@@ -26,7 +26,7 @@ public class Mapper {
     }
 
     public static Function<RealmTip, TipTicket> getTipMapperFunction(String babyPhoto) {
-        return realmTip -> new TipTicket(realmTip.getTipText(), realmTip.isAssertion(), babyPhoto);
+        return realmTip -> new TipTicket(realmTip.getTipText(), realmTip.getType(), babyPhoto);
     }
 
     public static List<RecordingObj> mapRealmRecordingListToRecordsObj(RealmList<RealmRecording> realmRecordings) {

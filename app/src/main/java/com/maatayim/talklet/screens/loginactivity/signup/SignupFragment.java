@@ -217,10 +217,12 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
 
     @Override
     public void  onDataSaveSuccess(){
-        if(!isFromLogin) {
+        if(isFromLogin) {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             getActivity().finish();
+        }else{
+           getActivity().onBackPressed();
         }
     }
 

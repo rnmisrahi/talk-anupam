@@ -117,7 +117,11 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new MainModule(this)).inject(this);
+        ((TalkletApplication) getActivity()
+                .getApplication())
+                .getAppComponent()
+                .plus(new MainModule(this))
+                .inject(this);
 
     }
 
@@ -197,6 +201,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
             wordsProgressBar.setVisibility(View.GONE);
             totalWordsTitle.setVisibility(View.GONE);
             startVal.setVisibility(View.GONE);
+            totalWords.setVisibility(View.GONE);
             maxWordsNum.setVisibility(View.GONE);
         }
     }

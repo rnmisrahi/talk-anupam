@@ -42,19 +42,19 @@ public class MainScreenChild{
 
     public static class Tip {
         private String text;
-        private boolean assertion;
+        private String tipType;
 
-        public Tip(String text, boolean assertion) {
+        public Tip(String text, String tipType) {
             this.text = text;
-            this.assertion = assertion;
+            this.tipType = tipType;
         }
 
         public String getText() {
             return text;
         }
 
-        public boolean isAssertion() {
-            return assertion;
+        public String getTipType() {
+            return tipType;
         }
     }
 

@@ -16,13 +16,12 @@ import javax.inject.Inject;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
 /**
- * Created by Sophie on 5/21/2017.
+ * Created by Sophie on 5/21/2017
  */
 
 public class LoginPresenter implements LoginContract.Presenter {
@@ -52,19 +51,40 @@ public class LoginPresenter implements LoginContract.Presenter {
 
 
     @Override
-    public void saveToken(LoginResult loginResult) {
+    public void saveAndSendFacebookId(LoginResult loginResult) {
         repository.saveFacebookLoginToken(loginResult, context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
-                        view.onFacebookLoginSuccess();
+                        sendFacebookID(loginResult);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onFacebookLoginFailed();
+                    }
+                });
+    }
+
+    private void sendFacebookID(LoginResult loginResult) {
+        repository.login(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(scheduler)
+                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
+                    @Override
+                    public void onSuccess(@NonNull LoginResponse loginResponse) {
+                        if (loginResponse.getToken() == null){
+                            view.unlockLoginProcess();
+                        }else{
+                            view.receiveServerTokenSuccess(loginResult);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e(TAG, "onError: ",e );
                     }
                 });
     }
@@ -81,7 +101,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         if (loginResponse.getToken() == null){
                             view.unlockLoginProcess();
                         }else{
-                            view.alreadyLogedIn();
+                            view.alreadyLoggedIn();
                         }
                     }
 
@@ -132,6 +152,12 @@ public class LoginPresenter implements LoginContract.Presenter {
                         view.onSaveUserFBDataFailed();
                     }
                 });
+    }
+
+    @Override
+    public void sendUserFacebookData() {
+//        repository.sendUserFacebookData()
+//                .
     }
 
 

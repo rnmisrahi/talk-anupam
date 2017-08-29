@@ -20,13 +20,15 @@ public interface LoginContract {
 
 //        void testConnect();
 
-        void saveToken(LoginResult loginResult);
+        void saveAndSendFacebookId(LoginResult loginResult);
 
         void checkIfLoggedIn();
 
         void checkIfSignedUp();
 
         void saveUserFBDetails(UserDetails userDetails);
+
+        void sendUserFacebookData();
     }
 
     interface View extends BaseContract.View {
@@ -52,6 +54,8 @@ public interface LoginContract {
 
         void unlockLoginProcess();
 
-        void alreadyLogedIn();
+        void alreadyLoggedIn();
+
+        void receiveServerTokenSuccess(LoginResult loginResult);
     }
 }

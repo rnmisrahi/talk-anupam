@@ -107,6 +107,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
 
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontalCalendarRV.setLayoutManager(linearLayoutManager);
+
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(horizontalCalendarRV);
 
@@ -115,6 +116,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
 
         int offset = Utils.getCenterHorizontalScreenCoord(getActivity())-ITEM_WIDTH;
         int middle = calendarList.size()- RIGHT_PADDING-1;
+
         linearLayoutManager.scrollToPositionWithOffset(middle, offset);
         selectItem(calendarList, middle, true);
         changeDisplayDataByDay(middle, calendarList);

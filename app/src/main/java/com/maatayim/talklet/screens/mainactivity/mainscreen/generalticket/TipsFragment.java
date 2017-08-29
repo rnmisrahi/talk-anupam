@@ -24,6 +24,8 @@ public class TipsFragment extends Fragment implements TipsContract.View{
     public static final String TICKET = "ticket";
     public static final String IS_REC = "isRec";
     public static final String IS_MORE_THAN_CHILD = "isMoreThanOneChild";
+    public static final String QUESTION = "Question";
+    public static final String ASSERT = "Assert";
     private TipTicket ticket;
 
 
@@ -76,7 +78,7 @@ public class TipsFragment extends Fragment implements TipsContract.View{
 //        if(generalTipTicket.isDisplay()) {
         tipText.setText(generalTipTicket.getTip());
 
-        if (generalTipTicket.isAssertion()) {
+        if (generalTipTicket.getTipType().equals(ASSERT)) {
             tipType_mg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.goal));
         } else {
             tipType_mg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.tip));

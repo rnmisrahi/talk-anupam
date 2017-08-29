@@ -36,7 +36,7 @@ import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.
 import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.TOP_MARGIN;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class ChildMainFragment extends TalkletFragment implements ChildMainContract.View {
