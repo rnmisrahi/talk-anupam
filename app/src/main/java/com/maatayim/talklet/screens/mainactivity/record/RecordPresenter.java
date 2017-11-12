@@ -4,6 +4,17 @@ import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
 
+import junit.framework.Assert;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,4 +98,36 @@ public class RecordPresenter implements RecordContract.Presenter {
 //                    }
 //                });
     }
+
+    void startFtpService() {
+
+    }
+
+    void saveRecordingStream() throws IOException {  // todo save actual recorded data
+
+        URL url = new URL("ftp://adam:admin@localhost:55281/file1.txt;type=i");
+        URLConnection urlConnection = url.openConnection();
+        OutputStream outputStream = urlConnection.getOutputStream();
+        String s = "writing a text file";
+
+        try (Writer w = new OutputStreamWriter(outputStream, "UTF-8")) {
+            w.write(s);
+        }
+
+        String input;
+        InputStream inputStream = urlConnection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        try {
+            while ((input = bufferedReader.readLine()) != null) {
+                result.append(input);
+            }
+
+            Assert.assertEquals(result.toString(), s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

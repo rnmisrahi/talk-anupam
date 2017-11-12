@@ -22,13 +22,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
 import com.maatayim.talklet.baseline.events.DowmloadCompleteEvent;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
-import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.children.ChildrenAdapter;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.MainModule;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.generalticket.TipTicket;
@@ -41,19 +39,20 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 import static android.media.MediaRecorder.AudioSource.MIC;
 
@@ -103,7 +102,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     private boolean isPlaying = false;
 
     AudioRecord recorder;
-    private int sampleRate = 16000 ; // 44100 for music
+    private int sampleRate = 16000; // 44100 for music
     private int channelConfig = AudioFormat.CHANNEL_CONFIGURATION_MONO;
     private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
     int minBufSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat);
@@ -180,7 +179,6 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     }
 
 
-
     private void initializeViewPager(List<TipTicket> ticketList, boolean isMoreThanOneChild) {
 
         pagerAdapter = new TipsAdapter(
@@ -197,7 +195,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         ChildrenAdapter childrenAdapter = new ChildrenAdapter(childrenList, countDataOnChildItem);
         childrenRecyclerView.setAdapter(childrenAdapter);
 
-        if(childrenList.size() > 1){
+        if (childrenList.size() > 1) {
             wordsProgressBar.setVisibility(View.GONE);
             totalWordsTitle.setVisibility(View.GONE);
             startVal.setVisibility(View.GONE);
@@ -235,7 +233,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
 
     @OnClick(R.id.recording_mic)
-    public void onRecordClick(){
+    public void onRecordClick() {
         MediaRecordWrapper mediaRecordWrapper = startRecording();
 //        startStreaming();
         EventBus.getDefault().post(new AddFragmentEvent(RecordingFragment.newInstance(mediaRecordWrapper)));
@@ -255,37 +253,36 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
                     byte[] buffer = new byte[minBufSize];
 
-                    Log.d("VS","Buffer created of size " + minBufSize);
+                    Log.d("VS", "Buffer created of size " + minBufSize);
                     DatagramPacket packet;
 
                     final InetAddress destination = InetAddress.getByName("192.168.1.5");
                     Log.d("VS", "Address retrieved");
 
 
-                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,sampleRate,channelConfig,audioFormat,minBufSize*10);
+                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate, channelConfig, audioFormat, minBufSize * 10);
                     Log.d("VS", "Recorder initialized");
 
                     recorder.startRecording();
 
 
-                    while(status == true) {
+                    while (status == true) {
 
 
                         //reading data from MIC into buffer
                         minBufSize = recorder.read(buffer, 0, buffer.length);
 
                         //putting buffer in the packet
-                        packet = new DatagramPacket (buffer,buffer.length,destination,port);
+                        packet = new DatagramPacket(buffer, buffer.length, destination, port);
 
                         socket.send(packet);
-                        System.out.println("MinBufferSize: " +minBufSize);
+                        System.out.println("MinBufferSize: " + minBufSize);
 
 
                     }
 
 
-
-                } catch(UnknownHostException e) {
+                } catch (UnknownHostException e) {
                     Log.e("VS", "UnknownHostException");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -298,9 +295,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     }
 
 
-
-
-    public MediaRecordWrapper startRecording(){
+    public MediaRecordWrapper startRecording() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MIC);
 
@@ -312,7 +307,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         File file = new File(path, "/" + RECORDING_FILE_3GPP);
         try {
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
         } catch (IOException e) {
@@ -320,9 +315,9 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         }
         mediaRecorder.setOutputFile(file.getAbsolutePath());
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        try{
+        try {
             mediaRecorder.prepare();
-        }catch (IOException exception){
+        } catch (IOException exception) {
             Log.d(TAG, "startRecording: exception in prepare record");
         }
 
@@ -349,8 +344,8 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
     // for testing only!!
     @OnClick(R.id.play_recording)
-    public void onPlayRecClick(){
-        if(!isPlaying) {
+    public void onPlayRecClick() {
+        if (!isPlaying) {
             mediaPlayer = new MediaPlayer();
             File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
 
@@ -367,7 +362,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
             mediaPlayer.start();
             isPlaying = true;
             return;
-        }else{
+        } else {
             isPlaying = false;
             return;
         }
@@ -395,13 +390,34 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
 
     @Subscribe
-    public void onDownloadComplete(DowmloadCompleteEvent event){
-        if(event.isDownloadComplete()){
+    public void onDownloadComplete(DowmloadCompleteEvent event) {
+        if (event.isDownloadComplete()) {
             presenter.getData();
         }
     }
 
+    void record() {  // todo talk with sophie about this solution
+        initMediaRecorder();
+        mediaRecorder.start();
+        Observable.interval(10000, TimeUnit.MILLISECONDS)
+                .doOnNext(x -> {
+                    mediaRecorder.stop();
+                    initMediaRecorder();
+                    mediaRecorder.start();
+                    // todo start ftp service
+                })
+                .subscribe();
+    }
 
+    private void initMediaRecorder() {
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        File file = new File(path, "/" + RECORDING_FILE_3GPP);
 
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        mediaRecorder.setOutputFile(file.getAbsolutePath());
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+    }
 
 }
