@@ -296,16 +296,20 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
 
     public MediaRecordWrapper startRecording() {
+
+        // initialize the MediaRecorder
+        initMediaRecorder();
+        // start timer
+
+        // start recording
+
+
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MIC);
 
-//        if (AudioManager.getProperty("PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED")){
-//            mediaRecorder.setAudioSource(UNPROCESSED);
-//        }
-
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File file = new File(path, "/" + RECORDING_FILE_3GPP);
+        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -396,7 +400,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         }
     }
 
-    void record() {  // todo talk with sophie about this solution
+    void record() {
         initMediaRecorder();
         mediaRecorder.start();
         Observable.interval(10000, TimeUnit.MILLISECONDS)
@@ -411,7 +415,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
     private void initMediaRecorder() {
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File file = new File(path, "/" + RECORDING_FILE_3GPP);
+        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
 
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MIC);

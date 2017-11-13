@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.maatayim.talklet.R;
-import com.maatayim.talklet.baseline.events.AddFragmentEvent;
-import com.maatayim.talklet.screens.Child;
-import com.maatayim.talklet.screens.mainactivity.childinfo.ChildFragment;
 import com.maatayim.talklet.screens.mainactivity.record.ChildClickEvent;
 import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 import com.squareup.picasso.Picasso;
