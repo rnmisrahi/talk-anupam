@@ -120,8 +120,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     @Override
     protected void onDestroy() {
         // Unregister
-        super.onDestroy();
+        presenter.detach();
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Subscribe
@@ -266,4 +267,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
+
 }

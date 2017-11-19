@@ -36,14 +36,14 @@ public class ByDatePresenter implements ByDateContract.Presenter {
 
 
     @Override
-    public void getData(String id) {
+    public void getData(int id) {
 //        setWordsTypesData(id);
         setCalendarData(id);
     }
 
 
 
-    private void setCalendarData(String id) {
+    private void setCalendarData(int id) {
 
         repository.getChildWordsByDate(id)
                 .subscribeOn(Schedulers.io())

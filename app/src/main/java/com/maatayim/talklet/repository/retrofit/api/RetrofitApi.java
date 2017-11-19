@@ -1,31 +1,26 @@
 package com.maatayim.talklet.repository.retrofit.api;
 
+import com.maatayim.talklet.repository.retrofit.model.user.SignUpResponse;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
-import com.maatayim.talklet.repository.retrofit.model.user.LoginRequest;
-import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
+import com.maatayim.talklet.repository.retrofit.model.children.CreateNewChild;
+import com.maatayim.talklet.repository.retrofit.model.user.LoginFacebookResponse;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
-import com.maatayim.talklet.repository.retrofit.model.general.CreateRecordingRequest;
 import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
-import com.maatayim.talklet.repository.retrofit.model.recording.RecordingMetadata;
 import com.maatayim.talklet.repository.retrofit.model.recording.RecordingNotificationResponse;
-import com.maatayim.talklet.repository.retrofit.model.general.ChildDataResponse;
+import com.maatayim.talklet.repository.retrofit.model.user.SignedUpRequest;
 import com.maatayim.talklet.repository.retrofit.model.user.UserDetails;
 import com.maatayim.talklet.repository.retrofit.model.wordcountdata.AllWordCountResponse;
-import com.maatayim.talklet.repository.retrofit.model.wordcountdata.WordCountResponse;
 import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
-
-import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 
 /**
  * Created by Sophie on 5/28/2017
@@ -33,12 +28,12 @@ import retrofit2.http.Query;
 
 public interface RetrofitApi {
 
-    //    User
-//    @FormUrlEncoded
-    @POST("login")
-    Single<LoginResponse> login(
-            @Body LoginRequest body
-    );
+
+
+    @POST("loginFacebook")
+    @FormUrlEncoded
+    Single<LoginFacebookResponse> loginWithFacebook(
+            @Field("facebookid") String facebookId);
 
     //    Children
     @GET("children")
@@ -47,28 +42,19 @@ public interface RetrofitApi {
     );
 
 
-    @PUT("children/{id}")
-    Single<ChildrenListWrapper> putUpdateChild(
-    );
 
     @POST("children")
     Single<ChildModel> postCreateChild(
             @Header("Authorization") String authorization,
-            @Body ChildModel body
+            @Body CreateNewChild body
     );
 
-    @DELETE("children/{id}")
-    void deleteChild(
-            @Header("Authorization") String authorization
-    );
+//    @DELETE("children/{id}")
+//    void deleteChild(
+//            @Header("Authorization") String authorization
+//    );
 
 
-    //    RecordingObj
-    @POST("recording")
-    void postRecordingMetadata(
-            @Header("Authorization") String authorization,
-            @Body RecordingMetadata body
-    );
 
 
     @GET("recording")
@@ -78,28 +64,16 @@ public interface RetrofitApi {
 
     //    General
     @GET("generaldata")
-    Single<TipsWrapper> getGeneralData();
-
-
-    @GET("childdata")
-    Single<ChildDataResponse> getChildData(
-            @Query("child") String child,
+    Single<TipsWrapper> getGeneralData(
             @Header("Authorization") String authorization
     );
 
-    @POST("recordings")
-    void postCreateRecording(
-            @Header("Authorization") String authorization,
-            @Body CreateRecordingRequest body
-    );
 
 
-    //    Word Data
-    @GET("worddata")
+    @GET("worddata/{user}")
     Single<WordData> getWordData(
-            @Query("child") String child,
-            @Header("Authorization") String authorization
-    );
+            @Path("user") String user,
+            @Header("Authorization") String authorization);
 
 
 
@@ -113,4 +87,12 @@ public interface RetrofitApi {
     Single<AllWordCountResponse> getAllWordsCountData(
             @Header("Authorization") String authorization
     );
+
+    @GET("signedup/status")
+    Single<SignUpResponse> getSignedUpStatus(
+            @Header("Authorization") String authorization
+    );
+
+
+
 }

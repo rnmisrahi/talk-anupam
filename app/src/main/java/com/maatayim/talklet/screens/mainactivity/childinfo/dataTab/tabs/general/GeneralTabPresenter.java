@@ -34,7 +34,7 @@ public class GeneralTabPresenter implements GeneralTabContract.Presenter {
     }
 
     @Override
-    public void getData(String id) {
+    public void getData(int id) {
 //        repository.getTotalWordsCount(id)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(scheduler)
@@ -67,14 +67,14 @@ public class GeneralTabPresenter implements GeneralTabContract.Presenter {
                     public void onSuccess(@NonNull List<CalendarWordsObj> dateObjs) {
 
                         int saidWordsCount = 0;
-                        int totlaGoalWords = 0;
+                        int totalGoalWords = 1;
 
                         for (CalendarWordsObj dateObj : dateObjs) {
                             saidWordsCount = saidWordsCount + dateObj.getWordsCount();
-                            totlaGoalWords = totlaGoalWords + dateObj.getTotalWords();
+                            totalGoalWords = totalGoalWords + dateObj.getTotalWords();
                         }
 
-                        view.onDataReceived(saidWordsCount, totlaGoalWords);
+                        view.onDataReceived(saidWordsCount, totalGoalWords);
                     }
 
                     @Override

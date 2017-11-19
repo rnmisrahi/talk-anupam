@@ -18,6 +18,7 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
     private boolean isVisibleProgressBar;
     public static final int MAX_PADDING = 5;
     private int paddingCounter = 0;
+    private int maxTotalWords = 0;
 
     public CustomCalendarViewAdapter(List<CalendarWordsObj> itemsList, boolean isVisibleProgressBar) {
         this.itemsList = itemsList;
@@ -27,6 +28,8 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
             itemsList.add(new CalendarWordsObj(null, -1, -1, false, null));
             paddingCounter++;
         }
+
+        calcMaxTotalWords();
     }
 
     @Override
@@ -52,5 +55,18 @@ public class CustomCalendarViewAdapter extends RecyclerView.Adapter<CustomCalend
 
     public CalendarWordsObj getItem(int position) {
         return itemsList.get(position);
+    }
+
+    private void calcMaxTotalWords(){
+        for (CalendarWordsObj calendarWordsObj : itemsList) {
+            int totalWords = calendarWordsObj.getTotalWords();
+            if (maxTotalWords < totalWords){
+                maxTotalWords = totalWords;
+            }
+        }
+    }
+
+    public int getMaxTotalWords(){
+        return maxTotalWords;
     }
 }

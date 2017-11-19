@@ -33,8 +33,11 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
     TextView wordCount;
 
     private final Context context;
+
     private final View itemView;
+
     private final boolean isCountDataChildItemVisable;
+
     private MainScreenChild child;
 
     public ChildrenHolder(View itemView, boolean isCountDataChildItemVisable) {
@@ -44,29 +47,27 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
         this.isCountDataChildItemVisable = isCountDataChildItemVisable;
         ButterKnife.bind(this, itemView);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new AddFragmentWithSharedElementEvent(ChildFragment.newInstance(child.getId()),childView));
-            }
-        });
+        itemView.setOnClickListener(v -> EventBus.getDefault()
+                                                 .post(new AddFragmentWithSharedElementEvent(ChildFragment.newInstance
+                                                         (child.getId()), childView)));
     }
 
     public void setData(MainScreenChild child) {
 
         this.child = child;
         Picasso.with(context)
-                .load(child.getUrl())
-                .placeholder(R.drawable.pic)
-                .into(childView);
+               .load(child.getUrl())
+               .fit()
+               .centerCrop()
+               .placeholder(R.drawable.pic)
+               .into(childView);
 
-        if(isCountDataChildItemVisable){
+        if (isCountDataChildItemVisable) {
             wordCount.setVisibility(View.VISIBLE);
-            wordCount.setText(context.getString(R.string.word_count, child.getWordCount(), child.getTotal()));
-        }
-        else{
+            wordCount.setText(context.getString(R.string.word_count, child.getWordCount(), child
+                    .getTotal()));
+        } else {
             wordCount.setVisibility(View.GONE);
         }
-
     }
 }

@@ -22,13 +22,14 @@ public interface LoginContract {
 
         void saveAndSendFacebookId(LoginResult loginResult);
 
+        void sendFacebookID(LoginResult loginResult);
+
         void checkIfLoggedIn();
 
         void checkIfSignedUp();
 
         void saveUserFBDetails(UserDetails userDetails);
 
-        void sendUserFacebookData();
     }
 
     interface View extends BaseContract.View {
@@ -44,9 +45,9 @@ public interface LoginContract {
 
         void onFacebookLoginFailed();
 
-        void onAlreadySignedUpFailed();
+        void goToSignupScreen();
 
-        void onSignedUpSuccess();
+        void navigateToMainActivity();
 
         void onSaveUserFBDataSuccess();
 
@@ -57,5 +58,11 @@ public interface LoginContract {
         void alreadyLoggedIn();
 
         void receiveServerTokenSuccess(LoginResult loginResult);
+
+        void finish();
+
+        void finishLoginActivity();
+
+        void displayFacebookError();
     }
 }

@@ -1,15 +1,10 @@
 package com.maatayim.talklet.repository.retrofit.api;
 
+import android.util.Log;
+
+import com.facebook.stetho.Stetho;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.maatayim.talklet.repository.LocalData;
-import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
-import com.maatayim.talklet.screens.Child;
 
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -23,16 +18,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BackEndApi {
 
-    private static String BASE_URL = "http://wxsvgtwqbqm7xtbwc-mock.stoplight-proxy.io/api/v1/";
-//    private static String BASE_URL = "http://apitestchild.azurewebsites.net/api/";
+//    private static String BASE_URL_MOCK = "http://wxsvgtwqbqm7xtbwc-mock.stoplight-proxy.io/api/v1/";
+    private static String BASE_URL = "http://talkjwt2.azurewebsites.net/api/v1/";
+//    private static String BASE_URL = BASE_URL_MOCK;
+//
     private static RetrofitApi instance;
 
 
     public static RetrofitApi getApi() {
         if (instance == null) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            final HttpLoggingInterceptor logging =
+                    new HttpLoggingInterceptor(BackEndApi::logHttpMessage)
+                            .setLevel(HttpLoggingInterceptor.Level.BODY);
+
+//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -43,11 +43,29 @@ public class BackEndApi {
                     .addCallAdapterFactory(
                             RxJava2CallAdapterFactory
                                     .createWithScheduler(Schedulers.io()))
+
                     .client(httpClient.build())
                     .build();
             instance = retrofit.create(RetrofitApi.class);
         }
         return instance;
     }
+
+
+
+
+    private static final String TAG = "BackEndApi";
+
+    private static void logHttpMessage(String message) {
+        if (message.length() < 10000) {
+            Log.d(TAG, message);
+        } else {
+            Log.d(TAG, message.substring(0, 10000) +
+                    "[... + " +
+                    (message.length() - 10000) +
+                    " chars]");
+        }
+    }
+
 
 }

@@ -3,7 +3,7 @@ package com.maatayim.talklet.repository.retrofit.model.general;
 import java.util.List;
 
 /**
- * Created by Sophie on 5/28/2017.
+ * Created by Sophie on 5/28/2017
  */
 
 public class TipsWrapper {

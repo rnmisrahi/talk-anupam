@@ -17,29 +17,21 @@ public class DaysWordsObj implements Parcelable {
     private String topic;
     private List<String> infoList = new ArrayList<>();
     private List<String> questionList = new ArrayList<>();
-    private List<String> activitesList = new ArrayList<>();
+    private List<String> activitiesList = new ArrayList<>();
     private List<String> ourFaveList = new ArrayList<>();
 
 
-    public DaysWordsObj(String word, String usage, String topic) {
+    public DaysWordsObj(String word, String usage, String topic,
+                        List<String> infoList, List<String> questionList,
+                        List<String> activitiesList, List<String> ourFaveList) {
         this.word = word;
         this.usage = usage;
         this.topic = topic;
 
-        infoList.add("41% of 18 month olds use this word");
-
-        questionList.add("41% of 18 month olds use this word");
-        questionList.add("41% of 18 month olds use this word");
-
-        activitesList.add("41% of 18 month olds use this word");
-        activitesList.add("41% of 18 month olds use this word");
-        activitesList.add("41% of 18 month olds use this word");
-
-        ourFaveList.add("41% of 18 month olds use this word");
-        ourFaveList.add("41% of 18 month olds use this word");
-        ourFaveList.add("41% of 18 month olds use this word");
-
-
+        this.infoList = infoList;
+        this.questionList = questionList;
+        this.activitiesList = activitiesList;
+        this.ourFaveList = ourFaveList;
     }
 
 
@@ -83,8 +75,8 @@ public class DaysWordsObj implements Parcelable {
         return questionList;
     }
 
-    public List<String> getActivitesList() {
-        return activitesList;
+    public List<String> getActivitiesList() {
+        return activitiesList;
     }
 
     public List<String> getOurFaveList() {

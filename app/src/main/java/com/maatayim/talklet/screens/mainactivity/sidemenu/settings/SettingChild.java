@@ -6,16 +6,16 @@ package com.maatayim.talklet.screens.mainactivity.sidemenu.settings;
 
 public class SettingChild {
 
-    private final String id;
+    private final int id;
     private final String name;
 
-    public SettingChild(String id, String name){
+    public SettingChild(int id, String name){
 
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

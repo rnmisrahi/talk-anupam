@@ -29,9 +29,11 @@ public class RecordChildrenHolder extends RecyclerView.ViewHolder {
     CircleImageView childView;
 
     private final Context context;
+
     private ChildRecObj child;
 
-    public RecordChildrenHolder(View itemView, final RecordChildrenAdapter.onSelectChildListener onSelectChildListener) {
+    public RecordChildrenHolder(View itemView, final RecordChildrenAdapter.onSelectChildListener
+            onSelectChildListener) {
         super(itemView);
         context = itemView.getContext();
         ButterKnife.bind(this, itemView);
@@ -52,15 +54,20 @@ public class RecordChildrenHolder extends RecyclerView.ViewHolder {
 
         this.child = child;
 
-        Picasso.with(context)
-                .load(child.getUrl())
-                .placeholder(R.drawable.pic)
-                .into(childView);
-
-        if(child.isSelected()){
-            childView.setBackground(context.getResources().getDrawable(R.drawable.record_child_bg_selected));
-        }else{
-            childView.setBackground(context.getResources().getDrawable(R.drawable.record_child_bg_not_selected));
+        if (child.isSelected()) {
+            childView.setBackground(context.getResources()
+                                           .getDrawable(R.drawable.record_child_bg_selected));
+        } else {
+            childView.setBackground(context.getResources()
+                                           .getDrawable(R.drawable.record_child_bg_not_selected));
         }
+
+
+        Picasso.with(context)
+               .load(child.getUrl())
+               .fit()
+               .centerCrop()
+               .placeholder(R.drawable.pic)
+               .into(childView);
     }
 }

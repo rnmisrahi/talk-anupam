@@ -22,7 +22,8 @@ public class Mapper {
 
 
     public static Function<RealmWordOfTheDay, DaysWordsObj> getWordOfTheDayMapperFunction() {
-        return wordOfTheDay -> new DaysWordsObj(wordOfTheDay.getWord(), wordOfTheDay.getSubtext(), wordOfTheDay.getTopic());
+        return wordOfTheDay -> new DaysWordsObj(wordOfTheDay.getWord(), wordOfTheDay.getSubtext(), wordOfTheDay.getTopic(),
+                wordOfTheDay.getInfoList(), wordOfTheDay.getQuestionList(), wordOfTheDay.getActivitiesList(), wordOfTheDay.getOurFaveList());
     }
 
     public static Function<RealmTip, TipTicket> getTipMapperFunction(String babyPhoto) {

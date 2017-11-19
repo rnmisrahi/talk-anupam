@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 public class RealmUser extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private int id;
 
     private String firstName;
     private String lastName;
@@ -23,12 +23,12 @@ public class RealmUser extends RealmObject {
 
 
     public RealmUser() {
-        this.id = "0";
+        this.id = 0;
     }
 
 
     public RealmUser(String firstName, String lastName, String birthday, String languageOne, String languageTwo, String languageThree) {
-        this.id = "0";
+        this.id = 0;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -39,7 +39,7 @@ public class RealmUser extends RealmObject {
     }
 
     public RealmUser(RealmUser user){
-        this.id = "0";
+        this.id = 0;
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.birthday = user.getBirthday();
@@ -75,7 +75,7 @@ public class RealmUser extends RealmObject {
         return language3;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 }

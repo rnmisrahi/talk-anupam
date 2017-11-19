@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
+import com.maatayim.talklet.baseline.events.DownloadCompleteEvent;
 import com.maatayim.talklet.screens.loginactivity.login.injection.AccessTokenWrapper;
 import com.facebook.login.LoginResult;
 
@@ -13,10 +13,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableCompletableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -26,11 +28,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginPresenter implements LoginContract.Presenter {
     private static final String TAG = "LoginPresenter";
+
     private LoginContract.View view;
+
     private Context context;
+
     private BaseContract.Repository repository;
+
     private AccessTokenWrapper accessToken;
+
     private Scheduler scheduler;
+
     private EventBus eventBus;
 
     @Inject
@@ -52,121 +60,152 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void saveAndSendFacebookId(LoginResult loginResult) {
-        repository.saveFacebookLoginToken(loginResult, context)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        sendFacebookID(loginResult);
-                    }
+        sendFacebookID(loginResult);
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        view.onFacebookLoginFailed();
-                    }
-                });
+
+//        repository.saveFacebookLoginToken(loginResult, context)
+//                  .subscribeOn(Schedulers.io())
+//                  .observeOn(scheduler)
+//                  .subscribe(new DisposableCompletableObserver() {
+//                      @Override
+//                      public void onComplete() {
+//                          sendFacebookID(loginResult);
+//                      }
+//
+//                      @Override
+//                      public void onError(@NonNull Throwable e) {
+//                          view.onFacebookLoginFailed();
+//                      }
+//                  });
     }
 
-    private void sendFacebookID(LoginResult loginResult) {
-        repository.login(context)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
-                    @Override
-                    public void onSuccess(@NonNull LoginResponse loginResponse) {
-                        if (loginResponse.getToken() == null){
-                            view.unlockLoginProcess();
-                        }else{
-                            view.receiveServerTokenSuccess(loginResult);
-                        }
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, "onError: ",e );
-                    }
-                });
+    private Completable signup() {
+        return repository.checkIfSignedUp(context)
+                         .observeOn(scheduler)
+                         .doOnSuccess(aBoolean -> {
+                             if (!aBoolean) {
+                                 view.goToSignupScreen();
+                             }
+                         }).filter(aBoolean -> aBoolean)
+                         .observeOn(scheduler)
+                         .doOnSuccess(aBoolean -> view.navigateToMainActivity())
+                         .doOnError(throwable -> Log.d(TAG, "signup: " + throwable.getMessage()))
+                         .flatMapCompletable(aBoolean -> downloadData());
+
+    }
+
+
+    @Override
+    public void sendFacebookID(LoginResult loginResult) {
+        repository.sendFacebookID(loginResult)
+                  .andThen(signup())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribeWith(new DisposableCompletableObserver() {
+                      @Override
+                      public void onComplete() {
+                          view.finishLoginActivity();
+
+                      }
+
+                      @Override
+                      public void onError(@NonNull Throwable e) {
+                          if (e instanceof IllegalAccessException) {
+                              view.displayFacebookError();
+                          }
+                          Log.e(TAG, "", e);
+                      }
+                  });
     }
 
 
     @Override
     public void checkIfLoggedIn() {
-        repository.login(context)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
-                    @Override
-                    public void onSuccess(@NonNull LoginResponse loginResponse) {
-                        if (loginResponse.getToken() == null){
-                            view.unlockLoginProcess();
-                        }else{
-                            view.alreadyLoggedIn();
-                        }
-                    }
+        repository.checkIfTokenFound(context)
+                  .observeOn(scheduler)
+                  .doOnSuccess(tokenFound -> {
+                      if (!tokenFound) {
+                          view.unlockLoginProcess();
+                      }
+                  })
+                  .filter(tokenFound -> tokenFound)
+                  .flatMap(aBoolean -> signup().toMaybe())
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, "onError: ",e );
-                    }
-                });
+                  .observeOn(scheduler)
+                  .subscribeWith(new DisposableMaybeObserver<Object>() {
+
+                      @Override
+                      public void onComplete() {
+                          Log.d(TAG, "onComplete: ");
+                      }
+
+                      @Override
+                      public void onSuccess(Object o) {
+                          view.finishLoginActivity();
+                      }
+
+                      @Override
+                      public void onError(@NonNull Throwable e) {
+                          Log.d(TAG, "" + e);
+                      }
+                  });
     }
+
 
     @Override
     public void checkIfSignedUp() {
-        repository.login(context)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribeWith(new DisposableSingleObserver<LoginResponse>() {
-                    @Override
-                    public void onSuccess(@NonNull LoginResponse loginResponse) {
-                        if (loginResponse.isSignedUp()) {
-                            view.onSignedUpSuccess();
-                        } else {
-                            view.onAlreadySignedUpFailed();
-                        }
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.e(TAG, "onError: ", e );
-                    }
-                });
 
+    }
+
+    private Completable downloadData() {
+        return repository.downloadKids()
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnComplete(() -> EventBus.getDefault()
+                                                     .post(new DownloadCompleteEvent(true)))
+                         .andThen(repository.downloadTips())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnComplete(() -> EventBus.getDefault()
+                                                     .post(new DownloadCompleteEvent(true)))
+                         .andThen(repository.downloadCountData())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnComplete(() -> EventBus.getDefault()
+                                                     .post(new DownloadCompleteEvent(true)));
+//                  .subscribeWith(new DisposableCompletableObserver() {
+//                      @Override
+//                      public void onComplete() {
+//                          if (noChildren) {
+
+//                          }
+
+//                      }
+//
+//                      @Override
+//                      public void onError(Throwable e) {
+//                          Log.e(TAG, "onError: ", e);
+//                      }
+//                  });
     }
 
     @Override
     public void saveUserFBDetails(UserDetails userDetails) {
 
         repository.saveUserFBDetails(userDetails)
-                .subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
-                        view.onSaveUserFBDataSuccess();
-                    }
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(scheduler)
+                  .subscribe(new DisposableCompletableObserver() {
+                      @Override
+                      public void onComplete() {
+                          view.onSaveUserFBDataSuccess();
+                      }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        view.onSaveUserFBDataFailed();
-                    }
-                });
-    }
-
-    @Override
-    public void sendUserFacebookData() {
-//        repository.sendUserFacebookData()
-//                .
+                      @Override
+                      public void onError(@NonNull Throwable e) {
+                          Log.e(TAG, "onError: saveUserFBDetails ", e);
+                          view.onSaveUserFBDataFailed();
+                      }
+                  });
     }
 
 
-//    @Override
-//    public void testConnect() {
-//        mockConnectToFacebook();
-//    }
-
-    private void mockConnectToFacebook() {
-        view.displayFacebookLoginInterface();
-    }
 }

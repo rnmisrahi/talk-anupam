@@ -92,7 +92,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
 
-    private void getTips(final String id) {
+    private void getTips(final int id) {
         repository.getTipsList(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
@@ -115,7 +115,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
 
-    private void getWordsCount(String id) {
+    private void getWordsCount(int id) {
         repository.getWordsCount(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)

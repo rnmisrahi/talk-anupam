@@ -51,7 +51,7 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
     @BindView(R.id.child_item)
     CircleImageView childImg;
 
-    private String babyId;
+    private int babyId;
     private ViewPagerAdapter adapter;
 
     protected static String[] TABS_TITLES;
@@ -60,10 +60,10 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
     protected TextView[] tabsTextViews;
 
 
-    public static ChildFragment newInstance(String id) {
+    public static ChildFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         ChildFragment fragment = new ChildFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,7 +81,7 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
         }
 
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new ChildModule(this)).inject(this);
 
@@ -103,7 +103,10 @@ public class ChildFragment extends TalkletFragment implements ChildContract.View
         setTitle(child.getName());
 
         Picasso.with(getContext())
+
                 .load(child.getImg())
+               .fit()
+               .centerCrop()
                 .placeholder(R.drawable.pic)
                 .into(childImg);
 

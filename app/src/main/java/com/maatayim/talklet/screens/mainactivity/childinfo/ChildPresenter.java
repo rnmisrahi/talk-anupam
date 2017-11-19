@@ -31,7 +31,7 @@ public class ChildPresenter implements ChildContract.Presenter {
 
 
     @Override
-    public void getData(String babyId) {
+    public void getData(int babyId) {
 
         repository.getChild(babyId)
                 .subscribeOn(Schedulers.io())

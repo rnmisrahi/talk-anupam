@@ -48,7 +48,7 @@ public class ChildMainFragment extends TalkletFragment implements ChildMainContr
     @Inject
     ChildMainContract.Presenter presenter;
 
-    private String babyId;
+    private int babyId;
 
     @BindView(R.id.tips_view_pager_child_ata)
     ViewPager tipsViewPagerGtab;
@@ -63,10 +63,10 @@ public class ChildMainFragment extends TalkletFragment implements ChildMainContr
     ViewPager wordsPager;
 
 
-    public static ChildMainFragment newInstance(String id) {
+    public static ChildMainFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         ChildMainFragment fragment = new ChildMainFragment();
         fragment.setArguments(args);
         return fragment;
@@ -77,7 +77,7 @@ public class ChildMainFragment extends TalkletFragment implements ChildMainContr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new ChildMainModule(this)).inject(this);
 

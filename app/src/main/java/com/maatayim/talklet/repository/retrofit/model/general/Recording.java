@@ -8,13 +8,13 @@ import io.realm.annotations.PrimaryKey;
 
 public class Recording {
 
-    private String id;
+    private int id;
     private int number;
     private String date;
     private int wordCounter;
     private String duration;
 
-    public Recording(String id, int number, String date, int wordCounter, String duration){
+    public Recording(int id, int number, String date, int wordCounter, String duration){
 
         this.id = id;
         this.number = number;
@@ -23,11 +23,11 @@ public class Recording {
         this.duration = duration;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

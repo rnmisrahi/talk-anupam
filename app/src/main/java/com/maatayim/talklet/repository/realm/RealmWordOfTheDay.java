@@ -1,5 +1,11 @@
 package com.maatayim.talklet.repository.realm;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,23 +16,33 @@ import io.realm.annotations.PrimaryKey;
 public class RealmWordOfTheDay extends RealmObject {
 
     @PrimaryKey
-    private String id;
-
+    private int id;
     private String word;
     private String subtext;
-    private String childId;
+    private int childId;
     private String topic;
+
+    private String infoList;
+    private String questionList;
+    private String activitiesList;
+    private String ourFaveList;
 
     public RealmWordOfTheDay(){
 
     }
 
-    public RealmWordOfTheDay(String id, String word, String subtext, String childId, String topic) {
+    public RealmWordOfTheDay(int id, String word, String subtext, int childId, String topic,
+                             List<String> infoList, List<String> questionList, List<String> activitesList,
+                             List<String> ourFaveList) {
         this.id = id;
         this.word = word;
         this.subtext = subtext;
         this.childId = childId;
         this.topic = topic;
+        setInfoList(infoList);
+        setQuestionList(questionList);
+        setActivitiesList(activitesList);
+        setOurFaveList(ourFaveList);
     }
 
     public RealmWordOfTheDay(RealmWordOfTheDay wordOfTheDay) {
@@ -34,6 +50,11 @@ public class RealmWordOfTheDay extends RealmObject {
         this.subtext = wordOfTheDay.getSubtext();
         this.childId = wordOfTheDay.getChildId();
         this.topic = wordOfTheDay.getTopic();
+
+        setInfoList(wordOfTheDay.getInfoList());
+        setQuestionList(wordOfTheDay.getQuestionList());
+        setActivitiesList(wordOfTheDay.getActivitiesList());
+        setOurFaveList(wordOfTheDay.getOurFaveList());
     }
 
 
@@ -53,7 +74,7 @@ public class RealmWordOfTheDay extends RealmObject {
         this.subtext = subtext;
     }
 
-    public String getChildId() {
+    public int getChildId() {
         return childId;
     }
 
@@ -61,19 +82,63 @@ public class RealmWordOfTheDay extends RealmObject {
         return topic;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(int childId) {
         this.childId = childId;
     }
 
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+
+    public List<String> getInfoList() {
+        Gson gson = new Gson();
+        return gson.fromJson(infoList,new TypeToken<List<String>>(){}.getType());
+    }
+
+
+    public List<String> getQuestionList() {
+        Gson gson = new Gson();
+        return gson.fromJson(questionList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public List<String> getActivitiesList() {
+        Gson gson = new Gson();
+        return gson.fromJson(activitiesList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public List<String> getOurFaveList() {
+        Gson gson = new Gson();
+        return gson.fromJson(ourFaveList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public void setInfoList(List<String> infoList) {
+        Gson gson = new Gson();
+        this.infoList = gson.toJson(infoList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public void setQuestionList(List<String> questionList) {
+        Gson gson = new Gson();
+        this.questionList = gson.toJson(questionList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public void setActivitiesList(List<String> activitiesList) {
+        Gson gson = new Gson();
+        this.activitiesList = gson.toJson(activitiesList,new TypeToken<List<String>>(){}.getType());
+    }
+
+    public void setOurFaveList(List<String> ourFaveList) {
+        Gson gson = new Gson();
+        this.ourFaveList = gson.toJson(ourFaveList,new TypeToken<List<String>>(){}.getType());
+    }
+
+
 }

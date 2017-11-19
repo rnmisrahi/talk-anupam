@@ -31,7 +31,7 @@ public class ChildMainPresenter implements ChildMainContract.Presenter {
     }
 
     @Override
-    public void getData(String id) {
+    public void getData(int id) {
 
         repository.downloadWordsOfTheDay(id)
                 .subscribeOn(Schedulers.io())
@@ -53,7 +53,7 @@ public class ChildMainPresenter implements ChildMainContract.Presenter {
     }
 
 
-    private void getChildTipsAndWords(String id){
+    private void getChildTipsAndWords(int id){
         repository.getChildTipsAndWords(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)

@@ -6,12 +6,12 @@ import java.util.Date;
 
 
 /**
- * Created by Sophie on 6/4/2017.
+ * Created by Sophie on 6/4/2017
  */
 
 public class Child {
 
-    private final String id;
+    private final int id;
     private final String name;
     private Date birthday;
     private final String img;
@@ -19,7 +19,7 @@ public class Child {
     private int count;
     private int total;
 
-    public Child(String id, String name, Date birthday, String img, boolean isSelected){
+    public Child(int id, String name, Date birthday, String img, boolean isSelected){
 
         this.id = id;
         this.name = name;
@@ -29,7 +29,7 @@ public class Child {
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

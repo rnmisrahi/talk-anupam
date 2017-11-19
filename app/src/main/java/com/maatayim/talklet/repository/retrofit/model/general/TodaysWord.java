@@ -6,12 +6,12 @@ package com.maatayim.talklet.repository.retrofit.model.general;
 
 public class TodaysWord {
 
-    private String id;
+    private int id;
     private String word;
     private String subtitle;
     private String[] tips;
 
-    public TodaysWord(String id, String word, String subtitle, String[] tips){
+    public TodaysWord(int id, String word, String subtitle, String[] tips){
 
         this.id = id;
         this.word = word;
@@ -19,11 +19,11 @@ public class TodaysWord {
         this.tips = tips;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

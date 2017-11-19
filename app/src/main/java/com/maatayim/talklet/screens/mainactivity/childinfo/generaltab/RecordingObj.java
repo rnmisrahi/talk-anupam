@@ -13,7 +13,7 @@ import java.util.Date;
 public class RecordingObj {
 
 
-    private String id;
+    private int id;
     private int number;
     private Date date;
     private int wordCount;
@@ -23,7 +23,7 @@ public class RecordingObj {
 
 
 
-    public RecordingObj(String id, int number, Date date, int wordCount,
+    public RecordingObj(int id, int number, Date date, int wordCount,
                         int wordCountGoal, long duration, boolean isSelected){
 
         this.id = id;
@@ -35,11 +35,11 @@ public class RecordingObj {
         this.isSelected = isSelected;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

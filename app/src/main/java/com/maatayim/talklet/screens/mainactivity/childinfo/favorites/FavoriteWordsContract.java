@@ -7,13 +7,13 @@ import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wo
 import java.util.List;
 
 /**
- * Created by Sophie on 6/22/2017.
+ * Created by Sophie on 6/22/2017
  */
 
 public interface FavoriteWordsContract {
 
     interface Presenter extends BaseContract.Presenter{
-        void getData(String id);
+        void getData(int id);
 
         void getNewWords(boolean dorDisplay);
         void getAdvanceWords();

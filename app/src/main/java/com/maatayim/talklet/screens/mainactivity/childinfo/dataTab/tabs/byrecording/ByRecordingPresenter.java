@@ -14,7 +14,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/20/2017.
+ * Created by Sophie on 6/20/2017
  */
 
 public class ByRecordingPresenter implements ByRecordingContract.Presenter {
@@ -34,13 +34,13 @@ public class ByRecordingPresenter implements ByRecordingContract.Presenter {
     }
 
     @Override
-    public void getData(String id) {
+    public void getData(int id) {
         setCalendarData(id);
     }
 
 
 
-    private void setCalendarData(String id) {
+    private void setCalendarData(int id) {
 
         repository.getChildWordsByDate(id)
                 .subscribeOn(Schedulers.io())

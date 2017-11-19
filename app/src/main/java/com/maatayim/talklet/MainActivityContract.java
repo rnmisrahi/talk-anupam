@@ -19,5 +19,7 @@ public interface MainActivityContract {
         void downloadData();
 
         void logout(Context context);
+
+        void detach();
     }
 }

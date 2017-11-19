@@ -57,13 +57,13 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
     @BindView(R.id.words_count_view)
     TextView wordsTextView;
 
-    private String babyId;
+    private int babyId;
 
 
-    public static GeneralTabFragment newInstance(String id) {
+    public static GeneralTabFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         GeneralTabFragment fragment = new GeneralTabFragment();
         fragment.setArguments(args);
         return fragment;
@@ -73,7 +73,7 @@ public class GeneralTabFragment extends TalkletFragment implements GeneralTabCon
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new GeneralTabModule(this)).inject(this);
 

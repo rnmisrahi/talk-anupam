@@ -6,12 +6,12 @@ package com.maatayim.talklet.repository.retrofit.model.worddata;
 
 public class Word {
 
-    private String id;
+    private int id;
     private int freqency;
     private int age;
     private String word;
 
-    public Word(String id, int freqency, int age, String word){
+    public Word(int id, int freqency, int age, String word){
 
         this.id = id;
         this.freqency = freqency;
@@ -20,11 +20,11 @@ public class Word {
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

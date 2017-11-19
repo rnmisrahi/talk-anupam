@@ -23,12 +23,15 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Sophie on 5/22/2017.
+ * Created by Sophie on 5/22/2017
  */
 
 public class Utils {
 
     private static final java.lang.String defaultDateFormat = "MMM dd, yyyy";
+    private static final java.lang.String jsonDateFormat = "yyyy-MM-dd%shh:mm:ss";
+    private static final java.lang.String jsonDate = "yyyy-MM-dd";
+    private static final java.lang.String jsonTime = "hh:mm:ss";
     private static final java.lang.String shortDateFormat = ", d MMM";
     private static final java.lang.String facebookDateFormat = "MM/dd/yyyy";
     private static final java.lang.String defaultTimeFormat = "%02d:%02d:%02d";
@@ -110,23 +113,10 @@ public class Utils {
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
-
-//        Calendar timePassed = newcal - cal;
-
-//        newDate.setTime(timePassed2);
-//        SimpleDateFormat dayFormat = new SimpleDateFormat(timerFormat, Locale.US);
-//        return dayFormat.format(date);
-
-//        NumberFormat format = new DecimalFormat("##.#");
-//        format.setMaximumIntegerDigits(2);
         return String.format(Locale.ENGLISH, "%02d:%02d:%02d",
                 tDelta / hoursInMilli,
                 (tDelta / minutesInMilli) % 60,
                 (tDelta / secondsInMilli) % 60);
-
-//        return format.format(tDelta / hoursInMilli)
-//                + ": "+ format.format(tDelta / minutesInMilli)
-//                + ": "+ format.format(tDelta % secondsInMilli);
 
     }
 
@@ -142,5 +132,30 @@ public class Utils {
         Calendar thatDay = Calendar.getInstance();
         thatDay.setTime(birthdayDate);
         return String.valueOf(thatDay.getTime().getTime());
+    }
+
+
+    public static long parserDate(String strDate){
+        SimpleDateFormat formatter = new SimpleDateFormat(jsonDateFormat, Locale.getDefault());
+
+        Date date = new Date();
+        try {
+            date = formatter.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date.getTime();
+    }
+
+
+    public static String convertLongDateToServerFormat(long longDate){
+
+        Date date = new Date();
+        date.setTime(longDate);
+
+        SimpleDateFormat formatterDate = new SimpleDateFormat(jsonDate, Locale.getDefault());
+//        SimpleDateFormat formatterTime = new SimpleDateFormat(jsonTime, Locale.getDefault());
+        return formatterDate.format(date) + "T00:00:00";
     }
 }
