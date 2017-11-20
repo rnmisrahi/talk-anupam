@@ -30,10 +30,16 @@ public interface RetrofitApi {
 
 
 
+//    @POST("loginFacebook")
+//    @FormUrlEncoded
+//    Single<LoginFacebookResponse> loginWithFacebook(
+//            @Field("facebookId") String facebookId);
+
+//
     @POST("loginFacebook")
-    @FormUrlEncoded
     Single<LoginFacebookResponse> loginWithFacebook(
-            @Field("facebookid") String facebookId);
+            @Header("facebookId") String facebookId);
+
 
     //    Children
     @GET("children")
