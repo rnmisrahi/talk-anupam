@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.events.AddFragmentEvent;
@@ -48,12 +47,14 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 import static android.media.MediaRecorder.AudioSource.MIC;
 
@@ -114,7 +115,6 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     AudioRecord recorder;
 
     private int sampleRate = 16000; // 44100 for music
-
     private int channelConfig = AudioFormat.CHANNEL_CONFIGURATION_MONO;
 
     private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
@@ -305,8 +305,7 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
                     Log.d("VS", "Address retrieved");
 
 
-                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
-                            channelConfig, audioFormat, minBufSize * 10);
+                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,sampleRate,channelConfig,audioFormat,minBufSize*10);
                     Log.d("VS", "Recorder initialized");
 
                     recorder.startRecording();
@@ -344,7 +343,9 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
         int recordPermission = ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.RECORD_AUDIO);
 
-        if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+
+
+if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             new RxPermissions(getActivity())
                     .request(Manifest.permission.RECORD_AUDIO)
                     .subscribe(granted -> {
@@ -368,28 +369,24 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 //        startStreaming();
         EventBus.getDefault()
                 .post(new AddFragmentEvent(RecordingFragment.newInstance(mediaRecordWrapper)));
-    }
+    }    public MediaRecordWrapper startRecording(){// initialize the MediaRecorder
+        initMediaRecorder();
+        // start timer
 
-
-    public MediaRecordWrapper startRecording() {
-
-        MediaRecorder mediaRecorder = new MediaRecorder();
+        // start recording
+       MediaRecorder mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MIC);
 
-//        if (AudioManager.getProperty("PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED")){
-//            mediaRecorder.setAudioSource(UNPROCESSED);
-//        }
-
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File file = new File(talkletRecDrectory, RECORDING_FILE_3GPP);
-//        try {
-//            if(!file.exists()){
-//                file.createNewFile();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mediaRecorder.setOutputFile(file.getAbsolutePath());
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         try {
@@ -470,11 +467,34 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
 
 //    @Subscribe
-//    public void onDownloadComplete(DownloadCompleteEvent event) {
-//        if (event.isDownloadComplete()) {
+//    public void onDownloadComplete(DownloadCompleteEvent event){
+//        if(event.isDownloadComplete()){
 //            presenter.getData();
 //        }
 //    }
 
+void record() {
+        initMediaRecorder();
+        mediaRecorder.start();
+        Observable.interval(10000, TimeUnit.MILLISECONDS)
+                .doOnNext(x -> {
+                    mediaRecorder.stop();
+                    initMediaRecorder();
+                    mediaRecorder.start();
+                    // todo start ftp service
+                })
+                .subscribe();
+    }
+
+    private void initMediaRecorder() {
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
+
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        mediaRecorder.setOutputFile(file.getAbsolutePath());
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+    }
 
 }

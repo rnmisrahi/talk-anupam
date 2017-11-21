@@ -63,6 +63,9 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".screens.mainactivity.record.FtpService"
+            android:exported="false" />
+
     </application>
 
 </manifest>

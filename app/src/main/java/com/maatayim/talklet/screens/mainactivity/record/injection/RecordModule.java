@@ -18,7 +18,9 @@ public class RecordModule {
     }
 
     @Provides
-    public RecordContract.Presenter providePresenter(RecordContract.View view, BaseContract.Repository repo, Scheduler scheduler) {
+    public RecordContract.Presenter providePresenter(RecordContract.View view,
+                                                     BaseContract.Repository repo,
+                                                     Scheduler scheduler) {
         return new RecordPresenter(view, repo, scheduler);
     }
 

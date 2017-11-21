@@ -1,5 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.record;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,12 +105,12 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mediaRecorder = getArguments().getParcelable(ARG_RECORD);
-        }
+
         EventBus.getDefault().register(this);
 
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new RecordModule(this)).inject(this);
+
+        presenter.startRecording();
     }
 
 
@@ -132,8 +133,6 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         }, 0, 1000);
         tStart = System.currentTimeMillis();
 
-        mediaRecorder.start();
-
         constraintSet1 = new ConstraintSet();
         constraintSet1.clone(getContext(), R.layout.fragment_record);
         constraintSet2 = new ConstraintSet();
@@ -151,7 +150,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         for (MainScreenChild mainScreenChild : mainScreenChildren) {
             children.add(new ChildRecObj(mainScreenChild));
         }
-
+        presenter.updateChildren(children);
         setChildrenRecyclerView(children);
 
     }
@@ -347,9 +346,15 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         if (event.isClickedChildSetChanged()){
             List<ChildRecObj> selectedChildren = childrenAdapter.getSelectedChildren();
             List<TipTicket> tipTickets = tipsMapper(selectedChildren);
+            presenter.updateChildren(selectedChildren);
             pagerAdapter.setDataSet(tipTickets);
             pagerAdapter.updateBaseId(tipTickets.size());
             tips_view_pager.setAdapter(pagerAdapter);
         }
+    }
+
+    @Override
+    public Context getViewContext() {
+        return getContext();
     }
 }
