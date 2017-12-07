@@ -27,8 +27,8 @@ public class LoginModule {
     }
 
     @Provides
-    public LoginContract.Presenter providePresenter(LoginContract.View view, Context context, BaseContract.Repository repo, AccessTokenWrapper accessToken, Scheduler scheduler, EventBus eventBus) {
-        return new LoginPresenter(view, context, repo, accessToken, scheduler, eventBus);
+    public LoginContract.Presenter providePresenter(LoginPresenter presenter) {
+        return presenter;
     }
 
     @Provides
@@ -36,9 +36,6 @@ public class LoginModule {
         return view;
     }
 
-    @Provides
-    public AccessTokenWrapper provideAccessToken() {
-        return new AccessTokenWrapper(AccessToken.getCurrentAccessToken());
-    }
+
 
 }

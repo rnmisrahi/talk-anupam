@@ -5,7 +5,7 @@ import android.content.Context;
 //import com.maatayim.talklet.TestComponent;
 import com.facebook.login.LoginResult;
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.screens.loginactivity.login.injection.AccessTokenWrapper;
+import com.maatayim.talklet.screens.AccessTokenWrapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -63,7 +63,7 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        presenter = new LoginPresenter(view, context, repository, accessToken, Schedulers.trampoline(), eventBus);
+        presenter = new LoginPresenter(view, context, repository, Schedulers.trampoline(), eventBus);
         RxJavaPlugins.setIoSchedulerHandler(new Function<Scheduler, Scheduler>() {
             @Override
             public Scheduler apply(@NonNull Scheduler scheduler) throws Exception {

@@ -30,23 +30,16 @@ public interface RetrofitApi {
 
 
 
-//    @POST("loginFacebook")
-//    @FormUrlEncoded
-//    Single<LoginFacebookResponse> loginWithFacebook(
-//            @Field("facebookId") String facebookId);
 
-//
     @POST("loginFacebook")
     Single<LoginFacebookResponse> loginWithFacebook(
             @Header("facebookId") String facebookId);
 
 
-    //    Children
     @GET("children")
     Single<ChildrenListWrapper> getChildrenList(
             @Header("Authorization") String authorization
     );
-
 
 
     @POST("children")
@@ -54,13 +47,6 @@ public interface RetrofitApi {
             @Header("Authorization") String authorization,
             @Body CreateNewChild body
     );
-
-//    @DELETE("children/{id}")
-//    void deleteChild(
-//            @Header("Authorization") String authorization
-//    );
-
-
 
 
     @GET("recording")

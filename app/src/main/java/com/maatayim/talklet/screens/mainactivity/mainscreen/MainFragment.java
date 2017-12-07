@@ -278,10 +278,12 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
     @OnClick(R.id.recording_mic)
     public void onRecordClick() {
         checkPermission();
+
+
+
 //        MediaRecordWrapper mediaRecordWrapper = startRecording();
 ////        startStreaming();
-//        EventBus.getDefault().post(new AddFragmentEvent(RecordingFragment.newInstance
-// (mediaRecordWrapper)));
+        EventBus.getDefault().post(new AddFragmentEvent(RecordingFragment.newInstance()));
     }
 
 
@@ -345,12 +347,12 @@ public class MainFragment extends TalkletFragment implements MainContract.View {
 
 
 
-if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             new RxPermissions(getActivity())
                     .request(Manifest.permission.RECORD_AUDIO)
                     .subscribe(granted -> {
                         if (granted) { // Always true pre-M
-                            record();
+//                            record();
                         } else {
                             // Oups permission denied
                             Toast.makeText(getContext(), "permission to Record not granted",
@@ -360,43 +362,43 @@ if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
                     });
 
         } else {
-            record();
+//            record();
         }
     }
 
-    private void record() {
-        MediaRecordWrapper mediaRecordWrapper = startRecording();
-//        startStreaming();
-        EventBus.getDefault()
-                .post(new AddFragmentEvent(RecordingFragment.newInstance(mediaRecordWrapper)));
-    }    public MediaRecordWrapper startRecording(){// initialize the MediaRecorder
-        initMediaRecorder();
-        // start timer
-
-        // start recording
-       MediaRecorder mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MIC);
-
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaRecorder.setOutputFile(file.getAbsolutePath());
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException exception) {
-            Log.d(TAG, "startRecording: exception in prepare record");
-        }
-
-        return new MediaRecordWrapper(mediaRecorder);
-    }
+//    private void record() {
+//        MediaRecordWrapper mediaRecordWrapper = startRecording();
+////        startStreaming();
+//        EventBus.getDefault()
+//                .post(new AddFragmentEvent(RecordingFragment.newInstance(mediaRecordWrapper)));
+//    }    public MediaRecordWrapper startRecording(){// initialize the MediaRecorder
+//        initMediaRecorder();
+//        // start timer
+//
+//        // start recording
+//        MediaRecorder mediaRecorder = new MediaRecorder();
+//        mediaRecorder.setAudioSource(MIC);
+//
+//        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
+//        try {
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        mediaRecorder.setOutputFile(file.getAbsolutePath());
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+//        try {
+//            mediaRecorder.prepare();
+//        } catch (IOException exception) {
+//            Log.d(TAG, "startRecording: exception in prepare record");
+//        }
+//
+//        return new MediaRecordWrapper(mediaRecorder);
+//    }
 
 
     @Override
@@ -473,28 +475,28 @@ if (recordPermission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
 //        }
 //    }
 
-void record() {
-        initMediaRecorder();
-        mediaRecorder.start();
-        Observable.interval(10000, TimeUnit.MILLISECONDS)
-                .doOnNext(x -> {
-                    mediaRecorder.stop();
-                    initMediaRecorder();
-                    mediaRecorder.start();
-                    // todo start ftp service
-                })
-                .subscribe();
-    }
-
-    private void initMediaRecorder() {
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
-
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        mediaRecorder.setOutputFile(file.getAbsolutePath());
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-    }
+//    private void record() {
+//        initMediaRecorder();
+//        mediaRecorder.start();
+//        Observable.interval(10000, TimeUnit.MILLISECONDS)
+//                  .doOnNext(x -> {
+//                      mediaRecorder.stop();
+//                      initMediaRecorder();
+//                      mediaRecorder.start();
+//                      // todo start ftp service
+//                  })
+//                  .subscribe();
+//    }
+//
+//    private void initMediaRecorder() {
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//        File file = new File(path, File.separator + RECORDING_FILE_3GPP);
+//
+//        mediaRecorder = new MediaRecorder();
+//        mediaRecorder.setAudioSource(MIC);
+//        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+//        mediaRecorder.setOutputFile(file.getAbsolutePath());
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+//    }
 
 }

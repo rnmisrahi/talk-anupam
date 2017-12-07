@@ -93,10 +93,10 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     private static List<TipTicket> originalTipsList = new ArrayList<>();
 
 
-    public static RecordingFragment newInstance(MediaRecordWrapper mediaRecorder) {
+    public static RecordingFragment newInstance() {
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_RECORD, mediaRecorder);
+//        args.putParcelable(ARG_RECORD, mediaRecorder);
         RecordingFragment fragment = new RecordingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -109,7 +109,6 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         EventBus.getDefault().register(this);
 
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new RecordModule(this)).inject(this);
-
         presenter.startRecording();
     }
 

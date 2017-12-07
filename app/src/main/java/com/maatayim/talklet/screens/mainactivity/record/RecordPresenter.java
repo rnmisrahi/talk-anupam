@@ -48,7 +48,7 @@ public class RecordPresenter implements RecordContract.Presenter {
     public void updateChildren(List<ChildRecObj> childRecObjs) {
         ArrayList<String> childrenIds = new ArrayList<>();
         for (ChildRecObj childRecObj : childRecObjs) {
-            childrenIds.add(childRecObj.getId());
+            childrenIds.add(String.valueOf(childRecObj.getId()));
         }
         selectedChildren.onNext(childrenIds);
         disposableObserver.dispose();
@@ -138,7 +138,7 @@ public class RecordPresenter implements RecordContract.Presenter {
     }
 
 
-    private void startFtpService(String filePath) {
+    public void startFtpService(String filePath) {
         Intent intent = new Intent(view.getViewContext(), FtpService.class);
         Bundle extras = new Bundle();
         extras.putString(FILE_PATH, filePath);

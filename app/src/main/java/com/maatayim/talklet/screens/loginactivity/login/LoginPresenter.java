@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.baseline.events.DownloadCompleteEvent;
-import com.maatayim.talklet.screens.loginactivity.login.injection.AccessTokenWrapper;
 import com.facebook.login.LoginResult;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,8 +34,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private BaseContract.Repository repository;
 
-    private AccessTokenWrapper accessToken;
-
     private Scheduler scheduler;
 
     private EventBus eventBus;
@@ -45,14 +42,12 @@ public class LoginPresenter implements LoginContract.Presenter {
     public LoginPresenter(LoginContract.View view,
                           Context context,
                           BaseContract.Repository repository,
-                          AccessTokenWrapper accessToken,
                           Scheduler scheduler,
                           EventBus eventBus
     ) {
         this.view = view;
         this.context = context;
         this.repository = repository;
-        this.accessToken = accessToken;
         this.scheduler = scheduler;
         this.eventBus = eventBus;
     }
