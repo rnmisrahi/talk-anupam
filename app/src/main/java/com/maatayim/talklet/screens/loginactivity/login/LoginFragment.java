@@ -49,12 +49,19 @@ import static android.app.Activity.RESULT_OK;
 public class LoginFragment extends TalkletFragment implements LoginContract.View {
 
     private static final String TAG = "LoginFragment";
+
     public static final int LOGIN_REQUEST_CODE = 64206;
+
     public static final String ID = "id";
+
     public static final String EMAIL = "email";
+
     public static final String FIRST_NAME = "first_name";
+
     public static final String LAST_NAME = "last_name";
+
     public static final String GENDER = "gender";
+
     public static final String BIRTHDAY = "birthday";
 
     @Inject
@@ -76,7 +83,9 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new LoginModule(this)).inject(this);
+        ((TalkletApplication) getActivity().getApplication()).getAppComponent()
+                                                             .plus(new LoginModule(this))
+                                                             .inject(this);
 
     }
 
@@ -98,8 +107,8 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK & requestCode == LOGIN_REQUEST_CODE) {
-                callbackManager.onActivityResult(requestCode, resultCode, data);
-            }
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
 
     }
 
@@ -107,8 +116,8 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @Override
     public void displayFacebookLoginInterface() {
 
-        loginButton.setReadPermissions(Arrays.asList("user_birthday", "public_profile", "email", "user_friends"));
-
+        loginButton.setReadPermissions(Arrays.asList("user_birthday", "public_profile", "email",
+                "user_friends"));
 
 
 //        loginButton.setReadPermissions(EMAIL);
@@ -122,56 +131,8 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                presenter.saveAndSendFacebookId(loginResult);
-
-
-//                AccessToken accessToken = loginResult.getAccessToken();
-
-//                LoginManager.getInstance().logInWithReadPermissions(
-//                        getActivity(),
-//                        Arrays.asList("birthday"));
-
-//                GraphRequest request = GraphRequest.newMeRequest(
-//                        loginResult.getAccessToken(),
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(JSONObject object, GraphResponse response) {
-//                                // Application code
-//                                try {
-//                                    Log.i("Response", response.toString());
-//                                    String email = object.getString(EMAIL);
-//                                    String birthday = object.getString("birthday");
-//                                    Profile profile = Profile.getCurrentProfile();
-//                                    String id = profile.getId();
-//                                    String firstName = object.getString(FIRST_NAME);
-//                                    String lastName = object.getString(LAST_NAME);
-//                                    String gender = object.getString(GENDER);
-////                                    profile.getProfilePictureUri()
-//
-//                                    UserDetails userDetails = new UserDetails(
-//                                            id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
-//
-//                                    presenter.saveUserFBDetails(userDetails);
-//
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                    Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
-//                                    LoginManager.getInstance().logOut();
-//                                    isDisplayLoginButton(true);
-//                                }
-//                            }
-//                        });
-//                Bundle parameters = new Bundle();
-//                parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," + GENDER + "," + BIRTHDAY);
-//                request.setParameters(parameters);
-//                request.executeAsync();
-
+                presenter.sendFacebookID(loginResult);
             }
-
-
-
-
-
 
             @Override
             public void onCancel() {
@@ -185,35 +146,35 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
         });
 
 
-
     }
 
-    private void isDisplayLoginButton(boolean isDisplay){
-        if(isDisplay){
+    private void displayLoginButton(boolean isDisplay) {
+        if (isDisplay) {
             loginButton.setVisibility(View.VISIBLE);
             connectText.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             loginButton.setVisibility(View.GONE);
             connectText.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onFacebookLoginSuccess(){
+    public void onFacebookLoginSuccess() {
         Log.d(TAG, "onFacebookLoginSuccess: ");
 
 
     }
 
-    public void onAlreadySignedUpFailed(){
+    public void goToSignupScreen() {
+        Log.d(TAG, "in goToSignupScreen:");
         EventBus.getDefault().post(new AddLoginFragmentEvent(SignupFragment.newInstance(true)));
 
     }
 
-    public void onSignedUpSuccess(){
+    public void navigateToMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
-        getActivity().finish();
+
     }
 
     @Override
@@ -229,7 +190,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @Override
     public void unlockLoginProcess() {
         LoginManager.getInstance().logOut();
-        isDisplayLoginButton(true);
+        displayLoginButton(true);
     }
 
     @Override
@@ -239,7 +200,6 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 
     @Override
     public void receiveServerTokenSuccess(LoginResult loginResult) {
-        Toast.makeText(getContext(), "IdSucess", Toast.LENGTH_SHORT).show();
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -258,27 +218,43 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
 //                                    profile.getProfilePictureUri()
 
                             UserDetails userDetails = new UserDetails(
-                                    id, firstName, lastName, Utils.parseDateFromFB(birthday), email, gender);
+                                    id, firstName, lastName, Utils.parseDateFromFB(birthday),
+                                    email, gender);
 
                             presenter.saveUserFBDetails(userDetails);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Connection error", Toast.LENGTH_SHORT)
+                                 .show();
                             LoginManager.getInstance().logOut();
-                            isDisplayLoginButton(true);
+                            displayLoginButton(true);
                         }
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," + GENDER + "," + BIRTHDAY);
+        parameters.putString("fields", ID + "," + EMAIL + "," + FIRST_NAME + "," + LAST_NAME + "," +
+                "" + GENDER + "," + BIRTHDAY);
         request.setParameters(parameters);
         request.executeAsync();
     }
 
     @Override
+    public void finishLoginActivity() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void displayFacebookError() {
+        Toast.makeText(getContext(), "Error in Facebook ID", Toast
+                .LENGTH_SHORT).show();
+        LoginManager.getInstance().logOut();
+        displayLoginButton(true);
+    }
+
+    @Override
     public void onFacebookLoginFailed() {
-        Toast.makeText(getContext(), "Facebook login failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Facebook checkIfSignedUp failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -294,7 +270,7 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @OnClick(R.id.connect_with_fb_button)
     public void onFacebookClick() {
         displayFacebookLoginInterface();
-        isDisplayLoginButton(false);
+        displayLoginButton(false);
 
     }
 
@@ -302,7 +278,6 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     public void onInvalidToken() {
         LoginManager.getInstance().logOut();
     }
-
 
 
 }

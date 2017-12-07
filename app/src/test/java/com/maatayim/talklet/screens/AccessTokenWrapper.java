@@ -1,4 +1,4 @@
-package com.maatayim.talklet.screens.loginactivity.login.injection;
+package com.maatayim.talklet.screens;
 
 import com.facebook.AccessToken;
 

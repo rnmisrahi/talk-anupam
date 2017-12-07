@@ -10,13 +10,15 @@ import com.maatayim.talklet.repository.realm.RealmChild;
 import com.maatayim.talklet.repository.realm.RealmCountData;
 import com.maatayim.talklet.repository.realm.RealmRecording;
 import com.maatayim.talklet.repository.realm.RealmTip;
+import com.maatayim.talklet.repository.realm.RealmToken;
 import com.maatayim.talklet.repository.realm.RealmUser;
 import com.maatayim.talklet.repository.realm.RealmWordOfTheDay;
 import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
 import com.maatayim.talklet.repository.retrofit.model.general.Recording;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
-import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv
+        .CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
@@ -32,42 +34,73 @@ import java.util.concurrent.Callable;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+
+import static com.maatayim.talklet.utils.Utils.parserDate;
 
 /**
  * Created by Sophie on 5/28/2017
  */
 
 public class LocalData {
-    public static final Uri DEFAULT_URI = Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg");
+    public static final Uri DEFAULT_URI = Uri.parse("https://s-media-cache-ak0.pinimg" +
+            ".com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg");
+
     public static final String REALM_WORD_OF_THE_DAY_CHILDID = "childId";
+
     public static final String REALM_CHILD_ID = "id";
+
     public static final String REALM_TIP_CHILD_ID = "childId";
+
     public static final String FACEBOOK_ID = "facebookID";
+
     public static final String EMPTY_FB_ID = "";
+
     //temp child DB
     String babysName;
+
     Date birthday = mockBirthday(2017, 5, 1);
-    String lastChildConnected = "1";
-    Uri babyBossUri = Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA");
-    Uri booUri = Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg");
+
+    int lastChildConnected = 1;
+
+    Uri babyBossUri = Uri.parse("https://resizing.flixster" +
+            ".com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300" +
+            "/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA");
+
+    Uri booUri = Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo" +
+            ".jpg");
 
     List<Child> children = mockChildrenList();
 
     private int currentId = 2;
 
 
-    //    public static final String TEMP_TOKEN = "EAALUm1y1RtcBAAfZCaA91aV9yvbKZCW940qo8gVdGSe1TkVNEgnaRnQt4dgiJft1hvNSs6EfPkLpKqg4MdMLzbT5Api0jY1C9wFP7EmuiJVHf8KejYZBcZAwZAF64wpvfxrZAS5YE2wBbV6SzVyP2gZAOXfsET4JDZCebcF9YJliRw0nCaFZBn24f0mUgYSJ45ql73w1o0YsF7oDMY4RLcC4Q";
-    public static final String TEMP_TOKEN = "TEST_TOKEN";
+    public static final String TEMP_TOKEN =
+            "EAALUm1y1RtcBAAfZCaA91aV9yvbKZCW940qo8gVdGSe1TkVNEgnaRnQt4dgiJft1hvNSs6EfPkLpKqg4MdMLzbT5Api0jY1C9wFP7EmuiJVHf8KejYZBcZAwZAF64wpvfxrZAS5YE2wBbV6SzVyP2gZAOXfsET4JDZCebcF9YJliRw0nCaFZBn24f0mUgYSJ45ql73w1o0YsF7oDMY4RLcC4Q";
+
+    //    public static final String TEMP_TOKEN = "TEST_TOKEN";
     public static final int DEFAULT_CHILD = 0;
+
     private String babysPhoto = "AA";
+
     private static LoginResult loginToken;
+
     private Observable<Integer> lastConnectionChild;
+
     private Observable<List<String>> languagesList;
+
     private UserDetails userDetails;
+
     private String facebookId = ""; // = "123";
+
+    private boolean isSignedUp = false;
+
+    public Single<Boolean> isSignedUp() {
+        return Single.just(isSignedUp);
+    }
 
     private Date mockBirthday(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
@@ -83,11 +116,14 @@ public class LocalData {
 
 //    Save
 
-    public Completable saveTipRx(final String tipId, final String text, final String tipType, final String childID) {
-        return Completable.fromAction(() -> saveTip(tipId, text, tipType, childID));
+    public Completable saveTipRx(final int tipId, final String text, final String tipType, final
+    int childID) {
+        return Completable.fromAction(() -> saveTip(tipId, text, tipType, childID))
+                          .subscribeOn(Schedulers.io());
     }
 
-    public void saveTip(final String tipId, final String text, final String tipType, final String childID) {
+    public void saveTip(final int tipId, final String text, final String tipType, final int
+            childID) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
@@ -99,10 +135,13 @@ public class LocalData {
     }
 
     public Completable saveChildRx(final ChildModel childModel) {
-        return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(), Long.valueOf(childModel.getBirthday()), childModel.getImage()));
+        return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(),
+                parserDate(childModel.getBirthday()), childModel.getImage()))
+                          .subscribeOn(Schedulers.io());
     }
 
-    public void saveChild(final String childId, final String name, final long birthday, final String babyImg) {
+    public void saveChild(final int childId, final String name, final long birthday, final String
+            babyImg) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
@@ -113,15 +152,24 @@ public class LocalData {
 
     }
 
-    public Completable saveWordOfDayRx(final String id, final String word, final String subtext, final String childID, final String topic) {
-        return Completable.fromAction(() -> saveWordOfDay(id, word, subtext, childID, topic));
+    public Completable saveWordOfDayRx(final int id, final String word, final String subtext,
+                                       final int childID, final String topic,
+                                       final List<String> infoList, final List<String> questionList,
+                                       final List<String> activitiesList, final List<String>
+                                               ourFaveList) {
+        return Completable.fromAction(() -> saveWordOfDay(id, word, subtext, childID, topic,
+                infoList, questionList, activitiesList, ourFaveList));
     }
 
-    public void saveWordOfDay(final String id, final String word, final String subtext, final String childID, final String topic) {
+    public void saveWordOfDay(final int id, final String word, final String subtext, final int
+            childID, final String topic,
+                              final List<String> infoList, final List<String> questionList,
+                              final List<String> activitiesList, final List<String> ourFaveList) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            RealmWordOfTheDay realmWordOfTheDay = new RealmWordOfTheDay(id, word, subtext, childID, topic);
+            RealmWordOfTheDay realmWordOfTheDay = new RealmWordOfTheDay(id, word, subtext,
+                    childID, topic, infoList, questionList, activitiesList, ourFaveList);
             realm1.copyToRealmOrUpdate(realmWordOfTheDay);
         });
         realm.close();
@@ -145,12 +193,16 @@ public class LocalData {
     }
 
 
-    public Completable updateUsersDataRx(String firstName, String lastName, String birthday, String languageOne, String languageTwo, String languageThree) {
-        return Completable.fromAction(() -> saveUsersData(firstName, lastName, birthday, languageOne, languageTwo, languageThree));
+    public Completable updateUsersDataRx(String firstName, String lastName, String birthday,
+                                         String languageOne, String languageTwo, String
+                                                 languageThree) {
+        return Completable.fromAction(() -> saveUsersData(firstName, lastName, birthday,
+                languageOne, languageTwo, languageThree));
     }
 
 
-    public void saveUsersData(String firstName, String lastName, String birthday, String languageOne, String languageTwo, String languageThree) {
+    public void saveUsersData(String firstName, String lastName, String birthday, String
+            languageOne, String languageTwo, String languageThree) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
@@ -162,22 +214,28 @@ public class LocalData {
 
     }
 
-    public Completable saveCountDataRx(final String id, final String childId, final int countData,
-                                       final int totalData, final long date, final List<Recording> recordingsList) {
-        return Completable.fromAction(() -> saveCountData(id, childId, countData, totalData, date, recordingsList));
+    public Completable saveCountDataRx(final int id, final int childId, final int countData,
+                                       final int totalData, final long date, final
+                                       List<Recording> recordingsList) {
+        return Completable.fromAction(() -> saveCountData(id, childId, countData, totalData,
+                date, recordingsList)).subscribeOn(Schedulers.io());
     }
 
-    public void saveCountData(final String id, final String childId, final int countData, final int totalData, final long date, final List<Recording> recordingsList) {
+    public void saveCountData(final int id, final int childId, final int countData, final int
+            totalData, final long date, final List<Recording> recordingsList) {
 
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
             RealmList<RealmRecording> recordList = new RealmList<RealmRecording>();
             for (Recording recording : recordingsList) {
-                recordList.add(new RealmRecording(recording.getId(), recording.getNumber(), recording.getDate(),
+                recordList.add(new RealmRecording(recording.getId(), recording.getNumber(),
+                        parserDate(recording
+                                .getDate()),
                         recording.getWordCount(), totalData, recording.getDuration()));
 
             }
-            RealmCountData realmCountData = new RealmCountData(id, childId, countData, totalData, date, recordList);
+            RealmCountData realmCountData = new RealmCountData(id, childId, countData, totalData,
+                    date, recordList);
             realm1.copyToRealmOrUpdate(realmCountData);
         });
         realm.close();
@@ -187,9 +245,9 @@ public class LocalData {
 
 //    Get
 
-    public Single<String> getToken() {
-        return Single.just("SOME_TOKEN");
-    }
+//    public Single<String> getToken() {
+//        return Single.just("SOME_TOKEN");/
+//    }
 
 
 //    public Single<String> getFacebookId() {
@@ -213,13 +271,15 @@ public class LocalData {
     }
 
 
-    public Single<List<RealmTip>> getTipsListRx(final String id) {
+    public Single<List<RealmTip>> getTipsListRx(final int id) {
         return Single.fromCallable(() -> getTipListByChild(id));
     }
 
-    private List<RealmTip> getTipListByChild(final String id) {
+    private List<RealmTip> getTipListByChild(final int id) {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<RealmTip> tipList = realm.where(RealmTip.class).equalTo(REALM_TIP_CHILD_ID, id).findAll();
+        RealmResults<RealmTip> tipList = realm.where(RealmTip.class)
+                                              .equalTo(REALM_TIP_CHILD_ID, id)
+                                              .findAll();
         List<RealmTip> response = new ArrayList<>();
         for (RealmTip realmTip : tipList) {
             response.add(new RealmTip(realmTip));
@@ -228,11 +288,11 @@ public class LocalData {
         return response;
     }
 
-    public Single<RealmChild> getChildRx(final String id) {
+    public Single<RealmChild> getChildRx(final int id) {
         return Single.fromCallable(() -> getChild(id));
     }
 
-    private RealmChild getChild(final String id) {
+    private RealmChild getChild(final int id) {
         Realm realm = Realm.getDefaultInstance();
         RealmChild child = realm.where(RealmChild.class).equalTo(REALM_CHILD_ID, id).findFirst();
         RealmChild response = new RealmChild(child);
@@ -241,13 +301,15 @@ public class LocalData {
     }
 
 
-    public Single<List<RealmWordOfTheDay>> getWordsOfTheDayListRx(final String id) {
+    public Single<List<RealmWordOfTheDay>> getWordsOfTheDayListRx(final int id) {
         return Single.fromCallable(() -> getWordsOfTheDayList(id));
     }
 
-    private List<RealmWordOfTheDay> getWordsOfTheDayList(final String id) {
+    private List<RealmWordOfTheDay> getWordsOfTheDayList(final int id) {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<RealmWordOfTheDay> wordsList = realm.where(RealmWordOfTheDay.class).equalTo(REALM_WORD_OF_THE_DAY_CHILDID, id).findAll();
+        RealmResults<RealmWordOfTheDay> wordsList = realm.where(RealmWordOfTheDay.class)
+                                                         .equalTo(REALM_WORD_OF_THE_DAY_CHILDID, id)
+                                                         .findAll();
         List<RealmWordOfTheDay> response = new ArrayList<>();
         for (RealmWordOfTheDay word : wordsList) {
             response.add(new RealmWordOfTheDay(word));
@@ -278,7 +340,7 @@ public class LocalData {
     }
 
 
-    public Single<RealmCountData> getWordsCountRx(final String id) {
+    public Single<RealmCountData> getWordsCountRx(final int id) {
         return Single.fromCallable(() -> getWordsCount(id)).map(realmCountDatas -> {
             RealmCountData response = new RealmCountData();
             int total = 0;
@@ -293,9 +355,11 @@ public class LocalData {
         });
     }
 
-    private List<RealmCountData> getWordsCount(final String id) {
+    private List<RealmCountData> getWordsCount(final int id) {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<RealmCountData> countDataList = realm.where(RealmCountData.class).equalTo(REALM_TIP_CHILD_ID, id).findAll();
+        RealmResults<RealmCountData> countDataList = realm.where(RealmCountData.class)
+                                                          .equalTo(REALM_TIP_CHILD_ID, id)
+                                                          .findAll();
         List<RealmCountData> response = new ArrayList<>();
         for (RealmCountData countData : countDataList) {
             response.add(realm.copyFromRealm(countData));
@@ -304,18 +368,14 @@ public class LocalData {
         return response;
     }
 
-    public Single<List<RealmCountData>> getWordsCountByDateRx(final String id) {
+    public Single<List<RealmCountData>> getWordsCountByDateRx(final int id) {
         return Single.fromCallable(() -> getWordsCount(id));
     }
 
 
-
-
-
-
     public Completable savePersonalSignUpDetails(String name, Date birthday) {
         currentId++;
-        children.add(new Child(String.valueOf(currentId), name, birthday, babysPhoto, false));
+        children.add(new Child(currentId, name, birthday, babysPhoto, false));
 //        this.babysName = name;
 //        this.birthday = birthday;
 
@@ -336,15 +396,15 @@ public class LocalData {
 
 //    Getters
 
-    public Observable<String> getName(String id) {
+    public Observable<String> getName(int id) {
         return Observable.fromCallable(() -> "Sophie");
     }
 
-    public Observable<Date> getBirthday(String id) {
+    public Observable<Date> getBirthday(int id) {
         return Observable.fromCallable(() -> new Date());
     }
 
-    public Observable<String> getBaybsPhoto(String id) {
+    public Observable<String> getBaybsPhoto(int id) {
         return Observable.fromCallable(() -> babysPhoto);
     }
 
@@ -369,7 +429,7 @@ public class LocalData {
         });
     }
 
-    public Observable<Pair<Integer, Integer>> getSaidWordsCount(String id) {
+    public Observable<Pair<Integer, Integer>> getSaidWordsCount(int id) {
 
         return Observable.fromCallable(new Callable<Pair<Integer, Integer>>() {
             @Override
@@ -382,11 +442,18 @@ public class LocalData {
 
     private List<Child> mockChildrenList() {
         List<Child> childrenList = new ArrayList<>();
-//        childrenList.add(new ChildModel("1", "Sophie", birthday, Uri.parse("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
-//        childrenList.add(new ChildModel("1", "BabyBoss", birthday, Uri.parse("https://resizing.flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300/v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA"), false));
-//        childrenList.add(new ChildModel("2", "Boo", birthday, Uri.parse("http://animatie.blog.nl/files/2009/11/petedocterideemonstersincpicboo.jpg"), false));
-//        childrenList.add(new ChildModel("4444", "Stewie", birthday, Uri.parse("http://vignette1.wikia.nocookie.net/family-guy-the-quest-for-stuff/images/e/ea/Stewie.png/revision/latest?cb=20140419144429")));
-//        childrenList.add(new ChildModel("5555", "Jack Jack", birthday, Uri.parse("http://www.writeups.org/wp-content/uploads/Jack-Jack-The-Incredibles-baby-a.jpg")));
+//        childrenList.add(new ChildModel("1", "Sophie", birthday, Uri.parse
+// ("https://s-media-cache-ak0.pinimg.com/736x/a2/e0/25/a2e025b30f2e129672b480a54ecc0b6c.jpg")));
+//        childrenList.add(new ChildModel("1", "BabyBoss", birthday, Uri.parse("https://resizing
+// .flixster.com/PyDVFygd7owZI0jgdJIFQcJ4Ovg=/300x300
+// /v1.bjsxMjYxMjY5O2o7MTczODQ7MTIwMDszMDAwOzE1MDA"), false));
+//        childrenList.add(new ChildModel("2", "Boo", birthday, Uri.parse("http://animatie.blog
+// .nl/files/2009/11/petedocterideemonstersincpicboo.jpg"), false));
+//        childrenList.add(new ChildModel("4444", "Stewie", birthday, Uri.parse
+// ("http://vignette1.wikia.nocookie.net/family-guy-the-quest-for-stuff/images/e/ea/Stewie
+// .png/revision/latest?cb=20140419144429")));
+//        childrenList.add(new ChildModel("5555", "Jack Jack", birthday, Uri.parse("http://www
+// .writeups.org/wp-content/uploads/Jack-Jack-The-Incredibles-baby-a.jpg")));
         return childrenList;
     }
 
@@ -397,7 +464,7 @@ public class LocalData {
 
                 //// TODO: 6/6/2017 getSpecific ChildModel from DB - this solution is temporery
                 for (Child child : children) {
-                    if (child.getId().equals(lastChildConnected)) {
+                    if (child.getId() == lastChildConnected) {
                         return child;
                     }
                 }
@@ -411,7 +478,7 @@ public class LocalData {
 //    }
 
 
-    public Observable<List<RecordingObj>> getRecordings(String id) {
+    public Observable<List<RecordingObj>> getRecordings(int id) {
         return Observable.fromCallable(new Callable<List<RecordingObj>>() {
             @Override
             public List<RecordingObj> call() throws Exception {
@@ -425,11 +492,11 @@ public class LocalData {
     private List<RecordingObj> mockRecordings() {
         List<RecordingObj> recordings = new ArrayList<>();
 
-        recordings.add(new RecordingObj("1", 1, new Date(1483726548L), 15, 20, 3600000L, false));
-        recordings.add(new RecordingObj("2", 2, new Date(1507659612000L), 4, 10, 3600000L, false));
-        recordings.add(new RecordingObj("3", 3, new Date(1507659612010L), 4, 10, 3600000L, false));
-        recordings.add(new RecordingObj("4", 4, new Date(1507659612000L), 4, 10, 3600000L, false));
-        recordings.add(new RecordingObj("5", 5, new Date(1507659612000L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj(1, 1, new Date(1483726548L), 15, 20, 3600000L, false));
+        recordings.add(new RecordingObj(2, 2, new Date(1507659612000L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj(3, 3, new Date(1507659612010L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj(4, 4, new Date(1507659612000L), 4, 10, 3600000L, false));
+        recordings.add(new RecordingObj(5, 5, new Date(1507659612000L), 4, 10, 3600000L, false));
 
         return recordings;
 
@@ -442,26 +509,26 @@ public class LocalData {
 
     }
 
-    private WordsCount mockWordsData(String id, Calendar date) {
-        Calendar birthdayCalTest = Calendar.getInstance();
-        birthdayCalTest.setTime(birthday);
-        birthdayCalTest.add(Calendar.DATE, 7);
+//    private WordsCount mockWordsData(String id, Calendar date) {
+//        Calendar birthdayCalTest = Calendar.getInstance();
+//        birthdayCalTest.setTime(birthday);
+//        birthdayCalTest.add(Calendar.DATE, 7);
+//
+//        if (date == birthdayCalTest) {
+//            return new WordsCount(new Pair<>(18, 33), new Pair<>(2, 18), new Pair<>(20, 73));
+//
+//        }
+//
+//        if (date.after(birthdayCalTest)) {
+//            return new WordsCount(new Pair<>(30, 33), new Pair<>(16, 18), new Pair<>(60, 73));
+//        }
+//
+//        return new WordsCount(new Pair<>(19, 33), new Pair<>(5, 18), new Pair<>(25, 73));
+//
+//    }
 
-        if (date == birthdayCalTest) {
-            return new WordsCount(new Pair<>(18, 33), new Pair<>(2, 18), new Pair<>(20, 73));
 
-        }
-
-        if (date.after(birthdayCalTest)) {
-            return new WordsCount(new Pair<>(30, 33), new Pair<>(16, 18), new Pair<>(60, 73));
-        }
-
-        return new WordsCount(new Pair<>(19, 33), new Pair<>(5, 18), new Pair<>(25, 73));
-
-    }
-
-
-    public Observable<WordsCount> getTotalWordsCount(String id) {
+    public Observable<WordsCount> getTotalWordsCount(int id) {
         return Observable.fromCallable(new Callable<WordsCount>() {
             @Override
             public WordsCount call() throws Exception {
@@ -473,7 +540,7 @@ public class LocalData {
     }
 
 
-    public Observable<List<CalendarWordsObj>> getCalendarData(String id) {
+    public Observable<List<CalendarWordsObj>> getCalendarData(int id) {
         return Observable.fromCallable(new Callable<List<CalendarWordsObj>>() {
             @Override
             public List<CalendarWordsObj> call() throws Exception {
@@ -525,7 +592,7 @@ public class LocalData {
         return lanuages;
     }
 
-    public Observable<List<FourWordsObj>> getFavoriteWords(String id) {
+    public Observable<List<FourWordsObj>> getFavoriteWords(int id) {
         return Observable.fromCallable(new Callable<List<FourWordsObj>>() {
             @Override
             public List<FourWordsObj> call() throws Exception {
@@ -544,7 +611,7 @@ public class LocalData {
         return favoritesWords;
     }
 
-    public Observable<List<SpecialWords>> getNewWords(String id) {
+    public Observable<List<SpecialWords>> getNewWords(int id) {
         return Observable.fromCallable(new Callable<List<SpecialWords>>() {
             @Override
             public List<SpecialWords> call() throws Exception {
@@ -556,7 +623,7 @@ public class LocalData {
 
     }
 
-    public Observable<List<SpecialWords>> getAdvanceWords(String id) {
+    public Observable<List<SpecialWords>> getAdvanceWords(int id) {
         return Observable.fromCallable(new Callable<List<SpecialWords>>() {
             @Override
             public List<SpecialWords> call() throws Exception {
@@ -569,7 +636,7 @@ public class LocalData {
     }
 
 
-    public Observable<List<SpecialWords>> getOtherWords(String id) {
+    public Observable<List<SpecialWords>> getOtherWords(int id) {
         return Observable.fromCallable(new Callable<List<SpecialWords>>() {
             @Override
             public List<SpecialWords> call() throws Exception {
@@ -628,4 +695,40 @@ public class LocalData {
     }
 
 
+    public Completable saveTokenRx(String token) {
+        return Completable.fromAction(() -> saveToken(token));
+    }
+
+    private void saveToken(String token) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm1 -> {
+            RealmToken realmToken = new RealmToken(token);
+            realm1.copyToRealmOrUpdate(realmToken);
+        });
+        realm.close();
+    }
+
+
+    public Single<RealmToken> getTokenRx() {
+        return Single.fromCallable(() -> getToken())
+                     .subscribeOn(Schedulers.io());
+    }
+
+    private RealmToken getToken() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmToken token = realm.where(RealmToken.class).findFirst();
+        RealmToken response = new RealmToken(token);
+        realm.close();
+        return response;
+    }
+
+
+    public Single<Integer> countChildren() {
+        return Single.fromCallable(() -> {
+            Realm realm = Realm.getDefaultInstance();
+            int size = realm.where(RealmChild.class).findAll().size();
+            realm.close();
+            return size;
+        });
+    }
 }

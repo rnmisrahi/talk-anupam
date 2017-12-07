@@ -12,7 +12,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Sophie on 6/6/2017.
+ * Created by Sophie on 6/6/2017
  */
 
 public class DataTabPresenter implements DataTabContract.Presenter {
@@ -32,7 +32,7 @@ public class DataTabPresenter implements DataTabContract.Presenter {
 
 
     @Override
-    public void getData(String babyId) {
+    public void getData(int babyId) {
 
         repository.getChild(babyId)
                 .subscribeOn(Schedulers.io())

@@ -4,7 +4,7 @@ import com.maatayim.talklet.baseline.BaseContract;
 import com.maatayim.talklet.screens.Child;
 
 /**
- * Created by Sophie on 6/29/2017.
+ * Created by Sophie on 6/29/2017
  */
 
 public interface AboutBabyContract {
@@ -17,6 +17,6 @@ public interface AboutBabyContract {
 
     interface Presenter extends BaseContract.Presenter{
 
-        void getData(String babyId);
+        void getData(int babyId);
     }
 }

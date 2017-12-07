@@ -49,7 +49,7 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
     ViewPager viewPager;
 
 
-    private String babyId;
+    private int babyId;
     private ViewPagerAdapter adapter;
 
 
@@ -57,10 +57,10 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
     protected LinearLayout[] tabsTextViews_data;
 
 
-    public static DataTabFragment newInstance(String id) {
+    public static DataTabFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         DataTabFragment fragment = new DataTabFragment();
         fragment.setArguments(args);
         return fragment;
@@ -71,7 +71,7 @@ public class DataTabFragment extends TalkletFragment implements DataTabContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new DataTabModule(this)).inject(this);
 

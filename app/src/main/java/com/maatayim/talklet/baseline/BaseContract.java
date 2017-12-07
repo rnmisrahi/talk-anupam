@@ -1,16 +1,10 @@
 package com.maatayim.talklet.baseline;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.util.Pair;
 
-import com.maatayim.talklet.repository.realm.RealmChild;
-import com.maatayim.talklet.repository.retrofit.model.children.ChildrenListWrapper;
-import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
-import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.DateObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
@@ -52,38 +46,38 @@ public interface BaseContract {
         Completable saveUserFBDetails(UserDetails userDetails);
 
 
-        Single<Child> getChild(String id);
-        Observable<String> getName(String id);
-        Observable<Date> getBirthday(String id);
-        Observable<String> getBaybsPhoto(String id);
-        Observable<List<TipTicket>> getTipsList(String id);
-        Observable<Pair<Integer, Integer>> getWordsCount(String id);
+        Single<Child> getChild(int id);
+        Observable<String> getName(int id);
+        Observable<Date> getBirthday(int id);
+        Observable<String> getBaybsPhoto(int id);
+        Observable<List<TipTicket>> getTipsList(int id);
+        Observable<Pair<Integer, Integer>> getWordsCount(int id);
         Observable<String> getFacebookLoginToken();
         Single<List<MainScreenChild>> getMainScreenChildrenList();
         Single<List<SettingChild>> getSettingChildList();
         Observable<Child> getLastConnectionChild();
-        Single<LoginResponse> login(Context context);
+        Single<Boolean> checkIfSignedUp(Context context);
 
 
-        Observable<List<RecordingObj>> getRecordings(String id);
+        Observable<List<RecordingObj>> getRecordings(int id);
 
-        Observable<WordsCount> getTotalWordsCount(String id);
+        Observable<WordsCount> getTotalWordsCount(int id);
 
-        Observable<List<CalendarWordsObj>> getCalendarData(String id);
+        Observable<List<CalendarWordsObj>> getCalendarData(int id);
 
         Observable<List<String>> getLanguageList();
 
-        Observable<List<FourWordsObj>> getFavoritesWords(String id);
+        Observable<List<FourWordsObj>> getFavoritesWords(int id);
 
-        Observable<List<SpecialWords>> getNewWords(String id);
+        Observable<List<SpecialWords>> getNewWords(int id);
 
-        Observable<List<SpecialWords>> getAdvanceWords(String id);
+        Observable<List<SpecialWords>> getAdvanceWords(int id);
 
-        Observable<List<SpecialWords>> getOtherWords(String id);
+        Observable<List<SpecialWords>> getOtherWords(int id);
 
         Single<AboutUserObj> getUserDetails();
 
-        Single<List<CalendarWordsObj>> getChildWordsByDate(String id);
+        Single<List<CalendarWordsObj>> getChildWordsByDate(int id);
 
         Observable<List<TipTicket>> getAllChildrenTips();
 
@@ -94,15 +88,20 @@ public interface BaseContract {
 
         Completable downloadCountData();
 
-        Completable downloadWordsOfTheDay(final String childId);
+        Completable downloadWordsOfTheDay(final int childId);
 
 
-        Single<GeneralTabChildObj> getChildTipsAndWords(String id);
+        Single<GeneralTabChildObj> getChildTipsAndWords(int id);
 
         Completable logout(Context context);
 
         Completable updateUsersData(AboutUserObj aboutUserObj);
 
+        Single<Integer> getNumOfChildren();
+
+        Single<Boolean> checkIfTokenFound(Context context);
+
+        Completable sendFacebookID(LoginResult loginResult);
     }
 
 

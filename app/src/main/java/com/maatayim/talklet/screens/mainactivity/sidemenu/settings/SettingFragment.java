@@ -74,12 +74,6 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
         AboutBabyAdapter aboutBabyAdapter = new AboutBabyAdapter(childrenNames);
         aboutChildRV.setAdapter(aboutBabyAdapter);
 
-
-//        aboutChild1.setText(getString(R.string.about_kid, childrenNames.get(0).getFirstName()));
-//        if (childrenNames.size() > 1){
-//            aboutChild2.setVisibility(View.VISIBLE);
-//            child2TextView.setText(getString(R.string.about_kid, childrenNames.get(1).getFirstName()));
-//        }
     }
 
 
@@ -91,7 +85,7 @@ public class SettingFragment extends SideMenuFragment implements SettingContract
 
 
     @OnClick(R.id.about_you)
-    public void onAboutyouClick(){
+    public void onAboutYouClick(){
         EventBus.getDefault().post(new AddFragmentEvent(new AboutYouFragment()));
     }
 

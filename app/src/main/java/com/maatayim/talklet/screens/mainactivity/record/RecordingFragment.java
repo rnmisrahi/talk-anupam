@@ -1,5 +1,6 @@
 package com.maatayim.talklet.screens.mainactivity.record;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,7 +47,7 @@ import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.
 import static com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment.TOP_MARGIN;
 
 /**
- * Created by Sophie on 6/27/2017.
+ * Created by Sophie on 6/27/2017
  */
 
 public class RecordingFragment extends TalkletFragment implements RecordContract.View {
@@ -92,10 +93,10 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     private static List<TipTicket> originalTipsList = new ArrayList<>();
 
 
-    public static RecordingFragment newInstance(MediaRecordWrapper mediaRecorder) {
+    public static RecordingFragment newInstance() {
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_RECORD, mediaRecorder);
+//        args.putParcelable(ARG_RECORD, mediaRecorder);
         RecordingFragment fragment = new RecordingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -104,12 +105,11 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mediaRecorder = getArguments().getParcelable(ARG_RECORD);
-        }
+
         EventBus.getDefault().register(this);
 
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new RecordModule(this)).inject(this);
+        presenter.startRecording();
     }
 
 
@@ -132,8 +132,6 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         }, 0, 1000);
         tStart = System.currentTimeMillis();
 
-        mediaRecorder.start();
-
         constraintSet1 = new ConstraintSet();
         constraintSet1.clone(getContext(), R.layout.fragment_record);
         constraintSet2 = new ConstraintSet();
@@ -151,7 +149,7 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         for (MainScreenChild mainScreenChild : mainScreenChildren) {
             children.add(new ChildRecObj(mainScreenChild));
         }
-
+        presenter.updateChildren(children);
         setChildrenRecyclerView(children);
 
     }
@@ -347,9 +345,15 @@ public class RecordingFragment extends TalkletFragment implements RecordContract
         if (event.isClickedChildSetChanged()){
             List<ChildRecObj> selectedChildren = childrenAdapter.getSelectedChildren();
             List<TipTicket> tipTickets = tipsMapper(selectedChildren);
+            presenter.updateChildren(selectedChildren);
             pagerAdapter.setDataSet(tipTickets);
             pagerAdapter.updateBaseId(tipTickets.size());
             tips_view_pager.setAdapter(pagerAdapter);
         }
+    }
+
+    @Override
+    public Context getViewContext() {
+        return getContext();
     }
 }

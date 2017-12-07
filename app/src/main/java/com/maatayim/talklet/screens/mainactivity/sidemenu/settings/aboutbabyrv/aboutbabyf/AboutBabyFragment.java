@@ -29,7 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AboutBabyFragment extends TalkletFragment implements AboutBabyContract.View{
 
-    private String babyId;
+    private int babyId;
     public static final String ARG_ID = "babyId";
 
     @Inject
@@ -38,7 +38,7 @@ public class AboutBabyFragment extends TalkletFragment implements AboutBabyContr
     @BindView(R.id.title_fill_details)
     TextView title;
 
-    @BindView(R.id.camera_image)
+    @BindView(R.id.camera_image_circle)
     CircleImageView babysImg;
 
     @BindView(R.id.upload_photo)
@@ -53,10 +53,10 @@ public class AboutBabyFragment extends TalkletFragment implements AboutBabyContr
     @BindView(R.id.confirm_signup_details)
     Button confirmButton;
 
-    public static AboutBabyFragment newInstance(String id) {
+    public static AboutBabyFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         AboutBabyFragment fragment = new AboutBabyFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,7 +67,7 @@ public class AboutBabyFragment extends TalkletFragment implements AboutBabyContr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new AboutBabyModule(this)).inject(this);
 
@@ -87,7 +87,13 @@ public class AboutBabyFragment extends TalkletFragment implements AboutBabyContr
     public void onDataReceived(Child child) {
         setTitle(getString(R.string.about_kid, child.getName()));
         title.setVisibility(View.GONE);
-        Glide.with(getContext()).load(child.getImg()).centerCrop().into(babysImg);
+
+        babysImg.setVisibility(View.VISIBLE);
+        Glide.with(getContext())
+                .load(child.getImg())
+                .centerCrop()
+                .into(babysImg);
+
         uploadPhotoText.setText(getString(R.string.upload_new_photo));
         babysName.setText(child.getName());
         birthday.setText(Utils.getFormattedDate(child.getBirthday()));

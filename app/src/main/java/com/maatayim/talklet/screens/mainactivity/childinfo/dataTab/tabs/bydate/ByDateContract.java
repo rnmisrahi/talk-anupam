@@ -15,7 +15,7 @@ import java.util.List;
 public interface ByDateContract {
 
     interface Presenter extends BaseContract.Presenter{
-        void getData(String id);
+        void getData(int id);
     }
 
     interface View extends BaseContract.View{

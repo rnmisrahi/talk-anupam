@@ -78,7 +78,7 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
 //        EventBus.getDefault().unregister(this);
 //    }
 
-    public boolean hasPermissions() {
+    public boolean hasPermissions(boolean isCamera) {
         int permissionCheckWrite = ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permissionCheckRead = ContextCompat.checkSelfPermission(getContext(),
@@ -86,15 +86,22 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
         int permissionOpenCamera = ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.CAMERA);
 
-        return permissionCheckWrite == android.content.pm.PackageManager.PERMISSION_GRANTED
-                && permissionCheckRead == android.content.pm.PackageManager.PERMISSION_GRANTED
-                && permissionOpenCamera == android.content.pm.PackageManager.PERMISSION_GRANTED;
+        if (isCamera){
+            return permissionCheckWrite == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    && permissionCheckRead == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    && permissionOpenCamera == android.content.pm.PackageManager.PERMISSION_GRANTED;
+        }else{
+            return permissionCheckWrite == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    && permissionCheckRead == android.content.pm.PackageManager.PERMISSION_GRANTED;
+        }
+
+
     }
 
 
     @OnClick(R.id.gallery_button)
     public void onGalleryClick(){
-        if (hasPermissions()){
+        if (hasPermissions(false)){
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
 //            imageUri = getContext().getContentResolver()
@@ -102,6 +109,8 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
 //                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 //            galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(galleryIntent, REQUEST_CODE_PICK_FROM_GALLERY);
+        }else{
+
         }
 
     }
@@ -109,11 +118,13 @@ public class ChoosePhotoFragment extends TalkletFragment implements ChoosePhotoC
 
     @OnClick(R.id.camera_button)
     public void onCameraClick(){
-        if (!hasPermissions()) {
+        if (!hasPermissions(true)) {
 
             new RxPermissions(getActivity())
                     .request(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA)
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.INTERNET,
+                            Manifest.permission.RECORD_AUDIO)
                     .subscribe(granted -> {
                         if (granted) { // Always true pre-M
                             takePhotoWhenPermissionGranted();

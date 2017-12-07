@@ -30,6 +30,7 @@
     <color name="date_bars">#e7f7f7</color>
     <color name="accent_date_bars">#5ec9cd</color>
     <color name="dark_gray">#a1a3a6</color>
+    <color name="light_gray">#d3d3d5</color>
 
     <!--navigation drawer-->
     <color name="navigation_drawer_padding">#dcdaeb</color>

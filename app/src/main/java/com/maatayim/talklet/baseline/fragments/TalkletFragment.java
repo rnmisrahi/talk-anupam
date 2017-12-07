@@ -15,7 +15,7 @@ import com.maatayim.talklet.baseline.BaseContract;
 import java.util.Timer;
 
 /**
- * Created by Sophie on 5/21/2017.
+ * Created by Sophie on 5/21/2017
  */
 
 public abstract class TalkletFragment extends Fragment implements BaseContract.View {

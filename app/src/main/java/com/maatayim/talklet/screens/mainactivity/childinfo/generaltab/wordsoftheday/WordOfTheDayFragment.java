@@ -109,7 +109,7 @@ public class WordOfTheDayFragment extends Fragment{
 
         initializeRV(infoRV, wordItem.getInfoList());
         initializeRV(questionRV, wordItem.getQuestionList());
-        initializeRV(activitesRV, wordItem.getActivitesList());
+        initializeRV(activitesRV, wordItem.getActivitiesList());
         initializeRV(ourFaveRV, wordItem.getOurFaveList());
     }
 

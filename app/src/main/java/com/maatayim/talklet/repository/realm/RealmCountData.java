@@ -11,14 +11,15 @@ import io.realm.annotations.PrimaryKey;
 public class RealmCountData extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private int id;
+
     private long date;
-    private String childId;
+    private int childId;
     private int wordCount;
     private int expectedWordCount;
     private RealmList<RealmRecording> recordings;
 
-    public RealmCountData(String id, String childId, int wordCount, int expectedWordCount, long date, RealmList<RealmRecording> recordings) {
+    public RealmCountData(int id, int childId, int wordCount, int expectedWordCount, long date, RealmList<RealmRecording> recordings) {
         this.id = id;
         this.childId = childId;
         this.wordCount = wordCount;
@@ -41,11 +42,11 @@ public class RealmCountData extends RealmObject {
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,11 +67,11 @@ public class RealmCountData extends RealmObject {
     }
 
 
-    public String getChildId() {
+    public int getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(int childId) {
         this.childId = childId;
     }
 

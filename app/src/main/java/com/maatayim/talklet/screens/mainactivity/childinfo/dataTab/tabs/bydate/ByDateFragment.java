@@ -1,9 +1,7 @@
 package com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +9,8 @@ import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.maatayim.talklet.R;
 import com.maatayim.talklet.baseline.TalkletApplication;
 import com.maatayim.talklet.baseline.fragments.TalkletFragment;
@@ -22,10 +18,9 @@ import com.maatayim.talklet.screens.mainactivity.CustomProgressBar;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CustomCalendarViewAdapter;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.injection.ByDateModule;
-import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.utils.Utils;
 
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 
@@ -66,16 +61,19 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     @BindView(R.id.advance_progressbar)
     CustomProgressBar advanceProgressBar;
 
-    private String babyId;
+    @BindView(R.id.ruler_bar)
+    CustomRuler customRulerBar;
+
+    private int babyId;
     private CustomCalendarViewAdapter calendarAdapter;
     private int prevMiddle = -1;
     private LinearLayoutManager linearLayoutManager;
 
 
-    public static ByDateFragment newInstance(String id) {
+    public static ByDateFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         ByDateFragment fragment = new ByDateFragment();
         fragment.setArguments(args);
         return fragment;
@@ -96,7 +94,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new ByDateModule(this)).inject(this);
 
@@ -113,6 +111,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
 
         calendarAdapter = new CustomCalendarViewAdapter(calendarList, true);
         horizontalCalendarRV.setAdapter(calendarAdapter);
+        customRulerBar.initRuler(calendarAdapter.getMaxTotalWords());
 
         int offset = Utils.getCenterHorizontalScreenCoord(getActivity())-ITEM_WIDTH;
         int middle = calendarList.size()- RIGHT_PADDING-1;
@@ -130,6 +129,7 @@ public class ByDateFragment extends TalkletFragment implements ByDateContract.Vi
                 }
             }
         });
+
 
     }
 

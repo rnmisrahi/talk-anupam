@@ -51,7 +51,7 @@ public class FavoriteWordsFragment extends TalkletFragment implements FavoriteWo
     FavoriteWordsContract.Presenter presenter;
 
 
-    private String babyId;
+    private int babyId;
 
     @BindView(R.id.favorites_words_rv)
     RecyclerView favoritesWordsRV;
@@ -77,10 +77,10 @@ public class FavoriteWordsFragment extends TalkletFragment implements FavoriteWo
     private CustomWordSection currentCustommView;
 
 
-    public static FavoriteWordsFragment newInstance(String id) {
+    public static FavoriteWordsFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         FavoriteWordsFragment fragment = new FavoriteWordsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -91,7 +91,7 @@ public class FavoriteWordsFragment extends TalkletFragment implements FavoriteWo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments()!= null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new FavoriteWordsModule(this)).inject(this);
 

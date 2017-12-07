@@ -31,7 +31,8 @@ public class AsyncCloudinaryUploader extends AsyncTask<Uri, Void, Void> {
     public static final String CLOUD_NAME = "talklet";
     private static final String API_KEY = "523964439529678";
     private static final String API_SECRET = "nxeP6TdBiB3yMPAHkQ8cf1rIc5A";
-    public static final String URL_START = "https://api.cloudinary.com/v1_1/talklet/image/upload/";
+//    public static final String URL_START = "https://api.cloudinary.com/v1_1/talklet/image/upload/";
+    public static final String URL_START = "http://res.cloudinary.com/talklet/image/upload/";
     public static final String TAG = "uploadPhotoToCloud: ";
 
     private final String uniqueImagePath;

@@ -10,23 +10,23 @@ import io.realm.annotations.PrimaryKey;
 public class RealmTip extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private int id;
 
     private String tipText;
     private String type;
-    private String childId;
+    private int childId;
 
     public RealmTip() {
     }
 
-    public RealmTip(String id, String tipText, String type, String childID) {
+    public RealmTip(int id, String tipText, String type, int childID) {
         this.id = id;
         this.tipText = tipText;
         this.type = type;
         this.childId = childID;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -54,11 +54,11 @@ public class RealmTip extends RealmObject {
         this.type = type;
     }
 
-    public String getChildId() {
+    public int getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(int childId) {
         this.childId = childId;
     }
 }

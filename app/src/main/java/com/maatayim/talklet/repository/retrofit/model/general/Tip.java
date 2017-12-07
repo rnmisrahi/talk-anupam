@@ -6,12 +6,12 @@ package com.maatayim.talklet.repository.retrofit.model.general;
 
 public class Tip {
 
-    private String id;
-    private String childId;
+    private int id;
+    private int childId;
     private String text;
     private String type;
 
-    public Tip(String id, String text, String type, String childId){
+    public Tip(int id, String text, String type, int childId){
 
         this.id = id;
         this.text = text;
@@ -20,11 +20,11 @@ public class Tip {
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class Tip {
     }
 
 
-    public String getChildId() {
+    public int getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(int childId) {
         this.childId = childId;
     }
 

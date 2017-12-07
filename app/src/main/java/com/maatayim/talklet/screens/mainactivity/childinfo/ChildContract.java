@@ -14,7 +14,7 @@ public interface ChildContract {
 
     interface Presenter extends BaseContract.Presenter{
 
-        void getData(String babyId);
+        void getData(int babyId);
 
     }
 

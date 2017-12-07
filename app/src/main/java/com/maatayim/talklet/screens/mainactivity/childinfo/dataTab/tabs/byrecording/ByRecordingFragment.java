@@ -35,14 +35,14 @@ import static com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.b
 import static com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.ByDateFragment.RIGHT_PADDING;
 
 /**
- * Created by Sophie on 6/20/2017.
+ * Created by Sophie on 6/20/2017
  */
 
 public class ByRecordingFragment extends TalkletFragment implements ByRecordingContract.View {
 
 
     private static final String ARG_ID = "babyId";
-    private String babyId;
+    private int babyId;
 
 
     @BindView(R.id.num_of_words_title)
@@ -67,10 +67,10 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
     private LinearLayoutManager linearLayoutManagerRecords;
 
 
-    public static ByRecordingFragment newInstance(String id) {
+    public static ByRecordingFragment newInstance(int id) {
 
         Bundle args = new Bundle();
-        args.putString(ARG_ID, id);
+        args.putInt(ARG_ID, id);
         ByRecordingFragment fragment = new ByRecordingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -81,7 +81,7 @@ public class ByRecordingFragment extends TalkletFragment implements ByRecordingC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            babyId = getArguments().getString(ARG_ID);
+            babyId = getArguments().getInt(ARG_ID);
         }
         ((TalkletApplication) getActivity().getApplication()).getAppComponent().plus(new ByRecordingModule(this)).inject(this);
 

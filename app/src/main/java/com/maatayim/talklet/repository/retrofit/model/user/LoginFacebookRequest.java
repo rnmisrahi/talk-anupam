@@ -4,13 +4,13 @@ package com.maatayim.talklet.repository.retrofit.model.user;
  * Created by Sophie on 7/4/2017
  */
 
-public class LoginRequest {
+public class LoginFacebookRequest {
     private String facebookId;
 
-    public LoginRequest() {
+    public LoginFacebookRequest() {
     }
 
-    public LoginRequest(String facebookId) {
+    public LoginFacebookRequest(String facebookId) {
         this.facebookId = facebookId;
     }
 

@@ -5,14 +5,12 @@ import android.support.v4.util.Pair;
 import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
-import com.maatayim.talklet.repository.retrofit.model.children.ChildModel;
-import com.maatayim.talklet.repository.retrofit.model.general.Tip;
-import com.maatayim.talklet.repository.retrofit.model.general.TipsWrapper;
-import com.maatayim.talklet.repository.retrofit.model.user.LoginResponse;
-import com.maatayim.talklet.repository.retrofit.model.worddata.WordData;
+import com.maatayim.talklet.repository.retrofit.model.children.CreateNewChild;
+import com.maatayim.talklet.repository.retrofit.model.user.LoginFacebookResponse;
 import com.maatayim.talklet.screens.Child;
 import com.maatayim.talklet.screens.loginactivity.login.UserDetails;
-import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv.CalendarWordsObj;
+import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.bydate.callendarrv
+        .CalendarWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.dataTab.tabs.general.WordsCount;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.FourWordsObj;
 import com.maatayim.talklet.screens.mainactivity.childinfo.favorites.favwords.wordsrv.SpecialWords;
@@ -31,14 +29,14 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.annotations.NonNull;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.maatayim.talklet.repository.Mapper.mapRealmRecordingListToRecordsObj;
+import static com.maatayim.talklet.utils.Utils.convertLongDateToServerFormat;
+import static com.maatayim.talklet.utils.Utils.parserDate;
 
 /**
  * Created by Sophie on 5/24/2017
@@ -46,7 +44,10 @@ import static com.maatayim.talklet.repository.Mapper.mapRealmRecordingListToReco
 
 public class RepositoryImpl implements BaseContract.Repository {
 
+    public static final int EMPTY_ID = -1;
+
     private LocalData localRepo;
+
     private RemoteData remoteRepo;
 
     @Inject
@@ -60,10 +61,11 @@ public class RepositoryImpl implements BaseContract.Repository {
 
     public Completable addChild(String name, Date birthday, String babysPhoto) {
 
-        return localRepo.getToken()
-                .flatMap(token -> remoteRepo.addChild(token,
-                        new ChildModel(null, name, String.valueOf(birthday.getTime()), babysPhoto)))
-                .flatMapCompletable(childModel -> localRepo.saveChildRx(childModel));
+        return localRepo.getTokenRx()
+                        .flatMap(token -> remoteRepo.addChild(token.getToken(),
+                                new CreateNewChild(name, convertLongDateToServerFormat(birthday
+                                        .getTime()), babysPhoto)))
+                        .flatMapCompletable(newChild -> localRepo.saveChildRx(newChild));
 
     }
 
@@ -75,46 +77,79 @@ public class RepositoryImpl implements BaseContract.Repository {
 
     @Override
     public Completable saveFacebookLoginToken(LoginResult loginResult, Context context) {
-        return localRepo.saveFacebookLoginToken(loginResult, context); // // TODO: 8/28/2017 save and send facebook id
+        return localRepo.saveFacebookLoginToken(loginResult, context);
     }
+
+    private static final String TAG = "RepositoryImpl";
 
     @Override
     public Completable saveUserFBDetails(UserDetails userDetails) {
-        return localRepo.getToken()
-                .flatMapCompletable(token -> remoteRepo.sendUsersData(token,
-                        new com.maatayim.talklet.repository.retrofit.model.user.UserDetails(userDetails)))
-                .andThen(localRepo.updateUsersDataRx(userDetails.getFirstName(), userDetails.getLastName(),
-                        userDetails.getBirthday(), userDetails.getLanguage1(), userDetails.getLanguage2(),
-                        userDetails.getLanguage3()));
+
+//        userDetails.setLanguage1("English");
+//        userDetails.setLanguage2("Russian");
+//        userDetails.setLanguage3("Hebrew");
+
+
+        return localRepo.getTokenRx()
+                        .flatMapCompletable(token -> remoteRepo.sendUsersData(token.getToken(),
+                                new com.maatayim.talklet.repository.retrofit.model.user
+                                        .UserDetails(userDetails)))
+                        .andThen(localRepo.updateUsersDataRx(userDetails.getFirstName(), userDetails
+                                        .getLastName(),
+                                userDetails.getBirthday(), userDetails.getLanguage1(),
+                                userDetails.getLanguage2(),
+                                userDetails.getLanguage3()))
+                ;
+
     }
 
     @Override
-    public Single<LoginResponse> login(Context context) {
-        return localRepo.getFacebookIdRx(context).flatMap(new Function<String, SingleSource<LoginResponse>>() {
-            @Override
-            public SingleSource<LoginResponse> apply(String facebookId) throws Exception {
-                if (facebookId.isEmpty()) {
-                    return Single.just(new LoginResponse(null, false));
-                } else {
-//                    return remoteRepo.login(/*facebookId*/"RubenMisrahi");
-                    return remoteRepo.login(facebookId);
-                }
-            }
-        });
+    public Single<Boolean> checkIfSignedUp(Context context) {
+
+
+        return localRepo.isSignedUp()
+                        .flatMap(aBoolean -> {
+                            if (!aBoolean) {
+                                return localRepo.getTokenRx().flatMap(realmToken -> remoteRepo
+                                        .isSignedUp(realmToken.getToken()));
+                            }
+                            return Single.just(true);
+                        });
+
+
+//        return localRepo.getTokenRx()
+//
+//                        .flatMap(realmToken -> checkIfSignedUp(realmToken))
+//                .
+
+
+//        return localRepo.getFacebookIdRx(context)
+//                        .flatMap(facebookId -> {
+//                            if (facebookId.isEmpty()) {
+//                                return Single.just(new LoginFacebookResponse(null, false));
+//                            } else {
+//                                return remoteRepo.loginWithFacebook(facebookId)
+//                                                 .flatMap(loginResponse -> localRepo
+//                                                         .saveTokenRx(loginResponse.getToken())
+//                                                         .andThen(Single.just(loginResponse)));
+//                            }
+//                        });
+
     }
 
+
     @Override
-    public Observable<List<RecordingObj>> getRecordings(String id) {
+    public Observable<List<RecordingObj>> getRecordings(int id) {
         return localRepo.getRecordings(id);
     }
 
     @Override
-    public Observable<WordsCount> getTotalWordsCount(String id) {
+    public Observable<WordsCount> getTotalWordsCount(int id) {
         return localRepo.getTotalWordsCount(id);
     }
 
     @Override
-    public Observable<List<CalendarWordsObj>> getCalendarData(String id) {
+    public Observable<List<CalendarWordsObj>> getCalendarData(int id) {
         return localRepo.getCalendarData(id);
     }
 
@@ -124,22 +159,22 @@ public class RepositoryImpl implements BaseContract.Repository {
     }
 
     @Override
-    public Observable<List<FourWordsObj>> getFavoritesWords(String id) {
+    public Observable<List<FourWordsObj>> getFavoritesWords(int id) {
         return localRepo.getFavoriteWords(id);
     }
 
     @Override
-    public Observable<List<SpecialWords>> getNewWords(String id) {
+    public Observable<List<SpecialWords>> getNewWords(int id) {
         return localRepo.getNewWords(id);
     }
 
     @Override
-    public Observable<List<SpecialWords>> getAdvanceWords(String id) {
+    public Observable<List<SpecialWords>> getAdvanceWords(int id) {
         return localRepo.getAdvanceWords(id);
     }
 
     @Override
-    public Observable<List<SpecialWords>> getOtherWords(String id) {
+    public Observable<List<SpecialWords>> getOtherWords(int id) {
         return localRepo.getOtherWords(id);
     }
 
@@ -153,27 +188,27 @@ public class RepositoryImpl implements BaseContract.Repository {
 
 
     @Override
-    public Observable<String> getName(String id) {
+    public Observable<String> getName(int id) {
         return localRepo.getName(id);
     }
 
     @Override
-    public Observable<Date> getBirthday(String id) {
+    public Observable<Date> getBirthday(int id) {
         return localRepo.getBirthday(id);
     }
 
     @Override
-    public Observable<String> getBaybsPhoto(String id) {
+    public Observable<String> getBaybsPhoto(int id) {
         return localRepo.getBaybsPhoto(id);
     }
 
     @Override
-    public Observable<List<TipTicket>> getTipsList(String id) {
+    public Observable<List<TipTicket>> getTipsList(int id) {
         return null;//localRepo.getTipsListRx(id);
     }
 
     @Override
-    public Observable<Pair<Integer, Integer>> getWordsCount(String id) {
+    public Observable<Pair<Integer, Integer>> getWordsCount(int id) {
         return localRepo.getSaidWordsCount(id);
     }
 
@@ -185,47 +220,64 @@ public class RepositoryImpl implements BaseContract.Repository {
     @Override
     public Single<List<MainScreenChild>> getMainScreenChildrenList() {
         return localRepo.getChildrenListRx()
-                .flatMapObservable(Observable::fromIterable)
-                .map(realmChild -> new MainScreenChild(realmChild.getId(), realmChild.getImage(), 0, 0, null))
-                .flatMapSingle(child -> localRepo.getTipsListRx(child.getId())
                         .flatMapObservable(Observable::fromIterable)
-                        .map(realmTip -> new MainScreenChild.Tip(realmTip.getTipText(), realmTip.getType()))
-                        .toList()
-                        .map(tipTickets -> {
-                            child.setTips(tipTickets);
-                            return child;
-                        }))
-                .flatMapSingle(child -> localRepo.getWordsCountRx(child.getId())
-                        .map(countData -> {
-                            child.setWordCount(countData.getWordCount());
-                            child.setTotal(countData.getExpectedWordCount());
-                            return child;
-                        })
-                ).toList();
+                        .map(realmChild -> new MainScreenChild(realmChild.getId(), realmChild
+                                .getImage(), 0, 0, null))
+                        .flatMapSingle(child -> localRepo.getTipsListRx(child.getId())
+                                                         .flatMapObservable
+                                                                 (Observable::fromIterable)
+                                                         .map(realmTip -> new MainScreenChild.Tip
+                                                                 (realmTip
+                                                                         .getTipText(), realmTip
+                                                                         .getType()))
+                                                         .toList()
+                                                         .map(tipTickets -> {
+                                                             child.setTips(tipTickets);
+                                                             return child;
+                                                         }))
+                        .flatMapSingle(child -> localRepo.getWordsCountRx(child.getId())
+                                                         .map(countData -> {
+                                                             child.setWordCount(countData
+                                                                     .getWordCount());
+                                                             child.setTotal(countData
+                                                                     .getExpectedWordCount());
+                                                             return child;
+                                                         })
+                        ).toList();
     }
 
     @Override
-    public Single<GeneralTabChildObj> getChildTipsAndWords(String id) {
+    public Single<GeneralTabChildObj> getChildTipsAndWords(int id) {
         return localRepo.getChildRx(id)
-                .map(realmChild -> new GeneralTabChildObj(realmChild.getName(), null, null, null, realmChild.getImage()))
-                .flatMap(generalTabChildObj -> localRepo.getTipsListRx(id)
-                        .flatMapObservable(Observable::fromIterable)
-                        .map(Mapper.getTipMapperFunction(generalTabChildObj.getChildPhoto()))
-                        .toList()
-                        .map(tipTickets -> {
-                            generalTabChildObj.setTips(tipTickets);
-                            return generalTabChildObj;
-                        })
-                )
-                .flatMap(generalTabChildObj -> localRepo.getWordsOfTheDayListRx(id)
-                        .flatMapObservable(Observable::fromIterable)
-                        .map(Mapper.getWordOfTheDayMapperFunction())
-                        .toList()
-                        .map(daysWordsObjs -> {
-                            generalTabChildObj.setWordsOfTheDay(daysWordsObjs);
-                            return generalTabChildObj;
+                        .map(realmChild -> new GeneralTabChildObj(realmChild.getName(), null,
+                                null, null, realmChild
+                                .getImage()))
+                        .flatMap(generalTabChildObj -> localRepo.getTipsListRx(id)
+                                                                .flatMapObservable
+                                                                        (Observable::fromIterable)
+                                                                .map(Mapper.getTipMapperFunction
+                                                                        (generalTabChildObj
+                                                                                .getChildPhoto()))
+                                                                .toList()
+                                                                .map(tipTickets -> {
+                                                                    generalTabChildObj.setTips
+                                                                            (tipTickets);
+                                                                    return generalTabChildObj;
+                                                                })
+                        )
+                        .flatMap(generalTabChildObj -> localRepo.getWordsOfTheDayListRx(id)
+                                                                .flatMapObservable
+                                                                        (Observable::fromIterable)
+                                                                .map(Mapper
+                                                                        .getWordOfTheDayMapperFunction())
+                                                                .toList()
+                                                                .map(daysWordsObjs -> {
+                                                                    generalTabChildObj
+                                                                            .setWordsOfTheDay
+                                                                                    (daysWordsObjs);
+                                                                    return generalTabChildObj;
 
-                        }));
+                                                                }));
     }
 
     @Override
@@ -236,31 +288,64 @@ public class RepositoryImpl implements BaseContract.Repository {
     @Override
     public Completable updateUsersData(AboutUserObj aboutUserObj) {
 
-        return localRepo.getToken()
-                .flatMapCompletable(token -> remoteRepo.sendUsersData(token,
-                        new com.maatayim.talklet.repository.retrofit.model.user.UserDetails(aboutUserObj)))
-                .andThen(localRepo.updateUsersDataRx(aboutUserObj.getFirstName(), aboutUserObj.getLastName(),
-                        String.valueOf(aboutUserObj.getBirthday().getTime()), aboutUserObj.getLanguage1(),
-                        aboutUserObj.getLanguage2(), aboutUserObj.getLanguage3()));
+        return localRepo.getTokenRx()
+                        .flatMapCompletable(token -> remoteRepo.sendUsersData(token.getToken(),
+                                new com.maatayim.talklet.repository.retrofit.model.user
+                                        .UserDetails(aboutUserObj)))
+                        .andThen(localRepo.updateUsersDataRx(aboutUserObj.getFirstName(),
+                                aboutUserObj
+                                        .getLastName(),
+                                String.valueOf(aboutUserObj.getBirthday()
+                                                           .getTime()), aboutUserObj.getLanguage1(),
+                                aboutUserObj.getLanguage2(), aboutUserObj.getLanguage3()));
 
 
     }
 
+    @Override
+    public Single<Integer> getNumOfChildren() {
+        return localRepo.countChildren();
+    }
+
+    @Override
+    public Single<Boolean> checkIfTokenFound(Context context) {
+        return localRepo.getTokenRx().map(realmToken -> (realmToken.getToken() != null));
+    }
+
+    @Override
+    public Completable sendFacebookID(LoginResult loginResult) {
+        return remoteRepo.loginWithFacebook(loginResult.getAccessToken().getUserId())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .doOnSuccess(loginFacebookResponse -> {
+                             if (loginFacebookResponse.getToken().equals("")) {
+                                 throw new IllegalAccessException("Error 01: Illigal Facebook" +
+                                         " ID:");
+                             }
+                         })
+                         .observeOn(Schedulers.io())
+                         .flatMapCompletable(loginResponse
+                                 ->
+                                 localRepo.saveTokenRx(loginResponse.getToken()));
+
+    }
 
 
     @Override
-    public Single<Child> getChild(String id) {
+    public Single<Child> getChild(int id) {
         return localRepo.getChildRx(id)
-                .map(realmChild -> new Child(realmChild.getId(), realmChild.getName(), new Date(realmChild.getBirthday()), realmChild.getImage(), false));
+                        .map(realmChild -> new Child(realmChild.getId(), realmChild.getName(),
+                                new Date(realmChild
+                                        .getBirthday()), realmChild.getImage(), false));
     }
 
 
     @Override
     public Single<List<SettingChild>> getSettingChildList() {
         return localRepo.getChildrenListRx()
-                .flatMapObservable(Observable::fromIterable)
-                .map(realmChild -> new SettingChild(realmChild.getId(), realmChild.getName()))
-                .toList();
+                        .flatMapObservable(Observable::fromIterable)
+                        .map(realmChild -> new SettingChild(realmChild.getId(), realmChild
+                                .getName()))
+                        .toList();
     }
 
     @Override
@@ -272,21 +357,30 @@ public class RepositoryImpl implements BaseContract.Repository {
     @Override
     public Single<AboutUserObj> getUserDetails() {
         return localRepo.getUserDetailsRx().map(user -> new AboutUserObj(user.getFirstName(),
-                user.getLastName(), new Date(Long.valueOf(user.getBirthday())), user.getLanguage1(), user.getLanguage2(),
+                user.getLastName(), new Date(Long.valueOf(user.getBirthday())), user.getLanguage1
+                (), user
+                .getLanguage2(),
                 user.getLanguage3()));
     }
 
     @Override
-    public Single<List<CalendarWordsObj>> getChildWordsByDate(String id) {
+    public Single<List<CalendarWordsObj>> getChildWordsByDate(int id) {
         return localRepo.getChildRx(id)
-                .flatMapObservable(realmChild->localRepo.getWordsCountByDateRx(realmChild.getId())
-                .flatMapObservable(Observable::fromIterable)
-                        .map(countData -> new CalendarWordsObj(new Date(countData.getDate()), countData.getWordCount(),
-                                countData.getExpectedWordCount(), false, mapRealmRecordingListToRecordsObj(countData.getRecordings()))) //// TODO: 7/23/2017 insert recordings
-                ).toList();
+                        .flatMapObservable(realmChild -> localRepo.getWordsCountByDateRx
+                                        (realmChild.getId())
+                                                                  .flatMapObservable
+                                                                          (Observable::fromIterable)
+                                                                  .map(countData -> new
+                                                                          CalendarWordsObj(new
+                                                                          Date(countData
+                                                                          .getDate()), countData
+                                                                          .getWordCount(),
+                                                                          countData
+                                                                                  .getExpectedWordCount(), false, mapRealmRecordingListToRecordsObj(countData
+                                                                          .getRecordings())))
+                                //// TODO: 7/23/2017 insert recordings
+                        ).toList();
     }
-
-
 
 
     @Override
@@ -296,57 +390,57 @@ public class RepositoryImpl implements BaseContract.Repository {
 
 
     public Completable downloadKids() {
-        return localRepo.getToken()
-                .flatMap(token -> remoteRepo.downloadKids(token))
-                .flatMapObservable(childrenListWrapper -> Observable.fromIterable(childrenListWrapper.getChildren()))
-                .flatMapCompletable(childModel -> localRepo.saveChildRx(childModel));
+        return localRepo.getTokenRx()
+                        .flatMap(token -> remoteRepo.downloadKids(token.getToken()))
+                        .flatMapObservable(childrenListWrapper -> Observable.fromIterable
+                                (childrenListWrapper
+                                        .getChildren()))
+                        .flatMapCompletable(childModel -> localRepo.saveChildRx(childModel));
     }
 
 
     public Completable downloadTips() {
-        return localRepo.getToken()
-                .flatMap(token -> remoteRepo.downloadTips(token))
-                .doOnSuccess(new Consumer<TipsWrapper>() {
-                    @Override
-                    public void accept(@NonNull TipsWrapper tipsWrapper) throws Exception {
-                        Log.d("a","A");
-                    }
-                })
-                .flatMapObservable(new Function<TipsWrapper, ObservableSource<Tip>>() {
-                    @Override
-                    public ObservableSource<Tip> apply(@NonNull TipsWrapper tipsWrapper) throws Exception {
-                        return Observable.fromIterable(tipsWrapper.getTips());
-                    }
-                })
-                .flatMapCompletable(new Function<Tip, Completable>() {
-                    @Override
-                    public Completable apply(@NonNull Tip tip) throws Exception {
-                        return localRepo.saveTipRx(tip.getId(), tip.getText(), tip.getType(), tip.getChildId());
-                    }
-                });
+        return localRepo.getTokenRx()
+                        .flatMap(token -> remoteRepo.downloadTips(token.getToken()))
+                        .doOnSuccess(tipsWrapper -> Log.d("a", "A"))
+                        .flatMapObservable(tipsWrapper -> Observable.fromIterable(tipsWrapper
+                                .getTips()))
+                        .flatMapCompletable(tip -> localRepo.saveTipRx(tip.getId(), tip.getText()
+                                , tip
+                                        .getType(), tip
+                                        .getChildId()));
     }
 
 
     public Completable downloadCountData() {
-        return localRepo.getToken()
-                .flatMap(token -> remoteRepo.downloadAllWordCountData(token))
-                .flatMapObservable(allWordCountResponse -> Observable.fromIterable(allWordCountResponse.getWordCountList()))
-                .flatMap(childWordModel -> Observable.fromIterable(childWordModel.getDays()))
-                .flatMapCompletable(dailyWords -> localRepo.saveCountDataRx(dailyWords.getId(), dailyWords.getChildId(),
-                        dailyWords.getWordCount(), dailyWords.getExpectedWordCount(), dailyWords.getDate(), dailyWords.getRecordings()));
+        return localRepo.getTokenRx()
+                        .flatMap(token -> remoteRepo.downloadAllWordCountData(token.getToken()))
+                        .flatMapObservable(allWordCountResponse -> Observable.fromIterable
+                                (allWordCountResponse
+                                        .getWordCountList()))
+                        .flatMap(childWordModel -> Observable.fromIterable(childWordModel.getDays
+                                ()))
+                        .flatMapCompletable(dailyWords -> localRepo.saveCountDataRx(dailyWords
+                                        .getId(), dailyWords
+                                        .getChildId(),
+                                dailyWords.getWordCount(), dailyWords.getExpectedWordCount(),
+                                parserDate(dailyWords
+                                        .getDate()), dailyWords.getRecordings()));
     }
 
 
-    public Completable downloadWordsOfTheDay(final String childId) {
-        return localRepo.getToken()
-                .flatMap(new Function<String, Single<WordData>>() {
-                    @Override
-                    public Single<WordData> apply(@NonNull String token) throws Exception {
-                        return remoteRepo.downloadWordsOfTheDay(childId, token);
-                    }
-                })
-                .flatMapObservable(wordData -> Observable.fromIterable(wordData.getWordsOfTheDay()))
-                .flatMapCompletable(word -> localRepo.saveWordOfDayRx(word.getId(), word.getWord(), word.getSubText(), word.getChildId(), word.getTopic()));
+    public Completable downloadWordsOfTheDay(final int childId) {
+        return localRepo.getTokenRx()
+                        .flatMap(token -> remoteRepo.downloadWordsOfTheDay(childId, token
+                                .getToken()))
+                        .flatMapObservable(wordData -> Observable.fromIterable(wordData
+                                .getWordsOfTheDay()))
+                        .flatMapCompletable(word -> localRepo.saveWordOfDayRx(word.getId(), word
+                                        .getWord(), word
+                                        .getSubText(), word.getChildId(), word.getTopic(),
+                                word.getInfoList(), word.getQuestionList(), word
+                                        .getActivitiesList(), word
+                                        .getOurFaveList()));
     }
 
 

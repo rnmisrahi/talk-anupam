@@ -40,7 +40,7 @@ public class SignupFragmentTest {
 
     @Test
     public void confirmImageExists(){
-        Espresso.onView(ViewMatchers.withId(R.id.camera_image))
+        Espresso.onView(ViewMatchers.withId(R.id.camera_image_circle))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 

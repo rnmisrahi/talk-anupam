@@ -32,7 +32,6 @@ import com.maatayim.talklet.screens.loginactivity.signup.events.DisplayPhotoEven
 import com.maatayim.talklet.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
@@ -42,7 +41,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnFocusChange;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -57,7 +55,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
     @BindView(R.id.title_fill_details)
     TextView fragmentTitle;
 
-    @BindView(R.id.camera_image)
+    @BindView(R.id.camera_image_circle)
     CircleImageView babysPhoto;
 
     @BindView(R.id.name_edit_text)
@@ -127,7 +125,7 @@ public class SignupFragment extends TalkletFragment implements SignupContract.Vi
         EventBus.getDefault().unregister(this);
     }
 
-   @OnClick(R.id.camera_image)
+   @OnClick(R.id.camera_image_circle)
    public void onChoosePhotoClick(){
        if(isFromLogin){
            EventBus.getDefault().post(new AddLoginFragmentEvent(new ChoosePhotoFragment()));

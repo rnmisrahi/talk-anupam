@@ -10,14 +10,14 @@ import java.util.List;
 
 public class DailyWords {
 
-    private String id;
-    private long date;
+    private int id;
+    private String date;
     private int wordCount;
     private int expectedWordCount;
     private List<Recording> recordings;
-    private String childId;
+    private int childId;
 
-    public DailyWords(String id, long date, int wordCount, int expectedWordCount, List<Recording> recordings) {
+    public DailyWords(int id, String date, int wordCount, int expectedWordCount, List<Recording> recordings) {
         this.id = id;
         this.date = date;
         this.wordCount = wordCount;
@@ -25,11 +25,11 @@ public class DailyWords {
         this.recordings = recordings;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -57,15 +57,15 @@ public class DailyWords {
         this.recordings = recordings;
     }
 
-    public String getChildId() {
+    public int getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(int childId) {
         this.childId = childId;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 }

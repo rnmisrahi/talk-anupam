@@ -10,10 +10,10 @@ import io.realm.annotations.PrimaryKey;
 public class RealmRecording extends RealmObject{
 
     @PrimaryKey
-    private String id;
+    private int id;
 
     private int number;
-    private String date;
+    private long date;
     private int wordCounter;
     private int wordCounterGoal;
     private String duration;
@@ -21,7 +21,7 @@ public class RealmRecording extends RealmObject{
     public RealmRecording() {
     }
 
-    public RealmRecording(String id, int number, String date, int wordCounter, int wordCounterGoal, String duration) {
+    public RealmRecording(int id, int number, long date, int wordCounter, int wordCounterGoal, String duration) {
         this.id = id;
         this.number = number;
         this.date = date;
@@ -31,11 +31,11 @@ public class RealmRecording extends RealmObject{
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,11 +47,11 @@ public class RealmRecording extends RealmObject{
         this.number = number;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

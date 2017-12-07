@@ -11,4 +11,7 @@
         <attr name="wordSectionTitleOpen" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomRuler">
+    </declare-styleable>
+
 </resources>

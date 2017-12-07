@@ -98,6 +98,8 @@ public class TipsFragment extends Fragment implements TipsContract.View{
 
         Picasso.with(getContext())
                 .load(generalTipTicket.getBabyPhoto())
+               .fit()
+               .centerCrop()
                 .placeholder(R.drawable.pic)
                 .into(childImg);
 

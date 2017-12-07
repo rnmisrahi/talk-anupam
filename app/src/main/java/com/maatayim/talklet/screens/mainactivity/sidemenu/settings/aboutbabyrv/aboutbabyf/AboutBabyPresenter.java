@@ -31,7 +31,7 @@ public class AboutBabyPresenter implements AboutBabyContract.Presenter {
     }
 
 
-    public void getData(String id){
+    public void getData(int id){
         repo.getChild(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)

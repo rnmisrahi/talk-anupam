@@ -22,7 +22,7 @@ public class FavoriteWordsPresenter implements FavoriteWordsContract.Presenter {
     private final FavoriteWordsContract.View view;
     private final BaseContract.Repository repo;
     private final Scheduler scheduler;
-    private String id;
+    private int id;
 
     @Inject
     public FavoriteWordsPresenter(FavoriteWordsContract.View view, BaseContract.Repository repo,
@@ -35,7 +35,7 @@ public class FavoriteWordsPresenter implements FavoriteWordsContract.Presenter {
 
 
     @Override
-    public void getData(String id) {
+    public void getData(int id) {
         this.id = id;
         getFavoritesWords(id);
         getNewWords(true);
@@ -43,7 +43,7 @@ public class FavoriteWordsPresenter implements FavoriteWordsContract.Presenter {
 
 
 
-    private void getFavoritesWords(String id) {
+    private void getFavoritesWords(int id) {
         repo.getFavoritesWords(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(scheduler)

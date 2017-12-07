@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 public class RealmChild extends RealmObject {
 
     @PrimaryKey
-    private String id;
+    private int id;
 
     private String name;
     private long birthday;
@@ -21,7 +21,7 @@ public class RealmChild extends RealmObject {
 
     }
 
-    public RealmChild(String id, String name, long birthday, String image) {
+    public RealmChild(int id, String name, long birthday, String image) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -35,11 +35,11 @@ public class RealmChild extends RealmObject {
         this.image = child.getImage();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
