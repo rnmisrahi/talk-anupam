@@ -5,6 +5,7 @@ import android.support.v4.util.Pair;
 import android.util.Log;
 
 import com.maatayim.talklet.baseline.BaseContract;
+import com.maatayim.talklet.repository.realm.RealmToken;
 import com.maatayim.talklet.repository.retrofit.model.children.CreateNewChild;
 import com.maatayim.talklet.repository.retrofit.model.user.LoginFacebookResponse;
 import com.maatayim.talklet.screens.Child;
@@ -30,8 +31,10 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.maatayim.talklet.repository.Mapper.mapRealmRecordingListToRecordsObj;
@@ -309,7 +312,17 @@ public class RepositoryImpl implements BaseContract.Repository {
 
     @Override
     public Single<Boolean> checkIfTokenFound(Context context) {
-        return localRepo.getTokenRx().map(realmToken -> (realmToken.getToken() != null));
+        return localRepo.getTokenRx()
+                        .flatMap((Function<RealmToken, SingleSource<? extends Boolean>>)
+                                realmToken -> {
+                            if (realmToken == null) {
+                                return Single.just(false);
+                            } else {
+                                return Single.just(true);
+//                                return remoteRepo.verifyToken(realmToken);
+                            }
+                        });
+
     }
 
     @Override

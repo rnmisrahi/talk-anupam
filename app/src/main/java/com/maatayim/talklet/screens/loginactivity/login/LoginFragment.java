@@ -277,6 +277,8 @@ public class LoginFragment extends TalkletFragment implements LoginContract.View
     @Override
     public void onInvalidToken() {
         LoginManager.getInstance().logOut();
+        displayLoginButton(true);
+        loginButton.setClickable(true);
     }
 
 

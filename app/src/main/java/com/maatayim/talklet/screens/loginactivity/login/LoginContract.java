@@ -64,5 +64,6 @@ public interface LoginContract {
         void finishLoginActivity();
 
         void displayFacebookError();
+
     }
 }

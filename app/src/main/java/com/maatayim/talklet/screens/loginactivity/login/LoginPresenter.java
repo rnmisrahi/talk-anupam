@@ -85,7 +85,10 @@ public class LoginPresenter implements LoginContract.Presenter {
                          }).filter(aBoolean -> aBoolean)
                          .observeOn(scheduler)
                          .doOnSuccess(aBoolean -> view.navigateToMainActivity())
-                         .doOnError(throwable -> Log.d(TAG, "signup: " + throwable.getMessage()))
+                         .doOnError(throwable -> {
+                             Log.d(TAG, "signup: " + throwable.getMessage());
+                             view.onInvalidToken();
+                         })
                          .flatMapCompletable(aBoolean -> downloadData());
 
     }
