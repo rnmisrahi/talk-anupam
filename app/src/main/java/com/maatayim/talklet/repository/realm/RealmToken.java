@@ -19,6 +19,7 @@ public class RealmToken extends RealmObject {
 
     public RealmToken(String token) {
         this.token = BEARER + token;
+//        this.token = token;
     }
 
     public RealmToken(RealmToken copy) {
