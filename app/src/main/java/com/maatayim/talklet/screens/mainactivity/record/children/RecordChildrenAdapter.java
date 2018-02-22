@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maatayim.talklet.R;
+import com.maatayim.talklet.screens.Child;
+import com.maatayim.talklet.screens.mainactivity.mainscreen.MainScreenChild;
 import com.maatayim.talklet.screens.mainactivity.record.ChildRecObj;
 
 import java.util.ArrayList;

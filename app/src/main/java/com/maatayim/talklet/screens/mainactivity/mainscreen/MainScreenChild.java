@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MainScreenChild{
 
-    private int id;
+    private String id;
     private String url;
     private int wordCount;
     private int total;
@@ -32,7 +32,7 @@ public class MainScreenChild{
         return tips;
     }
 
-    public MainScreenChild(int id, String url, int wordCount, int total, List<Tip> tips) {
+    public MainScreenChild(String id, String url, int wordCount, int total, List<Tip> tips) {
         this.id = id;
         this.url = url;
         this.wordCount = wordCount;
@@ -58,7 +58,7 @@ public class MainScreenChild{
         }
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

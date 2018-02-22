@@ -137,7 +137,7 @@ public class LocalData {
     public Completable saveChildRx(final ChildModel childModel) {
         return Completable.fromAction(() -> saveChild(childModel.getId(), childModel.getName(),
                 parserDate(childModel.getBirthday()), childModel.getImage()))
-                          .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());
     }
 
     public void saveChild(final int childId, final String name, final long birthday, final String

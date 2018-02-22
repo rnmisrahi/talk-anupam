@@ -49,7 +49,7 @@ public class ChildrenHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnClickListener(v -> EventBus.getDefault()
                                                  .post(new AddFragmentWithSharedElementEvent(ChildFragment.newInstance
-                                                         (child.getId()), childView)));
+                                                         (Integer.parseInt(child.getId())), childView)));
     }
 
     public void setData(MainScreenChild child) {

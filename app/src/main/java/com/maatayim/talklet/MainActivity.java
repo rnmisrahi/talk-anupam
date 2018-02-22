@@ -31,6 +31,8 @@ import com.maatayim.talklet.screens.mainactivity.mainscreen.MainFragment;
 import com.maatayim.talklet.screens.mainactivity.mainscreen.dagger.MainModule;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.DrawerHandler;
 import com.maatayim.talklet.screens.mainactivity.sidemenu.LogoutEvent;
+import com.maatayim.talklet.services.FTPUploadFileService;
+import com.maatayim.talklet.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,6 +42,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+//////import com.facebook.FacebookSdk;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
@@ -82,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         EventBus.getDefault().register(this);
         addFragment(new MainFragment(), true, null);
+
+        if (Utils.isConnectedWithInternet(this)) {
+            Intent msgIntent = new Intent(this, FTPUploadFileService.class);
+            startService(msgIntent);
+        }
 
     }
 

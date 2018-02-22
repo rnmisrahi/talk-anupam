@@ -20,8 +20,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--facebook-->
-    <string name="facebook_app_id">796713693824727</string>
-    <string name="fb_login_protocol_scheme">fb796713693824727</string>
+    <!--<string name="facebook_app_id">796713693824727</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb796713693824727</string>-->
+<!--This is what I got from the following:
+C:\Program Files\Git\usr\bin>keytool -exportcert -alias YOUR_RELEASE_KEY_ALIAS -keystore YOUR_RELEASE_KEY_PATH | openssl sha1 -binary | openssl base64
+-->
+    <!--<string name="facebook_app_id">1968945033319882</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb1968945033319882</string>-->
+
+    <!--This app id is the one I (Ruben) have control over. It can be set at: https://developers.facebook.com/apps/217220582154957/dashboard/-->
+    <string name="facebook_app_id">217220582154957</string>
+    <string name="fb_login_protocol_scheme">fb217220582154957</string>
 
     <!--MainScreen-->
     <string name="total_words">Total words</string>

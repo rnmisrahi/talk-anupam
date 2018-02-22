@@ -224,9 +224,9 @@ public class RepositoryImpl implements BaseContract.Repository {
     public Single<List<MainScreenChild>> getMainScreenChildrenList() {
         return localRepo.getChildrenListRx()
                         .flatMapObservable(Observable::fromIterable)
-                        .map(realmChild -> new MainScreenChild(realmChild.getId(), realmChild
+                        .map(realmChild -> new MainScreenChild(String.valueOf(realmChild.getId()), realmChild
                                 .getImage(), 0, 0, null))
-                        .flatMapSingle(child -> localRepo.getTipsListRx(child.getId())
+                        .flatMapSingle(child -> localRepo.getTipsListRx(Integer.parseInt(child.getId()))
                                                          .flatMapObservable
                                                                  (Observable::fromIterable)
                                                          .map(realmTip -> new MainScreenChild.Tip
@@ -238,7 +238,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                                                              child.setTips(tipTickets);
                                                              return child;
                                                          }))
-                        .flatMapSingle(child -> localRepo.getWordsCountRx(child.getId())
+                        .flatMapSingle(child -> localRepo.getWordsCountRx(Integer.parseInt(child.getId()))
                                                          .map(countData -> {
                                                              child.setWordCount(countData
                                                                      .getWordCount());
@@ -331,7 +331,7 @@ public class RepositoryImpl implements BaseContract.Repository {
                          .observeOn(AndroidSchedulers.mainThread())
                          .doOnSuccess(loginFacebookResponse -> {
                              if (loginFacebookResponse.getToken().equals("")) {
-                                 throw new IllegalAccessException("Error 01: Illigal Facebook" +
+                                 throw new IllegalAccessException("Error 01: Illegal Facebook" +
                                          " ID:");
                              }
                          })

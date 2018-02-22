@@ -18,33 +18,34 @@
             android:id="@+id/first_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="52dp"
+            android:layout_marginStart="52dp"
             android:layout_marginTop="90dp"
             android:background="@drawable/edit_text_line"
-            android:layout_marginStart="52dp"
-            android:layout_marginEnd="52dp"
+            android:capitalize="sentences"
             android:hint="@string/first_name"
             android:paddingBottom="10dp"
-            android:textColor="@color/text_color"/>
-
+            android:textColor="@color/text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <EditText
             android:id="@+id/last_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/first_name"
+            android:layout_marginEnd="52dp"
+            android:layout_marginStart="52dp"
             android:layout_marginTop="31dp"
             android:background="@drawable/edit_text_line"
-            android:layout_marginStart="52dp"
-            android:layout_marginEnd="52dp"
+            android:capitalize="words"
             android:hint="@string/last_name"
             android:paddingBottom="10dp"
-            android:textColor="@color/text_color"/>
+            android:textColor="@color/text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_name" />
 
 
         <TextView

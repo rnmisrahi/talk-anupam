@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -157,5 +159,13 @@ public class Utils {
         SimpleDateFormat formatterDate = new SimpleDateFormat(jsonDate, Locale.getDefault());
 //        SimpleDateFormat formatterTime = new SimpleDateFormat(jsonTime, Locale.getDefault());
         return formatterDate.format(date) + "T00:00:00";
+    }
+    public static boolean isConnectedWithInternet(Context context) {
+        ConnectivityManager
+                cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
     }
 }

@@ -12,7 +12,7 @@ public class ChildRecObj extends MainScreenChild {
 
     private boolean isSelected;
 
-    public ChildRecObj(int id, String url, int wordCount, int total, List<Tip> tips) {
+    public ChildRecObj(String id, String url, int wordCount, int total, List<Tip> tips) {
         super(id, url, wordCount, total, tips);
         this.isSelected = false;
 

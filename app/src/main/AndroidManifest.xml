@@ -66,6 +66,10 @@
         <service android:name=".screens.mainactivity.record.FtpService"
             android:exported="false" />
 
+        <service
+            android:name=".services.FTPUploadFileService"
+            android:exported="false" />
+
     </application>
 
 </manifest>
